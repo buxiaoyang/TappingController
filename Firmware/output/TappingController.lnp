@@ -7,6 +7,6 @@
 ".\output\timer.obj",
 ".\output\key.obj",
 ".\output\dispatch.obj" 
-TO ".\output\PlateCuttingController" 
-PRINT(".\listing\PlateCuttingController.m51") RAMSIZE(256) 
+TO ".\output\TappingController" 
+PRINT(".\listing\TappingController.m51") RAMSIZE(256) 
 XDATA( 0X0000-0X03FE )
