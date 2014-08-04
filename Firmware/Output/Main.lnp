@@ -1,4 +1,11 @@
 ".\Output\STARTUP.obj",
-".\Output\main.obj" 
+".\Output\main.obj",
+".\Output\basefunc.obj",
+".\Output\dispatch.obj",
+".\Output\eeprom.obj",
+".\Output\key.obj",
+".\Output\parameter.obj",
+".\Output\timer.obj",
+".\Output\uart.obj" 
 TO ".\Output\Main" 
 PRINT(".\Listing\Main.m51") RAMSIZE(256) 

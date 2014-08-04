@@ -9,105 +9,76 @@
 /* article, please specify in which data and procedures from STC    */
 /*------------------------------------------------------------------*/
 
-#include "reg51.h"
-#include "intrins.h"
+#include <reg52.h>
+#include <basefunc.h>
+#include <parameter.h>
+#include <uart.h>
+#include <timer.h>
+#include <key.h>
+#include <dispatch.h>
 
-typedef unsigned char BYTE;
-typedef unsigned int WORD;
+void parameter_send_screen()
+{
+	SendDataToScreen(0x0000,runMode); //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
+	
+	SendDataToScreen(0x0001,montorMode); //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+	SendDataToScreen(0x0002,sensor1); //传感器1	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0003,sensor2); //传感器2	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0004,sensor3); //传感器3	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0005,sensor4); //传感器4	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0006,sensor5); //传感器5	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0007,sensor6); //传感器6	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0008,sensor7); //传感器7	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0009,sensor8); //传感器8	0：无效  1：有效  2：错误
+	SendDataToScreen(0x000A,sensor9); //传感器9	0：无效  1：有效  2：错误
+	SendDataToScreen(0x000B,sensor10); //传感器10	0：无效  1：有效  2：错误
+	
+	SendDataToScreen(0x000C,cylinder1); //气缸1	0：无效  1：有效  2：错误
+	SendDataToScreen(0x000D,cylinder2); //气缸2	0：无效  1：有效  2：错误
+	SendDataToScreen(0x000E,cylinder3); //气缸3	0：无效  1：有效  2：错误
+	SendDataToScreen(0x000F,cylinder4); //气缸4	0：无效  1：有效  2：错误
+	SendDataToScreen(0x0010,cylinder5); //气缸5	0：无效  1：有效  2：错误
+	
+	SendDataToScreen(0x0011,intervalTimer1); //时间设置1	字(int) 最大9.9
+	SendDataToScreen(0x0012,intervalTimer2); //时间设置2	字(int) 最大9.9
+	SendDataToScreen(0x0013,intervalTimer3); //时间设置3	字(int) 最大9.9
+	SendDataToScreen(0x0014,intervalTimer4); //时间设置4	字(int) 最大9.9
+	SendDataToScreen(0x0015,intervalTimer5); //时间设置5	字(int) 最大9.9
+	SendDataToScreen(0x0016,intervalTimer6); //时间设置6	字(int) 最大9.9
+	SendDataToScreen(0x0017,intervalTimer7); //时间设置7	字(int) 最大9.9
+	
+	SendDataToScreen(0x0018,cylinderAlarm1); //报警设置 气缸1	字(int)
+	SendDataToScreen(0x0019,cylinderAlarm2); //报警设置 气缸2	字(int)
+	SendDataToScreen(0x001A,cylinderAlarm3); //报警设置 气缸3	字(int)
+	SendDataToScreen(0x001B,cylinderAlarm4); //报警设置 气缸4	字(int)
+	SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5	字(int)
 
-#define FOSC 11059200L      //System frequency
-#define BAUD 9600           //UART baudrate
-
-/*Define UART parity mode*/
-#define NONE_PARITY     0   //None parity
-#define ODD_PARITY      1   //Odd parity
-#define EVEN_PARITY     2   //Even parity
-#define MARK_PARITY     3   //Mark parity
-#define SPACE_PARITY    4   //Space parity
-
-#define PARITYBIT NONE_PARITY   //Testing even parity
-
-bit busy;
-
-void SendData(BYTE dat);
-void SendString(char *s);
+	SendDataToScreen(0x0023,pieceCount); 
+}
 
 void main()
 {
-#if (PARITYBIT == NONE_PARITY)
-    SCON = 0x50;            //8-bit variable UART
-#elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-    SCON = 0xda;            //9-bit variable UART, parity bit initial to 1
-#elif (PARITYBIT == SPACE_PARITY)
-    SCON = 0xd2;            //9-bit variable UART, parity bit initial to 0
-#endif
-
-    TMOD = 0x20;            //Set Timer1 as 8-bit auto reload mode
-    TH1 = TL1 = -(FOSC/12/32/BAUD); //Set auto-reload vaule
-    TR1 = 1;                //Timer1 start run
-    ES = 1;                 //Enable UART interrupt
-    EA = 1;                 //Open master interrupt switch
-
-    SendString("STC12C5A60S2\r\nUart Test !\r\n");
-    while(1);
+	uart_init();
+	//timer_init();
+	parameter_init();
+	while(1)
+	{	
+		parameter_send_screen();
+		TestOut = ! TestOut;   
+		if(KeyAutoManual == 1)
+		{
+			runMode = 1;
+		}
+		else
+		{
+			runMode = 0;
+		} 
+		Key_Scan();
+		ManiDispatch();
+		SubDispatch();
+	}   
 }
 
-/*----------------------------
-UART interrupt service routine
-----------------------------*/
-void Uart_Isr() interrupt 4 using 1
-{
-    if (RI)
-    {
-        RI = 0;             //Clear receive interrupt flag
-        //P0 = SBUF;          //P0 show UART data
-    }
-    if (TI)
-    {
-        TI = 0;             //Clear transmit interrupt flag
-        busy = 0;           //Clear transmit busy flag
-    }
-}
 
-/*----------------------------
-Send a byte data to UART
-Input: dat (data to be sent)
-Output:None
-----------------------------*/
-void SendData(BYTE dat)
-{
-    while (busy);           //Wait for the completion of the previous data is sent
-    ACC = dat;              //Calculate the even parity bit P (PSW.0)
-    if (P)                  //Set the parity bit according to P
-    {
-#if (PARITYBIT == ODD_PARITY)
-        TB8 = 0;            //Set parity bit to 0
-#elif (PARITYBIT == EVEN_PARITY)
-        TB8 = 1;            //Set parity bit to 1
-#endif
-    }
-    else
-    {
-#if (PARITYBIT == ODD_PARITY)
-        TB8 = 1;            //Set parity bit to 1
-#elif (PARITYBIT == EVEN_PARITY)
-        TB8 = 0;            //Set parity bit to 0
-#endif
-    }
-    busy = 1;
-    SBUF = ACC;             //Send data to UART buffer
-}
 
-/*----------------------------
-Send a string to UART
-Input: s (address of string)
-Output:None
-----------------------------*/
-void SendString(char *s)
-{
-    while (*s)              //Check the end of the string
-    {
-        SendData(*s++);     //Send current char and increment string ptr
-    }
-}
 
