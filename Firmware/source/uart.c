@@ -63,7 +63,7 @@ void Uart_Isr() interrupt 4 using 1
     {
         RI = 0;             //Clear receive interrupt flag
         //P0 = SBUF;          //P0 show UART data
-		ReceiveData(SBUF);
+		ReceiveData(SBUF); 
     }
     if (TI)
     {
@@ -144,6 +144,7 @@ void ReceiveData(BYTE dat)
 		case 3:
 			uartBuffer[dataIndex] = dat;
 			dataIndex ++;
+			//TestOut = ~TestOut;
 			if(dataIndex >= dataLength)
 			{
 				anyData();
@@ -159,17 +160,32 @@ void ReceiveData(BYTE dat)
 void anyData()
 {
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
-	if(uartBuffer[2] == 0x01)		//系统参数1
+	TestOut = ~TestOut;
+	if(uartBuffer[2] == 0x00)		//运行模式
 	{
-		
+		if(runMode == 0 || runMode == 2)
+		{
+			runMode = 0;
+		}
+		else
+		{
+			runMode = 1;
+		}
 	}
-	else if(uartBuffer[2] == 0x03)	//系统参数2
+	else if(uartBuffer[2] == 0x01)	////电机状态
 	{
-
+		if(montorMode)
+		{
+			montorMode = 0;
+		}
+		else
+		{
+			montorMode = 1;
+		}
 	}
-	else if(uartBuffer[2] == 0x05) 	//系统参数3
+	else if(uartBuffer[2] == 0x11) 	
 	{
-
+		intervalTimer1 = uartBuffer[5];
 	}
 	else if(uartBuffer[2] == 0x07)	//系统参数4
 	{

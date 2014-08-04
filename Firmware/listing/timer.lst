@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   TIMER                                                                 08/04/2014 22:05:48 PAGE 1   
+C51 COMPILER V7.50   TIMER                                                                 08/04/2014 23:19:50 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   51   1          TL0 = T1MS;                     //initial timer0 low byte
   52   1          TH0 = T1MS >> 8;                //initial timer0 high byte
   53   1          TR0 = 1;                        //timer0 start running
-C51 COMPILER V7.50   TIMER                                                                 08/04/2014 22:05:48 PAGE 2   
+C51 COMPILER V7.50   TIMER                                                                 08/04/2014 23:19:50 PAGE 2   
 
   54   1          ET0 = 1;                        //enable timer0 interrupt
   55   1          EA = 1;                         //open global interrupt switch

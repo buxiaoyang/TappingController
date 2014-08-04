@@ -22,6 +22,8 @@ void parameter_send_screen()
 	SendDataToScreen(0x0000,runMode); //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
 	
 	SendDataToScreen(0x0001,montorMode); //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+
+	/*
 	SendDataToScreen(0x0002,sensor1); //传感器1	0：无效  1：有效  2：错误
 	SendDataToScreen(0x0003,sensor2); //传感器2	0：无效  1：有效  2：错误
 	SendDataToScreen(0x0004,sensor3); //传感器3	0：无效  1：有效  2：错误
@@ -54,6 +56,7 @@ void parameter_send_screen()
 	SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5	字(int)
 
 	SendDataToScreen(0x0023,pieceCount); 
+	*/
 }
 
 void main()
@@ -64,7 +67,7 @@ void main()
 	while(1)
 	{	
 		parameter_send_screen();
-		TestOut = ! TestOut;   
+		  
 		if(KeyAutoManual == 1)
 		{
 			runMode = 1;
@@ -76,6 +79,7 @@ void main()
 		Key_Scan();
 		ManiDispatch();
 		SubDispatch();
+		delay_ms(50);
 	}   
 }
 
