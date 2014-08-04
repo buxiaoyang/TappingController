@@ -1,1 +1,0 @@
-copy .\output\SoakControl.hex SoakControl.hex

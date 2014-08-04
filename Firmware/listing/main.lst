@@ -1,155 +1,141 @@
-C51 COMPILER V7.50   MAIN                                                                  08/03/2014 21:11:11 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/04/2014 20:26:53 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
-OBJECT MODULE PLACED IN .\output\main.obj
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\main.c LARGE BROWSE INCDIR(.\include\) DEBUG OBJECTEXTEND PRINT(.\li
-                    -sting\main.lst) OBJECT(.\output\main.obj)
+OBJECT MODULE PLACED IN .\Output\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Source\main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing\main.lst) OBJECT(.\
+                    -Output\main.obj)
 
 line level    source
 
-   1          /***************************************************************************/
-   2          // 程序：清洗设备控制器
-   3          // 模块：主函数 
-   4          // 文件：main.c
-   5          // 作者：卜晓旸
-   6          // 版本：V0.02
-   7          // 日期：2013年11月8日
-   8          // 功能：主函数
-   9          // 芯片：STC12C5A60S2
-  10          // 编译：Keil uVision3 V3.90
-  11          /***************************************************************************/
-  12          
-  13          #include <reg52.h>
-  14          #include <basefunc.h>
-  15          #include <parameter.h>
-  16          #include <uart.h>
-  17          #include <timer.h>
-  18          #include <key.h>
-  19          #include <dispatch.h>
+   1          /*------------------------------------------------------------------*/
+   2          /* --- STC MCU Limited ---------------------------------------------*/
+   3          /* --- STC12C5Axx Series MCU UART (8-bit/9-bit)Demo ----------------*/
+   4          /* --- Mobile: (86)13922805190 -------------------------------------*/
+   5          /* --- Fax: 86-755-82905966 ----------------------------------------*/
+   6          /* --- Tel: 86-755-82948412 ----------------------------------------*/
+   7          /* --- Web: www.STCMCU.com -----------------------------------------*/
+   8          /* If you want to use the program or the program referenced in the  */
+   9          /* article, please specify in which data and procedures from STC    */
+  10          /*------------------------------------------------------------------*/
+  11          
+  12          #include "reg51.h"
+  13          #include "intrins.h"
+  14          
+  15          typedef unsigned char BYTE;
+  16          typedef unsigned int WORD;
+  17          
+  18          #define FOSC 11059200L      //System frequency
+  19          #define BAUD 9600           //UART baudrate
   20          
-  21          //External interrupt0 service routine
-  22          void exint0() interrupt 0           //(location at 0003H)
-  23          {
-  24   1              if(EncoderDirection == 0)
-  25   1              {
-  26   2                      if(currentlySignalNum>0)
-  27   2                      {
-  28   3                              currentlySignalNum --;
-  29   3                      }
-  30   2              }
-  31   1              else
-  32   1              {               
-  33   2                      if(currentlySignalNum <= maxSignalNum)
-  34   2                      {
-  35   3                              currentlySignalNum ++;
-  36   3                      }
-  37   2              }       
-  38   1      }
-  39          
-  40          void exterInterInit()
-  41          {
-  42   1              IT0 = 1;                        //set INT0 int type (1:Falling 0:Low level)
-  43   1          EX0 = 1;                        //enable INT0 interrupt
-  44   1          EA = 1;                         //open global interrupt switch
-  45   1              
-  46   1      }
-  47          
-  48          void parameter_send_screen()
-  49          {
-  50   1              SendDataToScreen(0x0001, sysParm1_SignalNumPerMeter);
-  51   1              SendDataToScreen(0x0003, sysParm2_ErrorCorrectionValue);
-  52   1              SendDataToScreen(0x0005, sysParm3);
-  53   1              SendDataToScreen(0x0007, sysParm4);
-  54   1              SendDataToScreen(0x0009, sysParm5);
-C51 COMPILER V7.50   MAIN                                                                  08/03/2014 21:11:11 PAGE 2   
+  21          /*Define UART parity mode*/
+  22          #define NONE_PARITY     0   //None parity
+  23          #define ODD_PARITY      1   //Odd parity
+  24          #define EVEN_PARITY     2   //Even parity
+  25          #define MARK_PARITY     3   //Mark parity
+  26          #define SPACE_PARITY    4   //Space parity
+  27          
+  28          #define PARITYBIT NONE_PARITY   //Testing even parity
+  29          
+  30          bit busy;
+  31          
+  32          void SendData(BYTE dat);
+  33          void SendString(char *s);
+  34          
+  35          void main()
+  36          {
+  37   1      #if (PARITYBIT == NONE_PARITY)
+  38   1          SCON = 0x50;            //8-bit variable UART
+  39   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
+                  SCON = 0xda;            //9-bit variable UART, parity bit initial to 1
+              #elif (PARITYBIT == SPACE_PARITY)
+                  SCON = 0xd2;            //9-bit variable UART, parity bit initial to 0
+              #endif
+  44   1      
+  45   1          TMOD = 0x20;            //Set Timer1 as 8-bit auto reload mode
+  46   1          TH1 = TL1 = -(FOSC/12/32/BAUD); //Set auto-reload vaule
+  47   1          TR1 = 1;                //Timer1 start run
+  48   1          ES = 1;                 //Enable UART interrupt
+  49   1          EA = 1;                 //Open master interrupt switch
+  50   1      
+  51   1          SendString("STC12C5A60S2\r\nUart Test !\r\n");
+  52   1          while(1);
+  53   1      }
+  54          
+C51 COMPILER V7.50   MAIN                                                                  08/04/2014 20:26:53 PAGE 2   
 
-  55   1              SendDataToScreen(0x000B, parameterBoard[0].boardLength);
-  56   1              SendDataToScreen(0x000D, parameterBoard[0].boardNumber);
-  57   1              SendDataToScreen(0x000F, parameterBoard[1].boardLength);
-  58   1              SendDataToScreen(0x0011, parameterBoard[1].boardNumber);
-  59   1              SendDataToScreen(0x0013, parameterBoard[2].boardLength);
-  60   1              SendDataToScreen(0x0015, parameterBoard[2].boardNumber);
-  61   1              SendDataToScreen(0x0017, parameterBoard[3].boardLength);
-  62   1              SendDataToScreen(0x0019, parameterBoard[3].boardNumber);
-  63   1              if(!powerMode && !runMode)
-  64   1              {
-  65   2                      SendDataToScreen(0x0000, 0x0000);
-  66   2              }
-  67   1              else if(!powerMode && runMode)
-  68   1              {
-  69   2                      SendDataToScreen(0x0000, 0x0001);
-  70   2              }
-  71   1              else if(powerMode && !runMode)
-  72   1              {
-  73   2                      SendDataToScreen(0x0000, 0x0002);
-  74   2              }
-  75   1              else
-  76   1              {
-  77   2                      SendDataToScreen(0x0000, 0x0003);
-  78   2              }
-  79   1              SendDataToScreen(0x001B, settingBoardLength);
-  80   1              SendDataToScreen(0x001D, settingBoardNumber);
-  81   1              SendDataToScreen(0x001F, currentlyBoardLength);
-  82   1              SendDataToScreen(0x0021, currentlyBoardNumber);
-  83   1      }
-  84          
-  85          /***************************************************************************/
-  86          // 主函数
-  87          // 参数：无
-  88          // 返回值：无   
-  89          /***************************************************************************/
-  90          void main()
-  91          {
-  92   1              exterInterInit();
-  93   1              uart_init();
-  94   1              //timer_init();
-  95   1              parameter_init();
-  96   1              maxSignalNum = (65535 * sysParm1_SignalNumPerMeter)/1000-2000;
-  97   1              while(1)
-  98   1              {
-  99   2                      currentlyBoardLength = (currentlySignalNum*1000)/sysParm1_SignalNumPerMeter;    
- 100   2                      parameter_send_screen();
- 101   2                      //SendDataToScreen(0x001F, currentlyBoardLength);
- 102   2                      if(uartReceiveOK)
- 103   2                      {
- 104   3                              uartReceiveOK = 0;
- 105   3                              //anyData();
- 106   3                      }
- 107   2                      TestOut = ! TestOut;   
- 108   2                      if(KeyAutoManual == 1)
- 109   2                      {
- 110   3                              runMode = 1;
- 111   3                      }
- 112   2                      else
- 113   2                      {
- 114   3                              runMode = 0;
- 115   3                      } 
- 116   2                      Key_Scan();
-C51 COMPILER V7.50   MAIN                                                                  08/03/2014 21:11:11 PAGE 3   
+  55          /*----------------------------
+  56          UART interrupt service routine
+  57          ----------------------------*/
+  58          void Uart_Isr() interrupt 4 using 1
+  59          {
+  60   1          if (RI)
+  61   1          {
+  62   2              RI = 0;             //Clear receive interrupt flag
+  63   2              P0 = SBUF;          //P0 show UART data
+  64   2                      SendData(SBUF);
+  65   2          }
+  66   1          if (TI)
+  67   1          {
+  68   2              TI = 0;             //Clear transmit interrupt flag
+  69   2              busy = 0;           //Clear transmit busy flag
+  70   2          }
+  71   1      }
+  72          
+  73          /*----------------------------
+  74          Send a byte data to UART
+  75          Input: dat (data to be sent)
+  76          Output:None
+  77          ----------------------------*/
+  78          void SendData(BYTE dat)
+  79          {
+  80   1          while (busy);           //Wait for the completion of the previous data is sent
+  81   1          ACC = dat;              //Calculate the even parity bit P (PSW.0)
+  82   1          if (P)                  //Set the parity bit according to P
+  83   1          {
+  84   2      #if (PARITYBIT == ODD_PARITY)
+                      TB8 = 0;            //Set parity bit to 0
+              #elif (PARITYBIT == EVEN_PARITY)
+                      TB8 = 1;            //Set parity bit to 1
+              #endif
+  89   2          }
+  90   1          else
+  91   1          {
+  92   2      #if (PARITYBIT == ODD_PARITY)
+                      TB8 = 1;            //Set parity bit to 1
+              #elif (PARITYBIT == EVEN_PARITY)
+                      TB8 = 0;            //Set parity bit to 0
+              #endif
+  97   2          }
+  98   1          busy = 1;
+  99   1          SBUF = ACC;             //Send data to UART buffer
+ 100   1      }
+ 101          
+ 102          /*----------------------------
+ 103          Send a string to UART
+ 104          Input: s (address of string)
+ 105          Output:None
+ 106          ----------------------------*/
+ 107          void SendString(char *s)
+ 108          {
+ 109   1          while (*s)              //Check the end of the string
+ 110   1          {
+ 111   2              SendData(*s++);     //Send current char and increment string ptr
+ 112   2          }
+ 113   1      }
+ 114          
 
- 117   2                      ManiDispatch();
- 118   2                      SubDispatch();
- 119   2              }   
- 120   1      }
- 121          
- 122          
- 123          
- 124          
- 125          
- 126          
- 127          
- 128          
 
+C51 COMPILER V7.50   MAIN                                                                  08/04/2014 20:26:53 PAGE 3   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    680    ----
-   CONSTANT SIZE    =   ----    ----
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =     28    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =   ----       3
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 

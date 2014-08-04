@@ -1,128 +1,113 @@
-/***************************************************************************/
-// 程序：清洗设备控制器
-// 模块：主函数	
-// 文件：main.c
-// 作者：卜晓旸
-// 版本：V0.02
-// 日期：2013年11月8日
-// 功能：主函数
-// 芯片：STC12C5A60S2
-// 编译：Keil uVision3 V3.90
-/***************************************************************************/
+/*------------------------------------------------------------------*/
+/* --- STC MCU Limited ---------------------------------------------*/
+/* --- STC12C5Axx Series MCU UART (8-bit/9-bit)Demo ----------------*/
+/* --- Mobile: (86)13922805190 -------------------------------------*/
+/* --- Fax: 86-755-82905966 ----------------------------------------*/
+/* --- Tel: 86-755-82948412 ----------------------------------------*/
+/* --- Web: www.STCMCU.com -----------------------------------------*/
+/* If you want to use the program or the program referenced in the  */
+/* article, please specify in which data and procedures from STC    */
+/*------------------------------------------------------------------*/
 
-#include <reg52.h>
-#include <basefunc.h>
-#include <parameter.h>
-#include <uart.h>
-#include <timer.h>
-#include <key.h>
-#include <dispatch.h>
+#include "reg51.h"
+#include "intrins.h"
 
-//External interrupt0 service routine
-void exint0() interrupt 0           //(location at 0003H)
-{
-	if(EncoderDirection == 0)
-	{
-		if(currentlySignalNum>0)
-		{
-			currentlySignalNum --;
-		}
-	}
-	else
-	{		
-		if(currentlySignalNum <= maxSignalNum)
-		{
-		   	currentlySignalNum ++;
-		}
-	}	
-}
+typedef unsigned char BYTE;
+typedef unsigned int WORD;
 
-void exterInterInit()
-{
-	IT0 = 1;                        //set INT0 int type (1:Falling 0:Low level)
-    EX0 = 1;                        //enable INT0 interrupt
-    EA = 1;                         //open global interrupt switch
-	
-}
+#define FOSC 11059200L      //System frequency
+#define BAUD 9600           //UART baudrate
 
-void parameter_send_screen()
-{
-	SendDataToScreen(0x0001, sysParm1_SignalNumPerMeter);
-	SendDataToScreen(0x0003, sysParm2_ErrorCorrectionValue);
-	SendDataToScreen(0x0005, sysParm3);
-	SendDataToScreen(0x0007, sysParm4);
-	SendDataToScreen(0x0009, sysParm5);
-	SendDataToScreen(0x000B, parameterBoard[0].boardLength);
-	SendDataToScreen(0x000D, parameterBoard[0].boardNumber);
-	SendDataToScreen(0x000F, parameterBoard[1].boardLength);
-	SendDataToScreen(0x0011, parameterBoard[1].boardNumber);
-	SendDataToScreen(0x0013, parameterBoard[2].boardLength);
-	SendDataToScreen(0x0015, parameterBoard[2].boardNumber);
-	SendDataToScreen(0x0017, parameterBoard[3].boardLength);
-	SendDataToScreen(0x0019, parameterBoard[3].boardNumber);
-	if(!powerMode && !runMode)
-	{
-	   	SendDataToScreen(0x0000, 0x0000);
-	}
-	else if(!powerMode && runMode)
-	{
-	   	SendDataToScreen(0x0000, 0x0001);
-	}
-	else if(powerMode && !runMode)
-	{
-		SendDataToScreen(0x0000, 0x0002);
-	}
-	else
-	{
-		SendDataToScreen(0x0000, 0x0003);
-	}
-	SendDataToScreen(0x001B, settingBoardLength);
-	SendDataToScreen(0x001D, settingBoardNumber);
-	SendDataToScreen(0x001F, currentlyBoardLength);
-	SendDataToScreen(0x0021, currentlyBoardNumber);
-}
+/*Define UART parity mode*/
+#define NONE_PARITY     0   //None parity
+#define ODD_PARITY      1   //Odd parity
+#define EVEN_PARITY     2   //Even parity
+#define MARK_PARITY     3   //Mark parity
+#define SPACE_PARITY    4   //Space parity
 
-/***************************************************************************/
-// 主函数
-// 参数：无
-// 返回值：无	
-/***************************************************************************/
+#define PARITYBIT NONE_PARITY   //Testing even parity
+
+bit busy;
+
+void SendData(BYTE dat);
+void SendString(char *s);
+
 void main()
 {
-	exterInterInit();
-	uart_init();
-	//timer_init();
-	parameter_init();
-	maxSignalNum = (65535 * sysParm1_SignalNumPerMeter)/1000-2000;
-	while(1)
-	{
-		currentlyBoardLength = (currentlySignalNum*1000)/sysParm1_SignalNumPerMeter;	
-		parameter_send_screen();
-		//SendDataToScreen(0x001F, currentlyBoardLength);
-		if(uartReceiveOK)
-		{
-			uartReceiveOK = 0;
-			//anyData();
-		}
-		TestOut = ! TestOut;   
-		if(KeyAutoManual == 1)
-		{
-			runMode = 1;
-		}
-		else
-		{
-			runMode = 0;
-		} 
-		Key_Scan();
-		ManiDispatch();
-		SubDispatch();
-	}   
+#if (PARITYBIT == NONE_PARITY)
+    SCON = 0x50;            //8-bit variable UART
+#elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
+    SCON = 0xda;            //9-bit variable UART, parity bit initial to 1
+#elif (PARITYBIT == SPACE_PARITY)
+    SCON = 0xd2;            //9-bit variable UART, parity bit initial to 0
+#endif
+
+    TMOD = 0x20;            //Set Timer1 as 8-bit auto reload mode
+    TH1 = TL1 = -(FOSC/12/32/BAUD); //Set auto-reload vaule
+    TR1 = 1;                //Timer1 start run
+    ES = 1;                 //Enable UART interrupt
+    EA = 1;                 //Open master interrupt switch
+
+    SendString("STC12C5A60S2\r\nUart Test !\r\n");
+    while(1);
 }
 
+/*----------------------------
+UART interrupt service routine
+----------------------------*/
+void Uart_Isr() interrupt 4 using 1
+{
+    if (RI)
+    {
+        RI = 0;             //Clear receive interrupt flag
+        //P0 = SBUF;          //P0 show UART data
+    }
+    if (TI)
+    {
+        TI = 0;             //Clear transmit interrupt flag
+        busy = 0;           //Clear transmit busy flag
+    }
+}
 
+/*----------------------------
+Send a byte data to UART
+Input: dat (data to be sent)
+Output:None
+----------------------------*/
+void SendData(BYTE dat)
+{
+    while (busy);           //Wait for the completion of the previous data is sent
+    ACC = dat;              //Calculate the even parity bit P (PSW.0)
+    if (P)                  //Set the parity bit according to P
+    {
+#if (PARITYBIT == ODD_PARITY)
+        TB8 = 0;            //Set parity bit to 0
+#elif (PARITYBIT == EVEN_PARITY)
+        TB8 = 1;            //Set parity bit to 1
+#endif
+    }
+    else
+    {
+#if (PARITYBIT == ODD_PARITY)
+        TB8 = 1;            //Set parity bit to 1
+#elif (PARITYBIT == EVEN_PARITY)
+        TB8 = 0;            //Set parity bit to 0
+#endif
+    }
+    busy = 1;
+    SBUF = ACC;             //Send data to UART buffer
+}
 
-
-
-
-
+/*----------------------------
+Send a string to UART
+Input: s (address of string)
+Output:None
+----------------------------*/
+void SendString(char *s)
+{
+    while (*s)              //Check the end of the string
+    {
+        SendData(*s++);     //Send current char and increment string ptr
+    }
+}
 
