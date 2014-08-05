@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   UART                                                                  08/05/2014 22:43:18 PAGE 1   
+C51 COMPILER V7.50   UART                                                                  08/05/2014 22:47:33 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE UART
@@ -62,7 +62,7 @@ line level    source
   52   1      #if (PARITYBIT == NONE_PARITY)
   53   1          S2CON = 0x50;           //8-bit variable UART
   54   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-C51 COMPILER V7.50   UART                                                                  08/05/2014 22:43:18 PAGE 2   
+C51 COMPILER V7.50   UART                                                                  08/05/2014 22:47:33 PAGE 2   
 
                   S2CON = 0xda;           //9-bit variable UART, parity bit initial to 1
               #elif (PARITYBIT == SPACE_PARITY)
@@ -126,7 +126,7 @@ line level    source
  114   1          S2BUF = ACC;            //Send data to UART2 buffer
  115   1      }
  116          
-C51 COMPILER V7.50   UART                                                                  08/05/2014 22:43:18 PAGE 3   
+C51 COMPILER V7.50   UART                                                                  08/05/2014 22:47:33 PAGE 3   
 
  117          /*----------------------------
  118          Send a string to UART
@@ -190,7 +190,7 @@ line level    source
  176   2                              {
  177   3                                      anyData();
  178   3                                      receiveSteps = 0;
-C51 COMPILER V7.50   UART                                                                  08/05/2014 22:43:18 PAGE 4   
+C51 COMPILER V7.50   UART                                                                  08/05/2014 22:47:33 PAGE 4   
 
  179   3                              }
  180   2                      break;
@@ -226,9 +226,9 @@ line level    source
  209   3                              montorMode = 0;
  210   3                      }
  211   2              }
- 212   1              else if(uartBuffer[2] == 0x05)  //系统参数3
+ 212   1              else if(uartBuffer[2] == 0x11)  //时间设置1     字(int) 最大9.9
  213   1              {
- 214   2      
+ 214   2                      intervalTimer1 = dat;
  215   2              }
  216   1              else if(uartBuffer[2] == 0x07)  //系统参数4
  217   1              {
@@ -254,7 +254,7 @@ line level    source
  237   1              {
  238   2      
  239   2              }
-C51 COMPILER V7.50   UART                                                                  08/05/2014 22:43:18 PAGE 5   
+C51 COMPILER V7.50   UART                                                                  08/05/2014 22:47:33 PAGE 5   
 
  240   1              else if(uartBuffer[2] == 0x13)  //板材参数_板长3
  241   1              {
@@ -301,9 +301,9 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    328    ----
+   CODE SIZE        =    332    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     18       5
+   XDATA SIZE       =     18       3
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

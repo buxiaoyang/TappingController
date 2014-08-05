@@ -209,9 +209,9 @@ void anyData()
 			montorMode = 0;
 		}
 	}
-	else if(uartBuffer[2] == 0x05) 	//系统参数3
+	else if(uartBuffer[2] == 0x11) 	//时间设置1	字(int) 最大9.9
 	{
-
+		intervalTimer1 = dat;
 	}
 	else if(uartBuffer[2] == 0x07)	//系统参数4
 	{

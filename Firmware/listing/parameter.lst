@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:43:17 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -62,7 +62,7 @@ line level    source
   51          
   52          unsigned int pieceCount; //计件计数     字(int)
   53          
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:43:17 PAGE 2   
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 2   
 
   54          /***************************************************************************/
   55          // 读取参数
@@ -126,7 +126,7 @@ line level    source
  112          /***************************************************************************/
  113          unsigned char parameter_save()
  114          {
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:43:17 PAGE 3   
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 3   
 
  115   1              unsigned char result = 1;
  116   1              return result;
