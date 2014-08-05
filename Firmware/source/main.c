@@ -34,7 +34,7 @@ void parameter_send_screen()
 	SendDataToScreen(0x0009,sensor8); //传感器8	0：无效  1：有效  2：错误
 	SendDataToScreen(0x000A,sensor9); //传感器9	0：无效  1：有效  2：错误
 	SendDataToScreen(0x000B,sensor10); //传感器10	0：无效  1：有效  2：错误
-	/*
+
 	SendDataToScreen(0x000C,cylinder1); //气缸1	0：无效  1：有效  2：错误
 	SendDataToScreen(0x000D,cylinder2); //气缸2	0：无效  1：有效  2：错误
 	SendDataToScreen(0x000E,cylinder3); //气缸3	0：无效  1：有效  2：错误
@@ -56,7 +56,7 @@ void parameter_send_screen()
 	SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5	字(int)
 
 	SendDataToScreen(0x0023,pieceCount); 
-	*/
+
 }
 
 /***************************************************************************/
@@ -66,7 +66,6 @@ void parameter_send_screen()
 /***************************************************************************/
 void main()
 {
-	uchar i;
 	uart_init();
 	//timer_init();
 	parameter_init();
@@ -74,20 +73,11 @@ void main()
 	{	
 		parameter_send_screen();
 		//TestOut = ! TestOut;
-		
-		if(uartReceiveOK)
-		{
-			uartReceiveOK = 0;
-			for(i=0; i<13; i++)
-			{
-				P2 = uartBuffer[i];
-			}
-			//anyData();
-		}   
+		 
 		Key_Scan();
 		ManiDispatch();
 		SubDispatch();
-		delay_ms(1000);
+		delay_ms(100);
 	}   
 }
 

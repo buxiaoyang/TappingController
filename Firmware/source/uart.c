@@ -187,9 +187,16 @@ void ReceiveData(BYTE dat)
 void anyData()
 {
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
-	if(uartBuffer[2] == 0x00)		//系统参数1
+	if(uartBuffer[2] == 0x00)//运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
 	{
-
+		if(runMode == 0 || runMode == 2)
+		{
+			runMode = 1;	
+		}
+		else
+		{
+			runMode = 0;
+		}
 	}
 	else if(uartBuffer[2] == 0x01)	//电机状态	0：电机停止   1：电机启动  返回数据0xEE
 	{
