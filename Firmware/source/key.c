@@ -38,7 +38,7 @@ void Key_Scan(void)
 			{
 				if(runMode)
 				{
-					//powerMode = 1;
+					powerMode = 1;
 					ManiDispatchSteps = 0;
 				}
 			   	//cistern[7].cisternStatus = Ready;
@@ -46,7 +46,7 @@ void Key_Scan(void)
 			}
 			if(KeyStop == 0)
 			{
-				//powerMode = 0;	
+				powerMode = 0;	
 			}
 			if(KeyHydClam == 0)
 			{

@@ -1,10 +1,10 @@
-C51 COMPILER V7.50   DISPATCH                                                              08/04/2014 23:19:47 PAGE 1   
+C51 COMPILER V7.50   DISPATCH                                                              05/29/2014 22:32:45 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE DISPATCH
-OBJECT MODULE PLACED IN .\Output\dispatch.obj
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\dispatch.c BROWSE INCDIR(.\source) DEBUG OBJECTEXTEND PRINT(.\Listin
-                    -g\dispatch.lst) OBJECT(.\Output\dispatch.obj)
+OBJECT MODULE PLACED IN .\output\dispatch.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\dispatch.c LARGE BROWSE INCDIR(.\include\) DEBUG OBJECTEXTEND PRINT(
+                    -.\listing\dispatch.lst) OBJECT(.\output\dispatch.obj)
 
 line level    source
 
@@ -31,29 +31,142 @@ line level    source
   21          
   22          void ManiDispatch(void)
   23          {
-  24   1      
-  25   1      }
-  26          
-  27          //0：初始状态
-  28          //1：电机输出前进慢
-  29          //2：到达设置长度15%，电机输出前进快
-  30          //3：到达设置长度85%，点击输出前进慢
-  31          //4：到达设置长度100%，切板输出
-  32          //5：切板下方感应
-  33          //6：切板上方感应，过程结束
-  34          //20：结束状态
-  35          void SubDispatch(void)
-  36          {
-  37   1      
-  38   1      }
+  24   1              switch(ManiDispatchSteps)
+  25   1              {
+  26   2                      case 0: 
+  27   2                              currentSettingIndex = 0;
+  28   2                              currentSettingBoardNum =  parameterBoard[currentSettingIndex].boardNumber;
+  29   2                              ManiDispatchSteps ++;
+  30   2                      break;
+  31   2                      case 1:
+  32   2                              if(parameterBoard[currentSettingIndex].boardNumber != 0 && parameterBoard[currentSettingIndex].boardLen
+             -gth != 0)
+  33   2                              {
+  34   3                                      ManiDispatchSteps ++;
+  35   3                              }
+  36   2                              else
+  37   2                              {
+  38   3                                      ManiDispatchSteps = 4;
+  39   3                              }
+  40   2                      break;
+  41   2                      case 2:
+  42   2                              SubDispatchSteps = 0;
+  43   2                              currentlySignalNum = 0;
+  44   2                              ManiDispatchSteps ++;
+  45   2                      break;
+  46   2                      case 3:
+  47   2                              if(SubDispatchSteps == 20)
+  48   2                              {
+  49   3                                      currentSettingBoardNum --;
+  50   3                                      if(currentSettingBoardNum > 0)
+  51   3                                      {
+  52   4                                              ManiDispatchSteps = 2;
+  53   4                                      }
+C51 COMPILER V7.50   DISPATCH                                                              05/29/2014 22:32:45 PAGE 2   
+
+  54   3                                      else
+  55   3                                      {
+  56   4                                              ManiDispatchSteps ++;
+  57   4                                      }
+  58   3                              }
+  59   2                      break;
+  60   2                      case 4:
+  61   2                              currentSettingIndex ++;
+  62   2                              currentSettingBoardNum =  parameterBoard[currentSettingIndex].boardNumber;
+  63   2                              if(currentSettingIndex < 4)
+  64   2                              {
+  65   3                                      ManiDispatchSteps = 1;
+  66   3                              }
+  67   2                              else
+  68   2                              {
+  69   3                                      ManiDispatchSteps = 20;
+  70   3                                      powerMode = 0;
+  71   3                              }
+  72   2                      break;
+  73   2                      default:
+  74   2                               _nop_();
+  75   2              }
+  76   1      }
+  77          
+  78          //0：初始状态
+  79          //1：电机输出前进慢
+  80          //2：到达设置长度15%，电机输出前进快
+  81          //3：到达设置长度85%，点击输出前进慢
+  82          //4：到达设置长度100%，切板输出
+  83          //5：切板下方感应
+  84          //6：切板上方感应，过程结束
+  85          //20：结束状态
+  86          void SubDispatch(void)
+  87          {
+  88   1              unsigned int temp;
+  89   1              switch(SubDispatchSteps)
+  90   1              {
+  91   2                      case 0: //0：初始状态
+  92   2                              MotorForwardFast = 1;
+  93   2                              MotorBackFast = 1;
+  94   2                              MotorForwardSlow = 0;
+  95   2                              MotorBackSlow = 1;
+  96   2                              HydClamOut = 1;
+  97   2                              SubDispatchSteps ++;
+  98   2                      break;
+  99   2                      case 1: //1：电机输出前进慢
+ 100   2                              temp = parameterBoard[currentSettingIndex].boardLength>>3;
+ 101   2                              if( currentlyBoardLength > temp )
+ 102   2                              {
+ 103   3                                      MotorForwardSlow = 1;
+ 104   3                                      MotorForwardFast = 0;
+ 105   3                                      SubDispatchSteps ++;    
+ 106   3                              }       
+ 107   2                      break;
+ 108   2                      case 2: //2：到达设置长度15%，电机输出前进快
+ 109   2                              temp = parameterBoard[currentSettingIndex].boardLength - (parameterBoard[currentSettingIndex].boardLeng
+             -th>>3);
+ 110   2                              if( currentlyBoardLength > temp)
+ 111   2                              {
+ 112   3                                      MotorForwardSlow = 0;
+ 113   3                                      MotorForwardFast = 1;
+ 114   3                                      SubDispatchSteps ++;    
+C51 COMPILER V7.50   DISPATCH                                                              05/29/2014 22:32:45 PAGE 3   
+
+ 115   3                              }       
+ 116   2                      break;
+ 117   2                      case 3: //3：到达设置长度85%，点击输出前进慢
+ 118   2                              if( currentlyBoardLength > parameterBoard[currentSettingIndex].boardLength)
+ 119   2                              {
+ 120   3                                      MotorForwardSlow = 1;
+ 121   3                                      if(HydClamInductorTop == 0)
+ 122   3                                      {
+ 123   4                                              HydClamOut = 0;
+ 124   4                                              SubDispatchSteps ++;
+ 125   4                                      }
+ 126   3                                              
+ 127   3                              }       
+ 128   2                      break;
+ 129   2                      case 4: //4：到达设置长度100%，切板输出
+ 130   2                              if(HydClamInductorBottom == 0)
+ 131   2                              {
+ 132   3                                      HydClamOut = 1;
+ 133   3                                      SubDispatchSteps ++;    
+ 134   3                              }       
+ 135   2                      break;
+ 136   2                      case 5: //5：切板下方感应
+ 137   2                              if(HydClamInductorTop == 0)
+ 138   2                              {
+ 139   3                                      SubDispatchSteps = 20;  
+ 140   3                              }       
+ 141   2                      break;
+ 142   2                      default:
+ 143   2                               _nop_();
+ 144   2              }
+ 145   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      2    ----
+   CODE SIZE        =    447    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =      4    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      4    ----
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

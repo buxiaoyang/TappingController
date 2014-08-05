@@ -16,40 +16,24 @@
 /***************************************************************************/
 // 参数定义	
 /***************************************************************************/
-unsigned char runMode; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
-unsigned char montorMode; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
-unsigned char sensor1; //传感器1	0：无效  1：有效  2：错误
-unsigned char sensor2; //传感器2	0：无效  1：有效  2：错误
-unsigned char sensor3; //传感器3	0：无效  1：有效  2：错误
-unsigned char sensor4; //传感器4	0：无效  1：有效  2：错误
-unsigned char sensor5; //传感器5	0：无效  1：有效  2：错误
-unsigned char sensor6; //传感器6	0：无效  1：有效  2：错误
-unsigned char sensor7; //传感器7	0：无效  1：有效  2：错误
-unsigned char sensor8; //传感器8	0：无效  1：有效  2：错误
-unsigned char sensor9; //传感器9	0：无效  1：有效  2：错误
-unsigned char sensor10; //传感器10	0：无效  1：有效  2：错误
+unsigned int powerMode; //启动状态 0关闭 1启动
+unsigned int runMode; //运行模式 0手动模式 1自动模式
+struct Board parameterBoard[4];	//板材参数
 
-unsigned char cylinder1; //气缸1	0：无效  1：有效  2：错误
-unsigned char cylinder2; //气缸2	0：无效  1：有效  2：错误
-unsigned char cylinder3; //气缸3	0：无效  1：有效  2：错误
-unsigned char cylinder4; //气缸4	0：无效  1：有效  2：错误
-unsigned char cylinder5; //气缸5	0：无效  1：有效  2：错误
+unsigned int sysParm1_SignalNumPerMeter; //系统参数一：一米距离编码器的信号数
+unsigned int sysParm2_ErrorCorrectionValue; //系统参数二：误差修正值，信号数
+unsigned int sysParm3; //系统参数三
+unsigned int sysParm4; //系统参数四
+unsigned int sysParm5; //系统参数五
 
-unsigned char intervalTimer1; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer2; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer3; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer4; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer5; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer6; //时间设置1	字(int) 最大9.9
-unsigned char intervalTimer7; //时间设置1	字(int) 最大9.9
+unsigned int settingBoardLength; //设定长度
+unsigned int settingBoardNumber; //设定块数
 
-unsigned char cylinderAlarm1; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm2; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm3; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm4; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm5; //报警设置 气缸1	字(int)
+unsigned int currentlyBoardLength; //已做长度
+unsigned int currentlyBoardNumber; //已做块数
 
-unsigned int pieceCount; //计件计数	字(int)
+unsigned long currentlySignalNum; //当前编码器信号数
+unsigned long maxSignalNum;	  //最大编码器信号数
 
 /***************************************************************************/
 // 读取参数
@@ -69,40 +53,27 @@ unsigned char parameter_read()
 /***************************************************************************/
 void parameter_init()
 {
-	runMode = 1; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
-	montorMode = 0; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
-	sensor1 = 0; //传感器1	0：无效  1：有效  2：错误
-	sensor2 = 0; //传感器2	0：无效  1：有效  2：错误
-	sensor3 = 0; //传感器3	0：无效  1：有效  2：错误
-	sensor4 = 0; //传感器4	0：无效  1：有效  2：错误
-	sensor5 = 0; //传感器5	0：无效  1：有效  2：错误
-	sensor6 = 0; //传感器6	0：无效  1：有效  2：错误
-	sensor7 = 0; //传感器7	0：无效  1：有效  2：错误
-	sensor8 = 0; //传感器8	0：无效  1：有效  2：错误
-	sensor9 = 0; //传感器9	0：无效  1：有效  2：错误
-	sensor10 = 0; //传感器10	0：无效  1：有效  2：错误
-	
-	cylinder1 = 0; //气缸1	0：无效  1：有效  2：错误
-	cylinder2 = 0; //气缸2	0：无效  1：有效  2：错误
-	cylinder3 = 0; //气缸3	0：无效  1：有效  2：错误
-	cylinder4 = 0; //气缸4	0：无效  1：有效  2：错误
-	cylinder5 = 0; //气缸5	0：无效  1：有效  2：错误
-	
-	intervalTimer1 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer2 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer3 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer4 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer5 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer6 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer7 = 0; //时间设置1	字(int) 最大9.9
-	
-	cylinderAlarm1 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm2 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm3 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm4 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm5 = 0; //报警设置 气缸1	字(int)
+	powerMode = 0;	//启动状态 0关闭 1启动
+	runMode = 0;
 
-	pieceCount = 0;
+	sysParm1_SignalNumPerMeter =  1000;
+	sysParm2_ErrorCorrectionValue = 100;
+	sysParm3 = 0;
+	sysParm4 = 0;
+	sysParm5 = 0;
+	parameterBoard[0].boardLength = 0;
+	parameterBoard[0].boardNumber = 0;
+	parameterBoard[1].boardLength = 0;
+	parameterBoard[1].boardNumber = 0;
+	parameterBoard[2].boardLength = 0;
+	parameterBoard[2].boardNumber = 0;
+	parameterBoard[3].boardLength = 0;
+	parameterBoard[3].boardNumber = 0;
+	settingBoardLength = 0;
+	settingBoardNumber = 0;
+	currentlyBoardLength = 0;
+	currentlyBoardNumber = 0;
+	currentlySignalNum = 0;
 }
 
 /***************************************************************************/

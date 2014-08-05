@@ -1,10 +1,10 @@
-C51 COMPILER V7.50   BASEFUNC                                                              08/04/2014 23:19:47 PAGE 1   
+C51 COMPILER V7.50   BASEFUNC                                                              05/29/2014 22:32:41 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE BASEFUNC
-OBJECT MODULE PLACED IN .\Output\basefunc.obj
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\basefunc.c BROWSE INCDIR(.\source) DEBUG OBJECTEXTEND PRINT(.\Listin
-                    -g\basefunc.lst) OBJECT(.\Output\basefunc.obj)
+OBJECT MODULE PLACED IN .\output\basefunc.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\basefunc.c LARGE BROWSE INCDIR(.\include\) DEBUG OBJECTEXTEND PRINT(
+                    -.\listing\basefunc.lst) OBJECT(.\output\basefunc.obj)
 
 line level    source
 
@@ -53,11 +53,11 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     48    ----
+   CODE SIZE        =     66    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =   ----       4
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       2
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
