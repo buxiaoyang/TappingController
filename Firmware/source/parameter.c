@@ -70,7 +70,7 @@ unsigned char parameter_read()
 void parameter_init()
 {
 	runMode = 1; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
-	montorMode = 0; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+	montorMode = 1; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
 	sensor1 = 0; //传感器1	0：无效  1：有效  2：错误
 	sensor2 = 0; //传感器2	0：无效  1：有效  2：错误
 	sensor3 = 0; //传感器3	0：无效  1：有效  2：错误

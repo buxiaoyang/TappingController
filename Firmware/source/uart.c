@@ -75,7 +75,7 @@ void Uart2() interrupt 8 using 1
     {
         S2CON &= ~S2RI;     //Clear receive interrupt flag
         ReceiveData(S2BUF);
-		//P0 = S2BUF;         //P0 show UART data
+		//P2 = S2BUF;         //P0 show UART data
         //P2 = (S2CON & S2RB8);//P2.2 show parity bit
     }
     if (S2CON & S2TI)
@@ -187,13 +187,20 @@ void ReceiveData(BYTE dat)
 void anyData()
 {
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
-	if(uartBuffer[2] == 0x01)		//系统参数1
+	if(uartBuffer[2] == 0x00)		//系统参数1
 	{
 
 	}
-	else if(uartBuffer[2] == 0x03)	//系统参数2
+	else if(uartBuffer[2] == 0x01)	//电机状态	0：电机停止   1：电机启动  返回数据0xEE
 	{
-
+		if(montorMode == 0)
+		{
+			montorMode = 1;
+		}
+		else
+		{
+			montorMode = 0;
+		}
 	}
 	else if(uartBuffer[2] == 0x05) 	//系统参数3
 	{

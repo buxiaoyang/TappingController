@@ -35,7 +35,7 @@ void tm0_isr() interrupt 1 using 1
     if (count-- == 0)               //1ms * 1000 -> 1s
     {
         count = 9;               //reset counter
-        TestOut = ! TestOut;   
+        //TestOut = ! TestOut;   
 		if(KeyAutoManual == 1)
 		{
 			runMode = 1;

@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  08/05/2014 21:20:13 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/05/2014 22:36:09 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -45,7 +45,7 @@ line level    source
   34   1              SendDataToScreen(0x0009,sensor8); //传感器8     0：无效  1：有效  2：错误
   35   1              SendDataToScreen(0x000A,sensor9); //传感器9     0：无效  1：有效  2：错误
   36   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
-  37   1              
+  37   1              /*
   38   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
   39   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
   40   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
@@ -62,47 +62,59 @@ line level    source
   51   1              
   52   1              SendDataToScreen(0x0018,cylinderAlarm1); //报警设置 气缸1       字(int)
   53   1              SendDataToScreen(0x0019,cylinderAlarm2); //报警设置 气缸2       字(int)
-C51 COMPILER V7.50   MAIN                                                                  08/05/2014 21:20:13 PAGE 2   
+C51 COMPILER V7.50   MAIN                                                                  08/05/2014 22:36:09 PAGE 2   
 
   54   1              SendDataToScreen(0x001A,cylinderAlarm3); //报警设置 气缸3       字(int)
   55   1              SendDataToScreen(0x001B,cylinderAlarm4); //报警设置 气缸4       字(int)
   56   1              SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5       字(int)
   57   1      
   58   1              SendDataToScreen(0x0023,pieceCount); 
-  59   1      }
-  60          
-  61          /***************************************************************************/
-  62          // 主函数
-  63          // 参数：无
-  64          // 返回值：无   
-  65          /***************************************************************************/
-  66          void main()
-  67          {
-  68   1              uart_init();
-  69   1              //timer_init();
-  70   1              parameter_init();
-  71   1              while(1)
-  72   1              {       
-  73   2                      parameter_send_screen();
-  74   2                      TestOut = ! TestOut;   
-  75   2                      Key_Scan();
-  76   2                      ManiDispatch();
-  77   2                      SubDispatch();
-  78   2                      delay_ms(100);
-  79   2              }   
-  80   1      }
-  81          
-  82          
-  83          
-  84          
-  85          
-  86          
-  87          
-  88          
+  59   1              */
+  60   1      }
+  61          
+  62          /***************************************************************************/
+  63          // 主函数
+  64          // 参数：无
+  65          // 返回值：无   
+  66          /***************************************************************************/
+  67          void main()
+  68          {
+  69   1              uchar i;
+  70   1              uart_init();
+  71   1              //timer_init();
+  72   1              parameter_init();
+  73   1              while(1)
+  74   1              {       
+  75   2                      parameter_send_screen();
+  76   2                      //TestOut = ! TestOut;
+  77   2                      
+  78   2                      if(uartReceiveOK)
+  79   2                      {
+  80   3                              uartReceiveOK = 0;
+  81   3                              for(i=0; i<13; i++)
+  82   3                              {
+  83   4                                      P2 = uartBuffer[i];
+  84   4                              }
+  85   3                              //anyData();
+  86   3                      }   
+  87   2                      Key_Scan();
+  88   2                      ManiDispatch();
+  89   2                      SubDispatch();
+  90   2                      delay_ms(1000);
+  91   2              }   
+  92   1      }
+  93          
+  94          
+  95          
+  96          
+  97          
+  98          
+  99          
+ 100          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    449    ----
+   CODE SIZE        =    219    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   TIMER                                                                 08/05/2014 21:20:14 PAGE 1   
+C51 COMPILER V7.50   TIMER                                                                 08/05/2014 22:36:11 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE TIMER
@@ -46,7 +46,7 @@ line level    source
   35   1          if (count-- == 0)               //1ms * 1000 -> 1s
   36   1          {
   37   2              count = 9;               //reset counter
-  38   2              TestOut = ! TestOut;   
+  38   2              //TestOut = ! TestOut;   
   39   2                      if(KeyAutoManual == 1)
   40   2                      {
   41   3                              runMode = 1;
@@ -62,7 +62,7 @@ line level    source
   51          //-----------------------------------------------
   52          
   53          /* main program */
-C51 COMPILER V7.50   TIMER                                                                 08/05/2014 21:20:14 PAGE 2   
+C51 COMPILER V7.50   TIMER                                                                 08/05/2014 22:36:11 PAGE 2   
 
   54          void timer_init()
   55          {
@@ -81,7 +81,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     96    ----
+   CODE SIZE        =     94    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----

@@ -44,7 +44,6 @@ sbit MotorBackFast  		= P1^6;  // 电机后退快速
 sbit MotorForwardSlow  		= P1^0;  //	电机前进慢速
 sbit MotorBackSlow  		= P1^1;  //	电机后退慢速
 sbit HydClamOut  			= P1^4;  //	液压剪刀输出
-sbit TestOut		  		= P2^7;  //	测试输出
 
 
 /***************************************************************************/

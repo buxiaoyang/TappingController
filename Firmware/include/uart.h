@@ -8,7 +8,7 @@ typedef unsigned int WORD;
 typedef unsigned long LONG;
 
 extern bit uartReceiveOK;
-
+extern BYTE uartBuffer[15];
 void uart_init();
 void SendData(BYTE dat);
 void SendDataToScreen(WORD address, WORD dat);
