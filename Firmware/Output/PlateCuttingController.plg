@@ -3,8 +3,8 @@
 <pre>
 <h1>µVision3 Build Log</h1>
 <h2>Project:</h2>
-C:\ShareXP\GitHub\PlateCuttingController\trunk\PlateCuttingController.uv2
-Project File Date:  05/28/2014
+C:\ShareXP\GitHub\TappingController\trunk\Firmware\PlateCuttingController.uv2
+Project File Date:  08/05/2014
 
 <h2>Output:</h2>
 Build target 'Target 1'
@@ -36,70 +36,6 @@ linking...
     SEGMENT: ?PR?_SENDSTRING?UART
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?TIMER_INIT?TIMER
-Program Size: data=17.2 xdata=80 code=2848
-creating hex file from ".\output\PlateCuttingController"...
-".\output\PlateCuttingController" - 0 Error(s), 9 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling main.c...
-compiling basefunc.c...
-compiling parameter.c...
-compiling eeprom.c...
-compiling uart.c...
-compiling timer.c...
-compiling key.c...
-compiling dispatch.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_DELAY_MS?BASEFUNC
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?PARAMETER_READ?PARAMETER
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?PARAMETER_SAVE?PARAMETER
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_DELAY?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPREADBYTE?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPPROGRAMBYTE?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPERASESECTOR?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDSTRING?UART
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?TIMER_INIT?TIMER
-Program Size: data=17.2 xdata=80 code=2880
-creating hex file from ".\output\PlateCuttingController"...
-".\output\PlateCuttingController" - 0 Error(s), 9 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling main.c...
-compiling basefunc.c...
-compiling parameter.c...
-compiling eeprom.c...
-compiling uart.c...
-compiling timer.c...
-compiling key.c...
-compiling dispatch.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_DELAY_MS?BASEFUNC
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?PARAMETER_READ?PARAMETER
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?PARAMETER_SAVE?PARAMETER
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_DELAY?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPREADBYTE?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPPROGRAMBYTE?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IAPERASESECTOR?EEPROM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDSTRING?UART
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?TIMER_INIT?TIMER
 Program Size: data=17.2 xdata=80 code=2887
 creating hex file from ".\output\PlateCuttingController"...
 ".\output\PlateCuttingController" - 0 Error(s), 9 Warning(s).
@@ -138,6 +74,310 @@ creating hex file from ".\output\PlateCuttingController"...
 Build target 'Target 1'
 assembling STARTUP.A51...
 compiling main.c...
+SOURCE\MAIN.C(26): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\MAIN.C(28): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\MAIN.C(33): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\MAIN.C(35): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\MAIN.C(99): error C202: 'maxSignalNum': undefined identifier
+SOURCE\MAIN.C(102): error C202: 'currentlyBoardLength': undefined identifier
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+SOURCE\UART.C(192): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\UART.C(193): error C202: 'maxSignalNum': undefined identifier
+SOURCE\UART.C(197): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\UART.C(201): error C202: 'sysParm3': undefined identifier
+SOURCE\UART.C(205): error C202: 'sysParm4': undefined identifier
+SOURCE\UART.C(209): error C202: 'sysParm5': undefined identifier
+SOURCE\UART.C(213): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(217): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(221): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(225): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(229): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(233): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(237): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(241): error C202: 'parameterBoard': undefined identifier
+compiling timer.c...
+compiling key.c...
+SOURCE\KEY.C(41): error C202: 'powerMode': undefined identifier
+SOURCE\KEY.C(49): error C202: 'powerMode': undefined identifier
+compiling dispatch.c...
+SOURCE\DISPATCH.C(28): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(32): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(43): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\DISPATCH.C(62): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(70): error C202: 'powerMode': undefined identifier
+SOURCE\DISPATCH.C(100): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(101): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(109): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(110): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(118): error C202: 'currentlyBoardLength': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+SOURCE\MAIN.C(71): error C202: 'maxSignalNum': undefined identifier
+SOURCE\MAIN.C(74): error C202: 'currentlyBoardLength': undefined identifier
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+SOURCE\UART.C(192): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\UART.C(193): error C202: 'maxSignalNum': undefined identifier
+SOURCE\UART.C(197): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\UART.C(201): error C202: 'sysParm3': undefined identifier
+SOURCE\UART.C(205): error C202: 'sysParm4': undefined identifier
+SOURCE\UART.C(209): error C202: 'sysParm5': undefined identifier
+SOURCE\UART.C(213): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(217): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(221): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(225): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(229): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(233): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(237): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(241): error C202: 'parameterBoard': undefined identifier
+compiling timer.c...
+compiling key.c...
+SOURCE\KEY.C(41): error C202: 'powerMode': undefined identifier
+SOURCE\KEY.C(49): error C202: 'powerMode': undefined identifier
+compiling dispatch.c...
+SOURCE\DISPATCH.C(28): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(32): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(43): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\DISPATCH.C(62): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(70): error C202: 'powerMode': undefined identifier
+SOURCE\DISPATCH.C(100): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(101): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(109): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(110): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(118): error C202: 'currentlyBoardLength': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+SOURCE\UART.C(192): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\UART.C(193): error C202: 'maxSignalNum': undefined identifier
+SOURCE\UART.C(197): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\UART.C(201): error C202: 'sysParm3': undefined identifier
+SOURCE\UART.C(205): error C202: 'sysParm4': undefined identifier
+SOURCE\UART.C(209): error C202: 'sysParm5': undefined identifier
+SOURCE\UART.C(213): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(217): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(221): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(225): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(229): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(233): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(237): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(241): error C202: 'parameterBoard': undefined identifier
+compiling timer.c...
+compiling key.c...
+SOURCE\KEY.C(41): error C202: 'powerMode': undefined identifier
+SOURCE\KEY.C(49): error C202: 'powerMode': undefined identifier
+compiling dispatch.c...
+SOURCE\DISPATCH.C(28): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(32): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(43): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\DISPATCH.C(62): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(70): error C202: 'powerMode': undefined identifier
+SOURCE\DISPATCH.C(100): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(101): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(109): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(110): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(118): error C202: 'currentlyBoardLength': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+SOURCE\UART.C(192): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\UART.C(193): error C202: 'maxSignalNum': undefined identifier
+SOURCE\UART.C(197): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\UART.C(201): error C202: 'sysParm3': undefined identifier
+SOURCE\UART.C(205): error C202: 'sysParm4': undefined identifier
+SOURCE\UART.C(209): error C202: 'sysParm5': undefined identifier
+SOURCE\UART.C(213): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(217): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(221): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(225): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(229): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(233): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(237): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(241): error C202: 'parameterBoard': undefined identifier
+compiling timer.c...
+compiling key.c...
+compiling dispatch.c...
+SOURCE\DISPATCH.C(28): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(32): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(43): error C202: 'currentlySignalNum': undefined identifier
+SOURCE\DISPATCH.C(62): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(70): error C202: 'powerMode': undefined identifier
+SOURCE\DISPATCH.C(100): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(101): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(109): error C202: 'parameterBoard': undefined identifier
+SOURCE\DISPATCH.C(110): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\DISPATCH.C(118): error C202: 'currentlyBoardLength': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+SOURCE\UART.C(192): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\UART.C(193): error C202: 'maxSignalNum': undefined identifier
+SOURCE\UART.C(197): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\UART.C(201): error C202: 'sysParm3': undefined identifier
+SOURCE\UART.C(205): error C202: 'sysParm4': undefined identifier
+SOURCE\UART.C(209): error C202: 'sysParm5': undefined identifier
+SOURCE\UART.C(213): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(217): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(221): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(225): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(229): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(233): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(237): error C202: 'parameterBoard': undefined identifier
+SOURCE\UART.C(241): error C202: 'parameterBoard': undefined identifier
+compiling timer.c...
+compiling key.c...
+compiling dispatch.c...
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling basefunc.c...
+compiling parameter.c...
+SOURCE\PARAMETER.C(72): error C202: 'powerMode': undefined identifier
+SOURCE\PARAMETER.C(75): error C202: 'sysParm1_SignalNumPerMeter': undefined identifier
+SOURCE\PARAMETER.C(76): error C202: 'sysParm2_ErrorCorrectionValue': undefined identifier
+SOURCE\PARAMETER.C(77): error C202: 'sysParm3': undefined identifier
+SOURCE\PARAMETER.C(78): error C202: 'sysParm4': undefined identifier
+SOURCE\PARAMETER.C(79): error C202: 'sysParm5': undefined identifier
+SOURCE\PARAMETER.C(80): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(81): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(82): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(83): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(84): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(85): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(86): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(87): error C202: 'parameterBoard': undefined identifier
+SOURCE\PARAMETER.C(88): error C202: 'settingBoardLength': undefined identifier
+SOURCE\PARAMETER.C(89): error C202: 'settingBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(90): error C202: 'currentlyBoardLength': undefined identifier
+SOURCE\PARAMETER.C(91): error C202: 'currentlyBoardNumber': undefined identifier
+SOURCE\PARAMETER.C(92): error C202: 'currentlySignalNum': undefined identifier
+compiling eeprom.c...
+compiling uart.c...
+compiling timer.c...
+compiling key.c...
+compiling dispatch.c...
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
 compiling basefunc.c...
 compiling parameter.c...
 compiling eeprom.c...
@@ -164,6 +404,36 @@ linking...
     SEGMENT: ?PR?_SENDSTRING?UART
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?TIMER_INIT?TIMER
-Program Size: data=17.2 xdata=80 code=2887
+Program Size: data=17.2 xdata=65 code=1323
 creating hex file from ".\output\PlateCuttingController"...
 ".\output\PlateCuttingController" - 0 Error(s), 9 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling basefunc.c...
+compiling parameter.c...
+compiling eeprom.c...
+compiling uart.c...
+compiling timer.c...
+compiling key.c...
+compiling dispatch.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PARAMETER_READ?PARAMETER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PARAMETER_SAVE?PARAMETER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?EEPROM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_IAPREADBYTE?EEPROM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_IAPPROGRAMBYTE?EEPROM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_IAPERASESECTOR?EEPROM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDSTRING?UART
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INIT?TIMER
+Program Size: data=17.2 xdata=65 code=1330
+creating hex file from ".\output\PlateCuttingController"...
+".\output\PlateCuttingController" - 0 Error(s), 8 Warning(s).

@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  05/29/2014 22:32:40 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/05/2014 21:20:13 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -28,122 +28,81 @@ line level    source
   18          #include <key.h>
   19          #include <dispatch.h>
   20          
-  21          //External interrupt0 service routine
-  22          void exint0() interrupt 0           //(location at 0003H)
-  23          {
-  24   1              if(EncoderDirection == 0)
-  25   1              {
-  26   2                      if(currentlySignalNum>0)
-  27   2                      {
-  28   3                              currentlySignalNum --;
-  29   3                      }
-  30   2              }
-  31   1              else
-  32   1              {               
-  33   2                      if(currentlySignalNum <= maxSignalNum)
-  34   2                      {
-  35   3                              currentlySignalNum ++;
-  36   3                      }
-  37   2              }       
-  38   1      }
-  39          
-  40          void exterInterInit()
-  41          {
-  42   1              IT0 = 1;                        //set INT0 int type (1:Falling 0:Low level)
-  43   1          EX0 = 1;                        //enable INT0 interrupt
-  44   1          EA = 1;                         //open global interrupt switch
-  45   1              
-  46   1      }
-  47          
-  48          void parameter_send_screen()
-  49          {
-  50   1              SendDataToScreen(0x0001, sysParm1_SignalNumPerMeter);
-  51   1              SendDataToScreen(0x0003, sysParm2_ErrorCorrectionValue);
-  52   1              SendDataToScreen(0x0005, sysParm3);
-  53   1              SendDataToScreen(0x0007, sysParm4);
-  54   1              SendDataToScreen(0x0009, sysParm5);
-C51 COMPILER V7.50   MAIN                                                                  05/29/2014 22:32:40 PAGE 2   
+  21          void parameter_send_screen()
+  22          {
+  23   1              SendDataToScreen(0x0000,runMode); //运行模式    0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自
+             -动模式(启动)   返回数据0xEE
+  24   1              
+  25   1              SendDataToScreen(0x0001,montorMode); //电机状态 0：电机停止   1：电机启动  返回数据0xEE
+  26   1      
+  27   1              SendDataToScreen(0x0002,sensor1); //传感器1     0：无效  1：有效  2：错误
+  28   1              SendDataToScreen(0x0003,sensor2); //传感器2     0：无效  1：有效  2：错误
+  29   1              SendDataToScreen(0x0004,sensor3); //传感器3     0：无效  1：有效  2：错误
+  30   1              SendDataToScreen(0x0005,sensor4); //传感器4     0：无效  1：有效  2：错误
+  31   1              SendDataToScreen(0x0006,sensor5); //传感器5     0：无效  1：有效  2：错误
+  32   1              SendDataToScreen(0x0007,sensor6); //传感器6     0：无效  1：有效  2：错误
+  33   1              SendDataToScreen(0x0008,sensor7); //传感器7     0：无效  1：有效  2：错误
+  34   1              SendDataToScreen(0x0009,sensor8); //传感器8     0：无效  1：有效  2：错误
+  35   1              SendDataToScreen(0x000A,sensor9); //传感器9     0：无效  1：有效  2：错误
+  36   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
+  37   1              
+  38   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
+  39   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
+  40   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
+  41   1              SendDataToScreen(0x000F,cylinder4); //气缸4     0：无效  1：有效  2：错误
+  42   1              SendDataToScreen(0x0010,cylinder5); //气缸5     0：无效  1：有效  2：错误
+  43   1              
+  44   1              SendDataToScreen(0x0011,intervalTimer1); //时间设置1    字(int) 最大9.9
+  45   1              SendDataToScreen(0x0012,intervalTimer2); //时间设置2    字(int) 最大9.9
+  46   1              SendDataToScreen(0x0013,intervalTimer3); //时间设置3    字(int) 最大9.9
+  47   1              SendDataToScreen(0x0014,intervalTimer4); //时间设置4    字(int) 最大9.9
+  48   1              SendDataToScreen(0x0015,intervalTimer5); //时间设置5    字(int) 最大9.9
+  49   1              SendDataToScreen(0x0016,intervalTimer6); //时间设置6    字(int) 最大9.9
+  50   1              SendDataToScreen(0x0017,intervalTimer7); //时间设置7    字(int) 最大9.9
+  51   1              
+  52   1              SendDataToScreen(0x0018,cylinderAlarm1); //报警设置 气缸1       字(int)
+  53   1              SendDataToScreen(0x0019,cylinderAlarm2); //报警设置 气缸2       字(int)
+C51 COMPILER V7.50   MAIN                                                                  08/05/2014 21:20:13 PAGE 2   
 
-  55   1              SendDataToScreen(0x000B, parameterBoard[0].boardLength);
-  56   1              SendDataToScreen(0x000D, parameterBoard[0].boardNumber);
-  57   1              SendDataToScreen(0x000F, parameterBoard[1].boardLength);
-  58   1              SendDataToScreen(0x0011, parameterBoard[1].boardNumber);
-  59   1              SendDataToScreen(0x0013, parameterBoard[2].boardLength);
-  60   1              SendDataToScreen(0x0015, parameterBoard[2].boardNumber);
-  61   1              SendDataToScreen(0x0017, parameterBoard[3].boardLength);
-  62   1              SendDataToScreen(0x0019, parameterBoard[3].boardNumber);
-  63   1              if(!powerMode && !runMode)
-  64   1              {
-  65   2                      SendDataToScreen(0x0000, 0x0000);
-  66   2              }
-  67   1              else if(!powerMode && runMode)
-  68   1              {
-  69   2                      SendDataToScreen(0x0000, 0x0001);
-  70   2              }
-  71   1              else if(powerMode && !runMode)
-  72   1              {
-  73   2                      SendDataToScreen(0x0000, 0x0002);
-  74   2              }
-  75   1              else
-  76   1              {
-  77   2                      SendDataToScreen(0x0000, 0x0003);
-  78   2              }
-  79   1              SendDataToScreen(0x001B, settingBoardLength);
-  80   1              SendDataToScreen(0x001D, settingBoardNumber);
-  81   1              SendDataToScreen(0x001F, currentlyBoardLength);
-  82   1              SendDataToScreen(0x0021, currentlyBoardNumber);
-  83   1      }
+  54   1              SendDataToScreen(0x001A,cylinderAlarm3); //报警设置 气缸3       字(int)
+  55   1              SendDataToScreen(0x001B,cylinderAlarm4); //报警设置 气缸4       字(int)
+  56   1              SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5       字(int)
+  57   1      
+  58   1              SendDataToScreen(0x0023,pieceCount); 
+  59   1      }
+  60          
+  61          /***************************************************************************/
+  62          // 主函数
+  63          // 参数：无
+  64          // 返回值：无   
+  65          /***************************************************************************/
+  66          void main()
+  67          {
+  68   1              uart_init();
+  69   1              //timer_init();
+  70   1              parameter_init();
+  71   1              while(1)
+  72   1              {       
+  73   2                      parameter_send_screen();
+  74   2                      TestOut = ! TestOut;   
+  75   2                      Key_Scan();
+  76   2                      ManiDispatch();
+  77   2                      SubDispatch();
+  78   2                      delay_ms(100);
+  79   2              }   
+  80   1      }
+  81          
+  82          
+  83          
   84          
-  85          /***************************************************************************/
-  86          // 主函数
-  87          // 参数：无
-  88          // 返回值：无   
-  89          /***************************************************************************/
-  90          void main()
-  91          {
-  92   1              exterInterInit();
-  93   1              uart_init();
-  94   1              //timer_init();
-  95   1              parameter_init();
-  96   1              maxSignalNum = (65535 * sysParm1_SignalNumPerMeter)/1000-2000;
-  97   1              while(1)
-  98   1              {
-  99   2                      currentlyBoardLength = (currentlySignalNum*1000)/sysParm1_SignalNumPerMeter;    
- 100   2                      parameter_send_screen();
- 101   2                      //SendDataToScreen(0x001F, currentlyBoardLength);
- 102   2                      if(uartReceiveOK)
- 103   2                      {
- 104   3                              uartReceiveOK = 0;
- 105   3                              //anyData();
- 106   3                      }
- 107   2                      TestOut = ! TestOut;   
- 108   2                      if(KeyAutoManual == 1)
- 109   2                      {
- 110   3                              runMode = 1;
- 111   3                      }
- 112   2                      else
- 113   2                      {
- 114   3                              runMode = 0;
- 115   3                      } 
- 116   2                      Key_Scan();
-C51 COMPILER V7.50   MAIN                                                                  05/29/2014 22:32:40 PAGE 3   
-
- 117   2                      ManiDispatch();
- 118   2                      SubDispatch();
- 119   2              }   
- 120   1      }
- 121          
- 122          
- 123          
- 124          
- 125          
- 126          
- 127          
- 128          
+  85          
+  86          
+  87          
+  88          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    680    ----
+   CODE SIZE        =    449    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

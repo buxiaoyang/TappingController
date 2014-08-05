@@ -15,6 +15,7 @@ unsigned char Key_Scan_Steps = 0; 		//0：初始状态 如果有按键按下则进入1
 
 void Key_Scan(void)
 {
+	/*
 	switch(Key_Scan_Steps)
 	{
 		case 0:
@@ -67,4 +68,5 @@ void Key_Scan(void)
 		default:
 			 _nop_();
 	}
+	*/
 }

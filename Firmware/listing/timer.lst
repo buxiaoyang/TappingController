@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   TIMER                                                                 05/29/2014 22:32:44 PAGE 1   
+C51 COMPILER V7.50   TIMER                                                                 08/05/2014 21:20:14 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   51          //-----------------------------------------------
   52          
   53          /* main program */
-C51 COMPILER V7.50   TIMER                                                                 05/29/2014 22:32:44 PAGE 2   
+C51 COMPILER V7.50   TIMER                                                                 08/05/2014 21:20:14 PAGE 2   
 
   54          void timer_init()
   55          {
@@ -81,7 +81,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     99    ----
+   CODE SIZE        =     96    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----

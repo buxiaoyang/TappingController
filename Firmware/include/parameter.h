@@ -63,23 +63,39 @@ struct Board  //板材结构体
 void parameter_init();
 unsigned char parameter_save();
 
-extern unsigned int powerMode; //启动
-extern unsigned int runMode; //运行模式
-extern struct Board parameterBoard[4];	//板材参数
+extern unsigned char runMode; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
+extern unsigned char montorMode; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+extern unsigned char sensor1; //传感器1	0：无效  1：有效  2：错误
+extern unsigned char sensor2; //传感器2	0：无效  1：有效  2：错误
+extern unsigned char sensor3; //传感器3	0：无效  1：有效  2：错误
+extern unsigned char sensor4; //传感器4	0：无效  1：有效  2：错误
+extern unsigned char sensor5; //传感器5	0：无效  1：有效  2：错误
+extern unsigned char sensor6; //传感器6	0：无效  1：有效  2：错误
+extern unsigned char sensor7; //传感器7	0：无效  1：有效  2：错误
+extern unsigned char sensor8; //传感器8	0：无效  1：有效  2：错误
+extern unsigned char sensor9; //传感器9	0：无效  1：有效  2：错误
+extern unsigned char sensor10; //传感器10	0：无效  1：有效  2：错误
 
-extern unsigned int sysParm1_SignalNumPerMeter; //系统参数一：一米距离编码器的信号数
-extern unsigned int sysParm2_ErrorCorrectionValue; //系统参数二：误差修正值，信号数
-extern unsigned int sysParm3; //系统参数三
-extern unsigned int sysParm4; //系统参数四
-extern unsigned int sysParm5; //系统参数五
+extern unsigned char cylinder1; //气缸1	0：无效  1：有效  2：错误
+extern unsigned char cylinder2; //气缸2	0：无效  1：有效  2：错误
+extern unsigned char cylinder3; //气缸3	0：无效  1：有效  2：错误
+extern unsigned char cylinder4; //气缸4	0：无效  1：有效  2：错误
+extern unsigned char cylinder5; //气缸5	0：无效  1：有效  2：错误
 
-extern unsigned int settingBoardLength; //设定长度
-extern unsigned int settingBoardNumber; //设定块数
+extern unsigned char intervalTimer1; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer2; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer3; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer4; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer5; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer6; //时间设置1	字(int) 最大9.9
+extern unsigned char intervalTimer7; //时间设置1	字(int) 最大9.9
 
-extern unsigned int currentlyBoardLength; //已做长度
-extern unsigned int currentlyBoardNumber; //已做块数
+extern unsigned char cylinderAlarm1; //报警设置 气缸1	字(int)
+extern unsigned char cylinderAlarm2; //报警设置 气缸1	字(int)
+extern unsigned char cylinderAlarm3; //报警设置 气缸1	字(int)
+extern unsigned char cylinderAlarm4; //报警设置 气缸1	字(int)
+extern unsigned char cylinderAlarm5; //报警设置 气缸1	字(int)
 
-extern unsigned long currentlySignalNum; //当前编码器信号数
-extern unsigned long maxSignalNum;	  //最大编码器信号数
+extern unsigned int pieceCount; //计件计数	字(int)
 
 #endif

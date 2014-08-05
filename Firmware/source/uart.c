@@ -189,56 +189,55 @@ void anyData()
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
 	if(uartBuffer[2] == 0x01)		//系统参数1
 	{
-		sysParm1_SignalNumPerMeter = dat;
-		maxSignalNum = (65535 * sysParm1_SignalNumPerMeter)/1000-2000;
+
 	}
 	else if(uartBuffer[2] == 0x03)	//系统参数2
 	{
-		sysParm2_ErrorCorrectionValue = dat;
+
 	}
 	else if(uartBuffer[2] == 0x05) 	//系统参数3
 	{
-		sysParm3 = dat;
+
 	}
 	else if(uartBuffer[2] == 0x07)	//系统参数4
 	{
-		sysParm4 = dat;
+
 	}
 	else if(uartBuffer[2] == 0x09)	//系统参数5
 	{
-		sysParm5 = dat;	
+	
 	}
 	else if(uartBuffer[2] == 0x0B)	//板材参数_板长1
 	{
-		parameterBoard[0].boardLength = dat;
+
 	}
 	else if(uartBuffer[2] == 0x0D)	//板材参数_块数1	
 	{
-		parameterBoard[0].boardNumber = dat;
+
 	}
 	else if(uartBuffer[2] == 0x0F)	//板材参数_板长2
 	{
-		parameterBoard[1].boardLength = dat;
+
 	}
 	else if(uartBuffer[2] == 0x11)	//板材参数_块数2
 	{
-		parameterBoard[1].boardNumber = dat;
+
 	}
 	else if(uartBuffer[2] == 0x13)	//板材参数_板长3
 	{
-		parameterBoard[2].boardLength = dat;
+		
 	}
 	else if(uartBuffer[2] == 0x15) 	//板材参数_块数3
 	{
-		parameterBoard[2].boardNumber = dat;
+
 	}
 	else if(uartBuffer[2] == 0x17)	//板材参数_板长4
 	{
-		parameterBoard[3].boardLength = dat;
+		
 	}
 	else if(uartBuffer[2] == 0x19)	//板材参数_块数4
 	{
-		parameterBoard[3].boardNumber = dat;
+	
 	}
 	else if(uartBuffer[2] == 0x23)	//手动操作_前进
 	{

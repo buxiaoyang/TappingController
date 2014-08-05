@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             05/29/2014 22:32:41 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 21:20:13 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -26,86 +26,119 @@ line level    source
   16          /***************************************************************************/
   17          // 参数定义     
   18          /***************************************************************************/
-  19          unsigned int powerMode; //启动状态 0关闭 1启动
-  20          unsigned int runMode; //运行模式 0手动模式 1自动模式
-  21          struct Board parameterBoard[4]; //板材参数
-  22          
-  23          unsigned int sysParm1_SignalNumPerMeter; //系统参数一：一米距离编码器的信号数
-  24          unsigned int sysParm2_ErrorCorrectionValue; //系统参数二：误差修正值，信号数
-  25          unsigned int sysParm3; //系统参数三
-  26          unsigned int sysParm4; //系统参数四
-  27          unsigned int sysParm5; //系统参数五
-  28          
-  29          unsigned int settingBoardLength; //设定长度
-  30          unsigned int settingBoardNumber; //设定块数
+  19          unsigned char runMode; //运行模式       0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)
+             -   返回数据0xEE
+  20          unsigned char montorMode; //电机状态    0：电机停止   1：电机启动  返回数据0xEE
+  21          unsigned char sensor1; //传感器1        0：无效  1：有效  2：错误
+  22          unsigned char sensor2; //传感器2        0：无效  1：有效  2：错误
+  23          unsigned char sensor3; //传感器3        0：无效  1：有效  2：错误
+  24          unsigned char sensor4; //传感器4        0：无效  1：有效  2：错误
+  25          unsigned char sensor5; //传感器5        0：无效  1：有效  2：错误
+  26          unsigned char sensor6; //传感器6        0：无效  1：有效  2：错误
+  27          unsigned char sensor7; //传感器7        0：无效  1：有效  2：错误
+  28          unsigned char sensor8; //传感器8        0：无效  1：有效  2：错误
+  29          unsigned char sensor9; //传感器9        0：无效  1：有效  2：错误
+  30          unsigned char sensor10; //传感器10      0：无效  1：有效  2：错误
   31          
-  32          unsigned int currentlyBoardLength; //已做长度
-  33          unsigned int currentlyBoardNumber; //已做块数
-  34          
-  35          unsigned long currentlySignalNum; //当前编码器信号数
-  36          unsigned long maxSignalNum;       //最大编码器信号数
+  32          unsigned char cylinder1; //气缸1        0：无效  1：有效  2：错误
+  33          unsigned char cylinder2; //气缸2        0：无效  1：有效  2：错误
+  34          unsigned char cylinder3; //气缸3        0：无效  1：有效  2：错误
+  35          unsigned char cylinder4; //气缸4        0：无效  1：有效  2：错误
+  36          unsigned char cylinder5; //气缸5        0：无效  1：有效  2：错误
   37          
-  38          /***************************************************************************/
-  39          // 读取参数
-  40          // 参数：无
-  41          // 返回值：0失败 1成功  
-  42          /***************************************************************************/
-  43          unsigned char parameter_read()
-  44          {
-  45   1              unsigned char result = 1;
-  46   1              return result;
-  47   1      }
-  48          
-  49          /***************************************************************************/
-  50          // 参数初始化函数
-  51          // 参数：无
-  52          // 返回值：无   
-  53          /***************************************************************************/
-  54          void parameter_init()
-C51 COMPILER V7.50   PARAMETER                                                             05/29/2014 22:32:41 PAGE 2   
+  38          unsigned char intervalTimer1; //时间设置1       字(int) 最大9.9
+  39          unsigned char intervalTimer2; //时间设置1       字(int) 最大9.9
+  40          unsigned char intervalTimer3; //时间设置1       字(int) 最大9.9
+  41          unsigned char intervalTimer4; //时间设置1       字(int) 最大9.9
+  42          unsigned char intervalTimer5; //时间设置1       字(int) 最大9.9
+  43          unsigned char intervalTimer6; //时间设置1       字(int) 最大9.9
+  44          unsigned char intervalTimer7; //时间设置1       字(int) 最大9.9
+  45          
+  46          unsigned char cylinderAlarm1; //报警设置 气缸1  字(int)
+  47          unsigned char cylinderAlarm2; //报警设置 气缸1  字(int)
+  48          unsigned char cylinderAlarm3; //报警设置 气缸1  字(int)
+  49          unsigned char cylinderAlarm4; //报警设置 气缸1  字(int)
+  50          unsigned char cylinderAlarm5; //报警设置 气缸1  字(int)
+  51          
+  52          unsigned int pieceCount; //计件计数     字(int)
+  53          
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 21:20:13 PAGE 2   
 
-  55          {
-  56   1              powerMode = 0;  //启动状态 0关闭 1启动
-  57   1              runMode = 0;
-  58   1      
-  59   1              sysParm1_SignalNumPerMeter =  1000;
-  60   1              sysParm2_ErrorCorrectionValue = 100;
-  61   1              sysParm3 = 0;
-  62   1              sysParm4 = 0;
-  63   1              sysParm5 = 0;
-  64   1              parameterBoard[0].boardLength = 0;
-  65   1              parameterBoard[0].boardNumber = 0;
-  66   1              parameterBoard[1].boardLength = 0;
-  67   1              parameterBoard[1].boardNumber = 0;
-  68   1              parameterBoard[2].boardLength = 0;
-  69   1              parameterBoard[2].boardNumber = 0;
-  70   1              parameterBoard[3].boardLength = 0;
-  71   1              parameterBoard[3].boardNumber = 0;
-  72   1              settingBoardLength = 0;
-  73   1              settingBoardNumber = 0;
-  74   1              currentlyBoardLength = 0;
-  75   1              currentlyBoardNumber = 0;
-  76   1              currentlySignalNum = 0;
-  77   1      }
-  78          
-  79          /***************************************************************************/
-  80          // 参数保存到eeprom
-  81          // 参数：无
-  82          // 返回值：0失败 1成功  
-  83          /***************************************************************************/
-  84          unsigned char parameter_save()
-  85          {
-  86   1              unsigned char result = 1;
-  87   1              return result;
-  88   1      }
-  89          
-  90          
+  54          /***************************************************************************/
+  55          // 读取参数
+  56          // 参数：无
+  57          // 返回值：0失败 1成功  
+  58          /***************************************************************************/
+  59          unsigned char parameter_read()
+  60          {
+  61   1              unsigned char result = 1;
+  62   1              return result;
+  63   1      }
+  64          
+  65          /***************************************************************************/
+  66          // 参数初始化函数
+  67          // 参数：无
+  68          // 返回值：无   
+  69          /***************************************************************************/
+  70          void parameter_init()
+  71          {
+  72   1              runMode = 1; //运行模式 0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数
+             -据0xEE
+  73   1              montorMode = 0; //电机状态      0：电机停止   1：电机启动  返回数据0xEE
+  74   1              sensor1 = 0; //传感器1  0：无效  1：有效  2：错误
+  75   1              sensor2 = 0; //传感器2  0：无效  1：有效  2：错误
+  76   1              sensor3 = 0; //传感器3  0：无效  1：有效  2：错误
+  77   1              sensor4 = 0; //传感器4  0：无效  1：有效  2：错误
+  78   1              sensor5 = 0; //传感器5  0：无效  1：有效  2：错误
+  79   1              sensor6 = 0; //传感器6  0：无效  1：有效  2：错误
+  80   1              sensor7 = 0; //传感器7  0：无效  1：有效  2：错误
+  81   1              sensor8 = 0; //传感器8  0：无效  1：有效  2：错误
+  82   1              sensor9 = 0; //传感器9  0：无效  1：有效  2：错误
+  83   1              sensor10 = 0; //传感器10        0：无效  1：有效  2：错误
+  84   1              
+  85   1              cylinder1 = 0; //气缸1  0：无效  1：有效  2：错误
+  86   1              cylinder2 = 0; //气缸2  0：无效  1：有效  2：错误
+  87   1              cylinder3 = 0; //气缸3  0：无效  1：有效  2：错误
+  88   1              cylinder4 = 0; //气缸4  0：无效  1：有效  2：错误
+  89   1              cylinder5 = 0; //气缸5  0：无效  1：有效  2：错误
+  90   1              
+  91   1              intervalTimer1 = 0; //时间设置1 字(int) 最大9.9
+  92   1              intervalTimer2 = 0; //时间设置1 字(int) 最大9.9
+  93   1              intervalTimer3 = 0; //时间设置1 字(int) 最大9.9
+  94   1              intervalTimer4 = 0; //时间设置1 字(int) 最大9.9
+  95   1              intervalTimer5 = 0; //时间设置1 字(int) 最大9.9
+  96   1              intervalTimer6 = 0; //时间设置1 字(int) 最大9.9
+  97   1              intervalTimer7 = 0; //时间设置1 字(int) 最大9.9
+  98   1              
+  99   1              cylinderAlarm1 = 0; //报警设置 气缸1    字(int)
+ 100   1              cylinderAlarm2 = 0; //报警设置 气缸1    字(int)
+ 101   1              cylinderAlarm3 = 0; //报警设置 气缸1    字(int)
+ 102   1              cylinderAlarm4 = 0; //报警设置 气缸1    字(int)
+ 103   1              cylinderAlarm5 = 0; //报警设置 气缸1    字(int)
+ 104   1      
+ 105   1              pieceCount = 0;
+ 106   1      }
+ 107          
+ 108          /***************************************************************************/
+ 109          // 参数保存到eeprom
+ 110          // 参数：无
+ 111          // 返回值：0失败 1成功  
+ 112          /***************************************************************************/
+ 113          unsigned char parameter_save()
+ 114          {
+C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 21:20:13 PAGE 3   
+
+ 115   1              unsigned char result = 1;
+ 116   1              return result;
+ 117   1      }
+ 118          
+ 119          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    120    ----
+   CODE SIZE        =     86    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     46    ----
+   XDATA SIZE       =     31    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
