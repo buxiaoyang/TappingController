@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/07/2014 20:39:51 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -54,15 +54,15 @@ line level    source
   43          unsigned char intervalTimer6; //时间设置1       字(int) 最大9.9
   44          unsigned char intervalTimer7; //时间设置1       字(int) 最大9.9
   45          
-  46          unsigned char cylinderAlarm1; //报警设置 气缸1  字(int)
-  47          unsigned char cylinderAlarm2; //报警设置 气缸1  字(int)
-  48          unsigned char cylinderAlarm3; //报警设置 气缸1  字(int)
-  49          unsigned char cylinderAlarm4; //报警设置 气缸1  字(int)
-  50          unsigned char cylinderAlarm5; //报警设置 气缸1  字(int)
+  46          unsigned int cylinderAlarm1; //报警设置 气缸1   字(int)
+  47          unsigned int cylinderAlarm2; //报警设置 气缸1   字(int)
+  48          unsigned int cylinderAlarm3; //报警设置 气缸1   字(int)
+  49          unsigned int cylinderAlarm4; //报警设置 气缸1   字(int)
+  50          unsigned int cylinderAlarm5; //报警设置 气缸1   字(int)
   51          
   52          unsigned int pieceCount; //计件计数     字(int)
   53          
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 2   
+C51 COMPILER V7.50   PARAMETER                                                             08/07/2014 20:39:51 PAGE 2   
 
   54          /***************************************************************************/
   55          // 读取参数
@@ -126,7 +126,7 @@ line level    source
  112          /***************************************************************************/
  113          unsigned char parameter_save()
  114          {
-C51 COMPILER V7.50   PARAMETER                                                             08/05/2014 22:47:33 PAGE 3   
+C51 COMPILER V7.50   PARAMETER                                                             08/07/2014 20:39:51 PAGE 3   
 
  115   1              unsigned char result = 1;
  116   1              return result;
@@ -136,9 +136,9 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     86    ----
+   CODE SIZE        =     96    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     31    ----
+   XDATA SIZE       =     36    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

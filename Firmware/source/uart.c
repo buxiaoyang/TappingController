@@ -213,67 +213,110 @@ void anyData()
 	{
 		intervalTimer1 = dat;
 	}
-	else if(uartBuffer[2] == 0x07)	//系统参数4
+	else if(uartBuffer[2] == 0x12)	//时间设置2	字(int)
 	{
-
+		intervalTimer2 = dat;
 	}
-	else if(uartBuffer[2] == 0x09)	//系统参数5
+	else if(uartBuffer[2] == 0x13)	//时间设置3	字(int)
 	{
-	
+		intervalTimer3 = dat;
 	}
-	else if(uartBuffer[2] == 0x0B)	//板材参数_板长1
+	else if(uartBuffer[2] == 0x14)	//时间设置4	字(int)
 	{
-
+		intervalTimer4 = dat;
 	}
-	else if(uartBuffer[2] == 0x0D)	//板材参数_块数1	
+	else if(uartBuffer[2] == 0x15)	//时间设置5	字(int)
 	{
-
+		intervalTimer5 = dat;
 	}
-	else if(uartBuffer[2] == 0x0F)	//板材参数_板长2
+	else if(uartBuffer[2] == 0x16)	//时间设置6	字(int)
 	{
-
+		intervalTimer6 = dat;
 	}
-	else if(uartBuffer[2] == 0x11)	//板材参数_块数2
+	else if(uartBuffer[2] == 0x17)	//时间设置7	字(int)
 	{
-
+	   	intervalTimer7 = dat;
 	}
-	else if(uartBuffer[2] == 0x13)	//板材参数_板长3
+	else if(uartBuffer[2] == 0x18)	//报警设置 气缸1	字(int)
 	{
-		
+		cylinderAlarm1 = dat;	
 	}
-	else if(uartBuffer[2] == 0x15) 	//板材参数_块数3
+	else if(uartBuffer[2] == 0x19) 	//报警设置 气缸2	字(int)
 	{
-
+		cylinderAlarm2 = dat;
 	}
-	else if(uartBuffer[2] == 0x17)	//板材参数_板长4
+	else if(uartBuffer[2] == 0x1A)	//报警设置 气缸3	字(int)
 	{
-		
+		cylinderAlarm3 = dat;
 	}
-	else if(uartBuffer[2] == 0x19)	//板材参数_块数4
+	else if(uartBuffer[2] == 0x1B)	//报警设置 气缸4	字(int)
 	{
-	
+		cylinderAlarm4 = dat;
 	}
-	else if(uartBuffer[2] == 0x23)	//手动操作_前进
+	else if(uartBuffer[2] == 0x1C)	//报警设置 气缸5	字(int)
 	{
-
+		cylinderAlarm5 = dat;
 	}
-	else if(uartBuffer[2] == 0x24)	//手动操作_后退
+	else if(uartBuffer[2] == 0x1D)	//复位计数按钮	返回数据0xEE
 	{
-		
+		pieceCount = 0;
 	}
-	else if(uartBuffer[2] == 0x25)	//手动操作_慢进
+	else if(uartBuffer[2] == 0x1E)	//手动模式 按钮 气缸1 	0：关闭  1：开启
 	{
-		
+		if(cylinder1)
+		{
+			cylinder1 = 0;
+		}
+		else
+		{
+			cylinder1 = 1;	
+		}
 	}
-	else if(uartBuffer[2] == 0x26)	//手动操作_切断上
+	else if(uartBuffer[2] == 0x1F)	//手动模式 按钮 气缸2	0：关闭  1：开启
 	{
-		
+		if(cylinder2)
+		{
+			cylinder2 = 0;
+		}
+		else
+		{
+			cylinder2 = 1;	
+		}
 	}
-	else if(uartBuffer[2] == 0x27)	//手动操作_切断下
+	else if(uartBuffer[2] == 0x20)	//手动模式 按钮 气缸3	0：关闭  1：开启
 	{
-		
+		if(cylinder3)
+		{
+			cylinder3 = 0;
+		}
+		else
+		{
+			cylinder3 = 1;	
+		}
 	}
-	else if(uartBuffer[2] == 0x28)	//运行画面_复位按钮
+	else if(uartBuffer[2] == 0x21)	//手动模式 按钮 气缸4	0：关闭  1：开启
+	{
+		if(cylinder4)
+		{
+			cylinder4 = 0;
+		}
+		else
+		{
+			cylinder4 = 1;	
+		}
+	}
+	else if(uartBuffer[2] == 0x22)	//手动模式 按钮 气缸5	0：关闭  1：开启
+	{
+		if(cylinder5)
+		{
+			cylinder5 = 0;
+		}
+		else
+		{
+			cylinder5 = 1;	
+		}
+	}
+	else if(uartBuffer[2] == 0x24)	//解除警报按钮	返回数据0xEE
 	{
 		
 	}

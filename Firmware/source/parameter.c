@@ -43,11 +43,11 @@ unsigned char intervalTimer5; //时间设置1	字(int) 最大9.9
 unsigned char intervalTimer6; //时间设置1	字(int) 最大9.9
 unsigned char intervalTimer7; //时间设置1	字(int) 最大9.9
 
-unsigned char cylinderAlarm1; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm2; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm3; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm4; //报警设置 气缸1	字(int)
-unsigned char cylinderAlarm5; //报警设置 气缸1	字(int)
+unsigned int cylinderAlarm1; //报警设置 气缸1	字(int)
+unsigned int cylinderAlarm2; //报警设置 气缸1	字(int)
+unsigned int cylinderAlarm3; //报警设置 气缸1	字(int)
+unsigned int cylinderAlarm4; //报警设置 气缸1	字(int)
+unsigned int cylinderAlarm5; //报警设置 气缸1	字(int)
 
 unsigned int pieceCount; //计件计数	字(int)
 
