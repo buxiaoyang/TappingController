@@ -39,12 +39,28 @@ void Key_Scan(void)
 				if(runMode == 1)
 				{
 					runMode = 3;
+					ManiDispatchSteps = 1;
+					cylinder1 = 0;
+					cylinder2 = 0;
+					cylinder3 = 0;
+					cylinder4 = 0;
+					cylinder5 = 0;
+					cylinderOut1 = 1;
+					cylinderOut2 = 1;
+					cylinderOut3 = 1;
+					cylinderOut4 = 1;
+					cylinderOut5 = 1;
 					refreshDisplay = 1;
 				}
 			}
 			if(KeyStop == 0) //¼±Í£°´¼ü°´ÏÂ
 			{
 				runMode = 1;
+				cylinder1 = 0;
+				cylinder2 = 0;
+				cylinder3 = 0;
+				cylinder4 = 0;
+				cylinder5 = 0;
 				cylinderOut1 = 1;
 				cylinderOut2 = 1;
 				cylinderOut3 = 1;

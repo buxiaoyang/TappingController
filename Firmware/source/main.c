@@ -74,6 +74,180 @@ void parameter_send_screen()
 
 }
 
+void getSensorStatus()
+{
+	//1
+	if(sensorIn1 == 0)
+	{
+		if(sensor1 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor1 = 1;
+	}
+	if(sensorIn1 == 1)
+	{
+		if(sensor1 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor1 = 0;
+	}
+	//2
+	if(sensorIn2 == 0)
+	{
+		if(sensor2 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor2 = 1;
+	}
+	if(sensorIn2 == 1)
+	{
+		if(sensor2 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor2 = 0;
+	}
+	//3
+	if(sensorIn3 == 0)
+	{
+		if(sensor3 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor3 = 1;
+	}
+	if(sensorIn3 == 1)
+	{
+		if(sensor3 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor3 = 0;
+	}
+	//4
+	if(sensorIn4 == 0)
+	{
+		if(sensor4 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor4 = 1;
+	}
+	if(sensorIn4 == 1)
+	{
+		if(sensor4 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor4 = 0;
+	}
+	//5
+	if(sensorIn5 == 0)
+	{
+		if(sensor5 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor5 = 1;
+	}
+	if(sensorIn5 == 1)
+	{
+		if(sensor5 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor5 = 0;
+	}
+	//6
+	if(sensorIn6 == 0)
+	{
+		if(sensor6 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor6 = 1;
+	}
+	if(sensorIn6 == 1)
+	{
+		if(sensor6 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor6 = 0;
+	}
+	//7
+	if(sensorIn7 == 0)
+	{
+		if(sensor7 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor7 = 1;
+	}
+	if(sensorIn7 == 1)
+	{
+		if(sensor7 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor7 = 0;
+	}
+	//8
+	if(sensorIn8 == 0)
+	{
+		if(sensor8 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor8 = 1;
+	}
+	if(sensorIn8 == 1)
+	{
+		if(sensor8 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor8 = 0;
+	}
+	//9
+	if(sensorIn9 == 0)
+	{
+		if(sensor9 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor9 = 1;
+	}
+	if(sensorIn9 == 1)
+	{
+		if(sensor9 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor9 = 0;
+	}
+	//10
+	if(sensorIn10 == 0)
+	{
+		if(sensor10 == 0)
+		{
+			refreshDisplay = 1;
+		}
+		sensor10 = 1;
+	}
+	if(sensorIn10 == 1)
+	{
+		if(sensor10 == 1)
+		{
+			refreshDisplay = 1;
+		}
+		sensor10 = 0;
+	}
+}
+
 /***************************************************************************/
 // 主函数
 // 参数：无
@@ -81,18 +255,46 @@ void parameter_send_screen()
 /***************************************************************************/
 void main()
 {
+	//unsigned int timeCount10ms = 0;
+	unsigned char timeCount100ms = 0;
+	unsigned char timeCount1s = 0;
 	delay_ms(500);
 	parameter_init();
 	uart_init();
 	//timer_init();
 	while(1)
-	{	
+	{
+		delay_us(3500);
+		//计时
+		//timeCount10ms ++;
+		//if(timeCount10ms == 950)//10ms
+		//{
+			//timeCount10ms = 0;
+		   	TestOut = ! TestOut;
+			//按键扫描
+			Key_Scan();
+			//100ms和1s定时
+			timeCount100ms++;
+			if(timeCount100ms == 10) //100ms
+			{
+				timeCount100ms = 0;
+				//TestOut = ! TestOut;
+				intervalTimerCount ++;
+				timeCount1s ++;
+				if(timeCount1s == 10)
+				{
+					timeCount1s = 0;
+					//TestOut = ! TestOut;
+					cylinderAlarmCount ++;	
+				}
+			 }
+		//}
+		//刷新显示	
 		if(refreshDisplay)
 		{
 			parameter_send_screen();
 			refreshDisplay = 0;
 		}
-		TestOut = ! TestOut;
 		//电机输出
 		if(montorMode)
 		{
@@ -102,10 +304,13 @@ void main()
 		{
 			montorOut = 1;
 		} 
-		Key_Scan();
-		ManiDispatch();
-		SubDispatch();
-		//delay_ms(100);
+		//刷新传感器状态
+		getSensorStatus();
+		//工作调度
+		if(runMode == 3 && alarmMode == 0)
+		{
+			ManiDispatch();
+		}
 	}   
 }
 

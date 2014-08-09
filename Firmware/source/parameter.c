@@ -55,6 +55,8 @@ unsigned int pieceCount; //计件计数	字(int)
 
 unsigned char refreshDisplay; //刷新屏幕标志位 0 不刷新 1刷新
 
+
+
 /***************************************************************************/
 // 读取参数
 // 参数：无
@@ -116,19 +118,19 @@ void parameter_init()
 	
 	if(!parameter_read())
 	{
-		intervalTimer1 = 32; //时间设置1	字(int) 最大9.9
-		intervalTimer2 = 43; //时间设置1	字(int) 最大9.9
-		intervalTimer3 = 55; //时间设置1	字(int) 最大9.9
-		intervalTimer4 = 65; //时间设置1	字(int) 最大9.9
-		intervalTimer5 = 75; //时间设置1	字(int) 最大9.9
-		intervalTimer6 = 87; //时间设置1	字(int) 最大9.9
-		intervalTimer7 = 99; //时间设置1	字(int) 最大9.9
+		intervalTimer1 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer2 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer3 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer4 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer5 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer6 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer7 = 20; //时间设置1	字(int) 最大9.9
 		
-		cylinderAlarm1 = 60; //报警设置 气缸1	字(int)
-		cylinderAlarm2 = 70; //报警设置 气缸1	字(int)
-		cylinderAlarm3 = 80; //报警设置 气缸1	字(int)
-		cylinderAlarm4 = 90; //报警设置 气缸1	字(int)
-		cylinderAlarm5 = 100; //报警设置 气缸1	字(int)	
+		cylinderAlarm1 = 30; //报警设置 气缸1	字(int)
+		cylinderAlarm2 = 40; //报警设置 气缸1	字(int)
+		cylinderAlarm3 = 20; //报警设置 气缸1	字(int)
+		cylinderAlarm4 = 10; //报警设置 气缸1	字(int)
+		cylinderAlarm5 = 15; //报警设置 气缸1	字(int)	
 	}
 	pieceCount = 0;
 

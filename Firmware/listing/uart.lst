@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 1   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE UART
@@ -62,7 +62,7 @@ line level    source
   52   1      #if (PARITYBIT == NONE_PARITY)
   53   1          S2CON = 0x50;           //8-bit variable UART
   54   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 2   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 2   
 
                   S2CON = 0xda;           //9-bit variable UART, parity bit initial to 1
               #elif (PARITYBIT == SPACE_PARITY)
@@ -126,7 +126,7 @@ line level    source
  114   1          S2BUF = ACC;            //Send data to UART2 buffer
  115   1      }
  116          
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 3   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 3   
 
  117          /*----------------------------
  118          Send a string to UART
@@ -190,7 +190,7 @@ line level    source
  176   3                              }
  177   2                      break;
  178   2                      case 2:
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 4   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 4   
 
  179   2                              dataLength = dat;
  180   2                              dataIndex = 0;
@@ -254,7 +254,7 @@ line level    source
  237   2                      parameter_save();
  238   2              }
  239   1              else if(uartBuffer[2] == 0x14)  //时间设置4     字(int)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 5   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 5   
 
  240   1              {
  241   2                      intervalTimer4 = dat;
@@ -318,7 +318,7 @@ line level    source
  299   1              else if(uartBuffer[2] == 0x1F)  //手动模式 按钮 气缸2   0：关闭  1：开启
  300   1              {
  301   2                      if(cylinder2)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 14:59:17 PAGE 6   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 6   
 
  302   2                      {
  303   3                              cylinder2 = 0;

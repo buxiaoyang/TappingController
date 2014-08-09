@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 14:59:16 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
   52   1      
   53   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 14:59:16 PAGE 2   
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 2   
 
   54   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
   55   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
@@ -87,56 +87,267 @@ line level    source
   74   1      
   75   1      }
   76          
-  77          /***************************************************************************/
-  78          // 主函数
-  79          // 参数：无
-  80          // 返回值：无   
-  81          /***************************************************************************/
-  82          void main()
-  83          {
-  84   1              delay_ms(500);
-  85   1              parameter_init();
-  86   1              uart_init();
-  87   1              //timer_init();
-  88   1              while(1)
-  89   1              {       
-  90   2                      if(refreshDisplay)
+  77          void getSensorStatus()
+  78          {
+  79   1              //1
+  80   1              if(sensorIn1 == 0)
+  81   1              {
+  82   2                      if(sensor1 == 0)
+  83   2                      {
+  84   3                              refreshDisplay = 1;
+  85   3                      }
+  86   2                      sensor1 = 1;
+  87   2              }
+  88   1              if(sensorIn1 == 1)
+  89   1              {
+  90   2                      if(sensor1 == 1)
   91   2                      {
-  92   3                              parameter_send_screen();
-  93   3                              refreshDisplay = 0;
-  94   3                      }
-  95   2                      TestOut = ! TestOut;
-  96   2                      //电机输出
-  97   2                      if(montorMode)
-  98   2                      {
-  99   3                              montorOut = 0;
- 100   3                      }
- 101   2                      else
- 102   2                      {
- 103   3                              montorOut = 1;
- 104   3                      } 
- 105   2                      Key_Scan();
- 106   2                      ManiDispatch();
- 107   2                      SubDispatch();
- 108   2                      //delay_ms(100);
- 109   2              }   
- 110   1      }
- 111          
- 112          
- 113          
- 114          
- 115          
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 14:59:16 PAGE 3   
+  92   3                              refreshDisplay = 1;
+  93   3                      }
+  94   2                      sensor1 = 0;
+  95   2              }
+  96   1              //2
+  97   1              if(sensorIn2 == 0)
+  98   1              {
+  99   2                      if(sensor2 == 0)
+ 100   2                      {
+ 101   3                              refreshDisplay = 1;
+ 102   3                      }
+ 103   2                      sensor2 = 1;
+ 104   2              }
+ 105   1              if(sensorIn2 == 1)
+ 106   1              {
+ 107   2                      if(sensor2 == 1)
+ 108   2                      {
+ 109   3                              refreshDisplay = 1;
+ 110   3                      }
+ 111   2                      sensor2 = 0;
+ 112   2              }
+ 113   1              //3
+ 114   1              if(sensorIn3 == 0)
+ 115   1              {
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 3   
 
- 116          
- 117          
- 118          
+ 116   2                      if(sensor3 == 0)
+ 117   2                      {
+ 118   3                              refreshDisplay = 1;
+ 119   3                      }
+ 120   2                      sensor3 = 1;
+ 121   2              }
+ 122   1              if(sensorIn3 == 1)
+ 123   1              {
+ 124   2                      if(sensor3 == 1)
+ 125   2                      {
+ 126   3                              refreshDisplay = 1;
+ 127   3                      }
+ 128   2                      sensor3 = 0;
+ 129   2              }
+ 130   1              //4
+ 131   1              if(sensorIn4 == 0)
+ 132   1              {
+ 133   2                      if(sensor4 == 0)
+ 134   2                      {
+ 135   3                              refreshDisplay = 1;
+ 136   3                      }
+ 137   2                      sensor4 = 1;
+ 138   2              }
+ 139   1              if(sensorIn4 == 1)
+ 140   1              {
+ 141   2                      if(sensor4 == 1)
+ 142   2                      {
+ 143   3                              refreshDisplay = 1;
+ 144   3                      }
+ 145   2                      sensor4 = 0;
+ 146   2              }
+ 147   1              //5
+ 148   1              if(sensorIn5 == 0)
+ 149   1              {
+ 150   2                      if(sensor5 == 0)
+ 151   2                      {
+ 152   3                              refreshDisplay = 1;
+ 153   3                      }
+ 154   2                      sensor5 = 1;
+ 155   2              }
+ 156   1              if(sensorIn5 == 1)
+ 157   1              {
+ 158   2                      if(sensor5 == 1)
+ 159   2                      {
+ 160   3                              refreshDisplay = 1;
+ 161   3                      }
+ 162   2                      sensor5 = 0;
+ 163   2              }
+ 164   1              //6
+ 165   1              if(sensorIn6 == 0)
+ 166   1              {
+ 167   2                      if(sensor6 == 0)
+ 168   2                      {
+ 169   3                              refreshDisplay = 1;
+ 170   3                      }
+ 171   2                      sensor6 = 1;
+ 172   2              }
+ 173   1              if(sensorIn6 == 1)
+ 174   1              {
+ 175   2                      if(sensor6 == 1)
+ 176   2                      {
+ 177   3                              refreshDisplay = 1;
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 4   
+
+ 178   3                      }
+ 179   2                      sensor6 = 0;
+ 180   2              }
+ 181   1              //7
+ 182   1              if(sensorIn7 == 0)
+ 183   1              {
+ 184   2                      if(sensor7 == 0)
+ 185   2                      {
+ 186   3                              refreshDisplay = 1;
+ 187   3                      }
+ 188   2                      sensor7 = 1;
+ 189   2              }
+ 190   1              if(sensorIn7 == 1)
+ 191   1              {
+ 192   2                      if(sensor7 == 1)
+ 193   2                      {
+ 194   3                              refreshDisplay = 1;
+ 195   3                      }
+ 196   2                      sensor7 = 0;
+ 197   2              }
+ 198   1              //8
+ 199   1              if(sensorIn8 == 0)
+ 200   1              {
+ 201   2                      if(sensor8 == 0)
+ 202   2                      {
+ 203   3                              refreshDisplay = 1;
+ 204   3                      }
+ 205   2                      sensor8 = 1;
+ 206   2              }
+ 207   1              if(sensorIn8 == 1)
+ 208   1              {
+ 209   2                      if(sensor8 == 1)
+ 210   2                      {
+ 211   3                              refreshDisplay = 1;
+ 212   3                      }
+ 213   2                      sensor8 = 0;
+ 214   2              }
+ 215   1              //9
+ 216   1              if(sensorIn9 == 0)
+ 217   1              {
+ 218   2                      if(sensor9 == 0)
+ 219   2                      {
+ 220   3                              refreshDisplay = 1;
+ 221   3                      }
+ 222   2                      sensor9 = 1;
+ 223   2              }
+ 224   1              if(sensorIn9 == 1)
+ 225   1              {
+ 226   2                      if(sensor9 == 1)
+ 227   2                      {
+ 228   3                              refreshDisplay = 1;
+ 229   3                      }
+ 230   2                      sensor9 = 0;
+ 231   2              }
+ 232   1              //10
+ 233   1              if(sensorIn10 == 0)
+ 234   1              {
+ 235   2                      if(sensor10 == 0)
+ 236   2                      {
+ 237   3                              refreshDisplay = 1;
+ 238   3                      }
+ 239   2                      sensor10 = 1;
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 5   
+
+ 240   2              }
+ 241   1              if(sensorIn10 == 1)
+ 242   1              {
+ 243   2                      if(sensor10 == 1)
+ 244   2                      {
+ 245   3                              refreshDisplay = 1;
+ 246   3                      }
+ 247   2                      sensor10 = 0;
+ 248   2              }
+ 249   1      }
+ 250          
+ 251          /***************************************************************************/
+ 252          // 主函数
+ 253          // 参数：无
+ 254          // 返回值：无   
+ 255          /***************************************************************************/
+ 256          void main()
+ 257          {
+ 258   1              //unsigned int timeCount10ms = 0;
+ 259   1              unsigned char timeCount100ms = 0;
+ 260   1              unsigned char timeCount1s = 0;
+ 261   1              delay_ms(500);
+ 262   1              parameter_init();
+ 263   1              uart_init();
+ 264   1              //timer_init();
+ 265   1              while(1)
+ 266   1              {
+ 267   2                      delay_us(3500);
+ 268   2                      //计时
+ 269   2                      //timeCount10ms ++;
+ 270   2                      //if(timeCount10ms == 950)//10ms
+ 271   2                      //{
+ 272   2                              //timeCount10ms = 0;
+ 273   2                              TestOut = ! TestOut;
+ 274   2                              //按键扫描
+ 275   2                              Key_Scan();
+ 276   2                              //100ms和1s定时
+ 277   2                              timeCount100ms++;
+ 278   2                              if(timeCount100ms == 10) //100ms
+ 279   2                              {
+ 280   3                                      timeCount100ms = 0;
+ 281   3                                      //TestOut = ! TestOut;
+ 282   3                                      intervalTimerCount ++;
+ 283   3                                      timeCount1s ++;
+ 284   3                                      if(timeCount1s == 10)
+ 285   3                                      {
+ 286   4                                              timeCount1s = 0;
+ 287   4                                              //TestOut = ! TestOut;
+ 288   4                                              cylinderAlarmCount ++;  
+ 289   4                                      }
+ 290   3                               }
+ 291   2                      //}
+ 292   2                      //刷新显示      
+ 293   2                      if(refreshDisplay)
+ 294   2                      {
+ 295   3                              parameter_send_screen();
+ 296   3                              refreshDisplay = 0;
+ 297   3                      }
+ 298   2                      //电机输出
+ 299   2                      if(montorMode)
+ 300   2                      {
+ 301   3                              montorOut = 0;
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 18:02:16 PAGE 6   
+
+ 302   3                      }
+ 303   2                      else
+ 304   2                      {
+ 305   3                              montorOut = 1;
+ 306   3                      } 
+ 307   2                      //刷新传感器状态
+ 308   2                      getSensorStatus();
+ 309   2                      //工作调度
+ 310   2                      if(runMode == 3 && alarmMode == 0)
+ 311   2                      {
+ 312   3                              ManiDispatch();
+ 313   3                      }
+ 314   2              }   
+ 315   1      }
+ 316          
+ 317          
+ 318          
+ 319          
+ 320          
+ 321          
+ 322          
+ 323          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    508    ----
+   CODE SIZE        =    998    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =   ----       2
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

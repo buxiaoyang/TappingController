@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   DISPATCH                                                              08/09/2014 14:59:17 PAGE 1   
+C51 COMPILER V7.50   DISPATCH                                                              08/09/2014 18:02:17 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE DISPATCH
@@ -13,45 +13,176 @@ line level    source
    3          #include <intrins.h>
    4          #include <dispatch.h>
    5          
-   6          unsigned char ManiDispatchSteps = 20;
-   7          
-   8          unsigned char SubDispatchSteps = 20;    
-   9                                                                          //0：初始状态
-  10                                                                          //1：电机输出前进慢
-  11                                                                          //2：到达设置长度15%，电机输出前进快
-  12                                                                          //3：到达设置长度85%，点击输出前进慢
-  13                                                                          //4：到达设置长度100%，切板输出
-  14                                                                          //5：切板下方感应
-  15                                                                          //6：切板上方感应，过程结束
-  16                                                                          //20：结束状态
+   6          /*
+   7          按启动按钮，
+   8          气缸位置就绪， 送料气缸1启动，
+   9          碰到2号感应器，打料气缸2启动。
+  10          碰到4号感应器，夹紧气缸3启动。
+  11          碰到6号感应器，打料气缸2关闭。
+  12          碰到3号感应器，送料气缸1关闭。
+  13          碰到1号感应器，进刀气缸4启动。
+  14          碰到8号感应器，进刀气缸4关闭。
+  15          碰到7号感应器，夹紧气缸3关闭。
+  16          */
   17          
-  18          unsigned char currentSettingIndex = 20;
-  19          unsigned char currentSettingBoardNum = 20;
+  18          unsigned int intervalTimerCount = 0;
+  19          unsigned int cylinderAlarmCount = 0;
   20          
-  21          
-  22          void ManiDispatch(void)
-  23          {
-  24   1      
-  25   1      }
-  26          
-  27          //0：初始状态
-  28          //1：电机输出前进慢
-  29          //2：到达设置长度15%，电机输出前进快
-  30          //3：到达设置长度85%，点击输出前进慢
-  31          //4：到达设置长度100%，切板输出
-  32          //5：切板下方感应
-  33          //6：切板上方感应，过程结束
-  34          //20：结束状态
-  35          void SubDispatch(void)
-  36          {
-  37   1      
-  38   1      }
+  21          unsigned char ManiDispatchSteps = 20;   // 1，1 3 5 7号感应器有效，送料气缸1启动
+  22                                                                                          // 2，碰到2号感应器进入延迟
+  23                                                                                          // 3，延迟intervalTimer1时间到，打料气缸2启动
+  24                                                                                          // 4，碰到4号感应器进入延迟
+  25                                                                                          // 5，延迟intervalTimer2时间到，夹紧气缸3启动
+  26                                                                                          // 6，碰到6号感应器进入延迟
+  27                                                                                          // 7，延迟intervalTimer3时间到，打料气缸2关闭
+  28                                                                                          // 8，碰到3号感应器进入延迟
+  29                                                                                          // 9，延迟intervalTimer4时间到，送料气缸1关闭
+  30                                                                                          // 10，碰到1号感应器进入延迟
+  31                                                                                          // 11，延迟intervalTimer5时间到，进刀气缸4启动
+  32                                                                                          // 12，碰到8号感应器进入延迟
+  33                                                                                          // 13，延迟intervalTimer6时间到，进刀气缸4关闭
+  34                                                                                          // 14，碰到7号感应器进入延迟
+  35                                                                                          // 15，延迟intervalTimer7时间到，夹紧气缸3关闭
+  36                                                                                          // 20，空操作
+  37          
+  38          void ManiDispatch(void)
+  39          {
+  40   1              switch(ManiDispatchSteps)
+  41   1              {
+  42   2                      case 1:  // 1，1 3 5 7号感应器有效，送料气缸1启动
+  43   2                              if(sensor1 == 1 && sensor3 == 1 && sensor5 == 1 && sensor7 == 1)
+  44   2                              {
+  45   3                                      cylinderOut1 = 0;
+  46   3                                      cylinder1 = 1;
+  47   3                                      refreshDisplay = 1;
+  48   3                                      ManiDispatchSteps ++;   
+  49   3                              }
+  50   2                      break;
+  51   2                      case 2:  // 2，碰到2号感应器进入延迟 
+  52   2                              if(sensor2 == 1)
+  53   2                              {
+  54   3                                      intervalTimerCount = 0;
+C51 COMPILER V7.50   DISPATCH                                                              08/09/2014 18:02:17 PAGE 2   
+
+  55   3                                      ManiDispatchSteps ++;   
+  56   3                              }
+  57   2                      break;
+  58   2                      case 3:  // 3，延迟intervalTimer1时间到，打料气缸2启动
+  59   2                              if(intervalTimerCount> intervalTimer1)
+  60   2                              {
+  61   3                                      cylinderOut2 = 0;
+  62   3                                      cylinder2 = 1;
+  63   3                                      refreshDisplay = 1;
+  64   3                                      ManiDispatchSteps ++;   
+  65   3                              }
+  66   2                      break;
+  67   2                      case 4:  // 4，碰到4号感应器进入延迟
+  68   2                              if(sensor4 == 1)
+  69   2                              {
+  70   3                                      intervalTimerCount = 0;
+  71   3                                      ManiDispatchSteps ++;   
+  72   3                              }
+  73   2                      break;
+  74   2                      case 5: // 5，延迟intervalTimer2时间到，夹紧气缸3启动
+  75   2                              if(intervalTimerCount > intervalTimer2)
+  76   2                              {
+  77   3                                      cylinderOut3 = 0;
+  78   3                                      cylinder3 = 1;
+  79   3                                      refreshDisplay = 1;
+  80   3                                      ManiDispatchSteps ++;   
+  81   3                              }
+  82   2                      break;
+  83   2                      case 6: // 6，碰到6号感应器进入延迟
+  84   2                              if(sensor6 == 1)
+  85   2                              {
+  86   3                                      intervalTimerCount = 0;
+  87   3                                      ManiDispatchSteps ++;   
+  88   3                              }
+  89   2                      break;
+  90   2                      case 7:  // 7，延迟intervalTimer3时间到，打料气缸2关闭
+  91   2                              if(intervalTimerCount > intervalTimer3)
+  92   2                              {
+  93   3                                      cylinderOut2 = 1;
+  94   3                                      cylinder2 = 0;
+  95   3                                      refreshDisplay = 1;
+  96   3                                      ManiDispatchSteps ++;   
+  97   3                              }
+  98   2                      break;
+  99   2                      case 8: // 8，碰到3号感应器进入延迟
+ 100   2                              if(sensor3 == 1)
+ 101   2                              {
+ 102   3                                      intervalTimerCount = 0;
+ 103   3                                      ManiDispatchSteps ++;   
+ 104   3                              }
+ 105   2                      break;
+ 106   2                      case 9:  // 9，延迟intervalTimer4时间到，送料气缸1关闭
+ 107   2                              if(intervalTimerCount > intervalTimer4)
+ 108   2                              {
+ 109   3                                      cylinderOut1 = 1;
+ 110   3                                      cylinder1 = 0;
+ 111   3                                      refreshDisplay = 1;
+ 112   3                                      ManiDispatchSteps ++;   
+ 113   3                              }
+ 114   2                      break;
+ 115   2                      case 10:  // 10，碰到1号感应器进入延迟
+ 116   2                              if(sensor1 == 1)
+C51 COMPILER V7.50   DISPATCH                                                              08/09/2014 18:02:17 PAGE 3   
+
+ 117   2                              {
+ 118   3                                      intervalTimerCount = 0;
+ 119   3                                      ManiDispatchSteps ++;   
+ 120   3                              }
+ 121   2                      break;
+ 122   2                      case 11: // 11，延迟intervalTimer5时间到，进刀气缸4启动
+ 123   2                              if(intervalTimerCount > intervalTimer5)
+ 124   2                              {
+ 125   3                                      cylinderOut4 = 0;
+ 126   3                                      cylinder4 = 1;
+ 127   3                                      refreshDisplay = 1;
+ 128   3                                      ManiDispatchSteps ++;   
+ 129   3                              }
+ 130   2                      break;
+ 131   2                      case 12: // 12，碰到8号感应器进入延迟
+ 132   2                              if(sensor8 == 1)
+ 133   2                              {
+ 134   3                                      intervalTimerCount = 0;
+ 135   3                                      ManiDispatchSteps ++;   
+ 136   3                              }
+ 137   2                      break;
+ 138   2                      case 13:  // 13，延迟intervalTimer6时间到，进刀气缸4关闭
+ 139   2                              if(intervalTimerCount > intervalTimer6)
+ 140   2                              {
+ 141   3                                      cylinderOut4 = 1;
+ 142   3                                      cylinder4 = 0;
+ 143   3                                      refreshDisplay = 1;
+ 144   3                                      ManiDispatchSteps ++;   
+ 145   3                              }
+ 146   2                      break;
+ 147   2                      case 14: // 14，碰到7号感应器进入延迟
+ 148   2                              if(sensor7 == 1)
+ 149   2                              {
+ 150   3                                      intervalTimerCount = 0;
+ 151   3                                      ManiDispatchSteps ++;   
+ 152   3                              }
+ 153   2                      break;
+ 154   2                      case 15: // 15，延迟intervalTimer7时间到，夹紧气缸3关闭
+ 155   2                              if(intervalTimerCount > intervalTimer7)
+ 156   2                              {
+ 157   3                                      cylinderOut3 = 1;
+ 158   3                                      cylinder3 = 0;
+ 159   3                                      refreshDisplay = 1;
+ 160   3                                      ManiDispatchSteps = 1;
+ 161   3                                      pieceCount ++;  
+ 162   3                              }
+ 163   2                      break;
+ 164   2              }
+ 165   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      2    ----
+   CODE SIZE        =    471    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      4    ----
+   XDATA SIZE       =      5    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
