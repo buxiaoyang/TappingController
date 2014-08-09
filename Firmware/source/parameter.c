@@ -118,19 +118,19 @@ void parameter_init()
 	
 	if(!parameter_read())
 	{
-		intervalTimer1 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer2 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer3 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer4 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer5 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer6 = 20; //时间设置1	字(int) 最大9.9
-		intervalTimer7 = 20; //时间设置1	字(int) 最大9.9
+		intervalTimer1 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer2 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer3 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer4 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer5 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer6 = 40; //时间设置1	字(int) 最大9.9
+		intervalTimer7 = 40; //时间设置1	字(int) 最大9.9
 		
-		cylinderAlarm1 = 30; //报警设置 气缸1	字(int)
-		cylinderAlarm2 = 40; //报警设置 气缸1	字(int)
+		cylinderAlarm1 = 10; //报警设置 气缸1	字(int)
+		cylinderAlarm2 = 15; //报警设置 气缸1	字(int)
 		cylinderAlarm3 = 20; //报警设置 气缸1	字(int)
-		cylinderAlarm4 = 10; //报警设置 气缸1	字(int)
-		cylinderAlarm5 = 15; //报警设置 气缸1	字(int)	
+		cylinderAlarm4 = 25; //报警设置 气缸1	字(int)
+		cylinderAlarm5 = 30; //报警设置 气缸1	字(int)	
 	}
 	pieceCount = 0;
 

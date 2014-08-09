@@ -264,7 +264,7 @@ void main()
 	//timer_init();
 	while(1)
 	{
-		delay_us(3500);
+		delay_us(3600);
 		//¼ÆÊ±
 		//timeCount10ms ++;
 		//if(timeCount10ms == 950)//10ms

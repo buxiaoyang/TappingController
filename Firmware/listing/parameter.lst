@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 18:02:16 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 19:19:48 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -62,7 +62,7 @@ line level    source
   51          unsigned int cylinderAlarm4; //报警设置 气缸1   字(int)
   52          unsigned int cylinderAlarm5; //报警设置 气缸1   字(int)
   53          
-C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 18:02:16 PAGE 2   
+C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 19:19:48 PAGE 2   
 
   54          unsigned int pieceCount; //计件计数     字(int)
   55          
@@ -126,7 +126,7 @@ line level    source
  112   1              
  113   1              cylinder1 = 0; //气缸1  0：无效  1：有效  2：错误
  114   1              cylinder2 = 0; //气缸2  0：无效  1：有效  2：错误
-C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 18:02:16 PAGE 3   
+C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 19:19:48 PAGE 3   
 
  115   1              cylinder3 = 0; //气缸3  0：无效  1：有效  2：错误
  116   1              cylinder4 = 0; //气缸4  0：无效  1：有效  2：错误
@@ -134,19 +134,19 @@ line level    source
  118   1              
  119   1              if(!parameter_read())
  120   1              {
- 121   2                      intervalTimer1 = 20; //时间设置1        字(int) 最大9.9
- 122   2                      intervalTimer2 = 20; //时间设置1        字(int) 最大9.9
- 123   2                      intervalTimer3 = 20; //时间设置1        字(int) 最大9.9
- 124   2                      intervalTimer4 = 20; //时间设置1        字(int) 最大9.9
- 125   2                      intervalTimer5 = 20; //时间设置1        字(int) 最大9.9
- 126   2                      intervalTimer6 = 20; //时间设置1        字(int) 最大9.9
- 127   2                      intervalTimer7 = 20; //时间设置1        字(int) 最大9.9
+ 121   2                      intervalTimer1 = 40; //时间设置1        字(int) 最大9.9
+ 122   2                      intervalTimer2 = 40; //时间设置1        字(int) 最大9.9
+ 123   2                      intervalTimer3 = 40; //时间设置1        字(int) 最大9.9
+ 124   2                      intervalTimer4 = 40; //时间设置1        字(int) 最大9.9
+ 125   2                      intervalTimer5 = 40; //时间设置1        字(int) 最大9.9
+ 126   2                      intervalTimer6 = 40; //时间设置1        字(int) 最大9.9
+ 127   2                      intervalTimer7 = 40; //时间设置1        字(int) 最大9.9
  128   2                      
- 129   2                      cylinderAlarm1 = 30; //报警设置 气缸1   字(int)
- 130   2                      cylinderAlarm2 = 40; //报警设置 气缸1   字(int)
+ 129   2                      cylinderAlarm1 = 10; //报警设置 气缸1   字(int)
+ 130   2                      cylinderAlarm2 = 15; //报警设置 气缸1   字(int)
  131   2                      cylinderAlarm3 = 20; //报警设置 气缸1   字(int)
- 132   2                      cylinderAlarm4 = 10; //报警设置 气缸1   字(int)
- 133   2                      cylinderAlarm5 = 15; //报警设置 气缸1   字(int) 
+ 132   2                      cylinderAlarm4 = 25; //报警设置 气缸1   字(int)
+ 133   2                      cylinderAlarm5 = 30; //报警设置 气缸1   字(int) 
  134   2              }
  135   1              pieceCount = 0;
  136   1      
@@ -190,7 +190,7 @@ line level    source
  174   1      }
  175          
  176          
-C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 18:02:16 PAGE 4   
+C51 COMPILER V7.50   PARAMETER                                                             08/09/2014 19:19:48 PAGE 4   
 
 
 

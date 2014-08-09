@@ -2,7 +2,7 @@
 #include <reg52.h>
 #include <intrins.h>
 #include <parameter.h>
-
+#include <dispatch.h>
 
 #define FOSC 11059200L      //System frequency
 #define BAUD 115200         //UART baudrate
@@ -195,6 +195,54 @@ void ReceiveData(BYTE dat)
 	}
 }
 
+void cancelcylinderAlarm()
+{
+	if(cylinderOut1 == 0)
+	{
+		cylinder1 = 1;
+	}
+	else
+	{
+		cylinder1 = 0;
+	}
+
+	if(cylinderOut2 == 0)
+	{
+		cylinder2 = 1;
+	}
+	else
+	{
+		cylinder2 = 0;
+	}
+
+	if(cylinderOut3 == 0)
+	{
+		cylinder3 = 1;
+	}
+	else
+	{
+		cylinder3 = 0;
+	}
+
+	if(cylinderOut4 == 0)
+	{
+		cylinder4 = 1;
+	}
+	else
+	{
+		cylinder4 = 0;
+	}
+
+	if(cylinderOut5 == 0)
+	{
+		cylinder5 = 1;
+	}
+	else
+	{
+		cylinder5 = 0;
+	}
+}
+
 void anyData()
 {
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
@@ -290,10 +338,12 @@ void anyData()
 		if(cylinder1)
 		{
 			cylinder1 = 0;
+			cylinderOut1 = 1;
 		}
 		else
 		{
-			cylinder1 = 1;	
+			cylinder1 = 1;
+			cylinderOut1 = 0;	
 		}
 	}
 	else if(uartBuffer[2] == 0x1F)	//手动模式 按钮 气缸2	0：关闭  1：开启
@@ -301,10 +351,12 @@ void anyData()
 		if(cylinder2)
 		{
 			cylinder2 = 0;
+			cylinderOut2 = 1;
 		}
 		else
 		{
-			cylinder2 = 1;	
+			cylinder2 = 1;
+			cylinderOut2 = 0;	
 		}
 	}
 	else if(uartBuffer[2] == 0x20)	//手动模式 按钮 气缸3	0：关闭  1：开启
@@ -312,10 +364,12 @@ void anyData()
 		if(cylinder3)
 		{
 			cylinder3 = 0;
+			cylinderOut3 = 1;
 		}
 		else
 		{
-			cylinder3 = 1;	
+			cylinder3 = 1;
+			cylinderOut3 = 0;	
 		}
 	}
 	else if(uartBuffer[2] == 0x21)	//手动模式 按钮 气缸4	0：关闭  1：开启
@@ -323,10 +377,12 @@ void anyData()
 		if(cylinder4)
 		{
 			cylinder4 = 0;
+			cylinderOut4 = 1;
 		}
 		else
 		{
-			cylinder4 = 1;	
+			cylinder4 = 1;
+			cylinderOut4 = 0;	
 		}
 	}
 	else if(uartBuffer[2] == 0x22)	//手动模式 按钮 气缸5	0：关闭  1：开启
@@ -334,15 +390,20 @@ void anyData()
 		if(cylinder5)
 		{
 			cylinder5 = 0;
+			cylinderOut5 = 1;
 		}
 		else
 		{
-			cylinder5 = 1;	
+			cylinder5 = 1;
+			cylinderOut5 = 0;	
 		}
 	}
 	else if(uartBuffer[2] == 0x24)	//解除警报按钮	返回数据0xEE
 	{
 		alarmMode = 0;
+		cylinderAlarmCount = 0;
+		systemAlarmOut = 1;
+		cancelcylinderAlarm();
 	}
 	uartReceiveOK = 1;	
 }

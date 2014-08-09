@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 1   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE UART
@@ -12,7 +12,7 @@ line level    source
    2          #include <reg52.h>
    3          #include <intrins.h>
    4          #include <parameter.h>
-   5          
+   5          #include <dispatch.h>
    6          
    7          #define FOSC 11059200L      //System frequency
    8          #define BAUD 115200         //UART baudrate
@@ -62,7 +62,7 @@ line level    source
   52   1      #if (PARITYBIT == NONE_PARITY)
   53   1          S2CON = 0x50;           //8-bit variable UART
   54   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 2   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 2   
 
                   S2CON = 0xda;           //9-bit variable UART, parity bit initial to 1
               #elif (PARITYBIT == SPACE_PARITY)
@@ -126,7 +126,7 @@ line level    source
  114   1          S2BUF = ACC;            //Send data to UART2 buffer
  115   1      }
  116          
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 3   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 3   
 
  117          /*----------------------------
  118          Send a string to UART
@@ -190,7 +190,7 @@ line level    source
  176   3                              }
  177   2                      break;
  178   2                      case 2:
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 4   
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 4   
 
  179   2                              dataLength = dat;
  180   2                              dataIndex = 0;
@@ -211,166 +211,229 @@ line level    source
  195   2              }
  196   1      }
  197          
- 198          void anyData()
+ 198          void cancelcylinderAlarm()
  199          {
- 200   1              WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
- 201   1              refreshDisplay = 1;
- 202   1              if(uartBuffer[2] == 0x00)//运行模式     0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启
-             -动)   返回数据0xEE
- 203   1              {
- 204   2                      if(runMode == 0 || runMode == 2)
- 205   2                      {
- 206   3                              runMode = 1;    
- 207   3                      }
- 208   2                      else
- 209   2                      {
- 210   3                              runMode = 0;
- 211   3                      }
+ 200   1              if(cylinderOut1 == 0)
+ 201   1              {
+ 202   2                      cylinder1 = 1;
+ 203   2              }
+ 204   1              else
+ 205   1              {
+ 206   2                      cylinder1 = 0;
+ 207   2              }
+ 208   1      
+ 209   1              if(cylinderOut2 == 0)
+ 210   1              {
+ 211   2                      cylinder2 = 1;
  212   2              }
- 213   1              else if(uartBuffer[2] == 0x01)  //电机状态      0：电机停止   1：电机启动  返回数据0xEE
+ 213   1              else
  214   1              {
- 215   2                      if(montorMode == 0)
- 216   2                      {
- 217   3                              montorMode = 1;
- 218   3                      }
- 219   2                      else
- 220   2                      {
- 221   3                              montorMode = 0;
- 222   3                      }
- 223   2              }
- 224   1              else if(uartBuffer[2] == 0x11)  //时间设置1     字(int) 最大9.9
- 225   1              {
- 226   2                      intervalTimer1 = dat;
- 227   2                      parameter_save();
- 228   2              }
- 229   1              else if(uartBuffer[2] == 0x12)  //时间设置2     字(int)
- 230   1              {
- 231   2                      intervalTimer2 = dat;
- 232   2                      parameter_save();
- 233   2              }
- 234   1              else if(uartBuffer[2] == 0x13)  //时间设置3     字(int)
- 235   1              {
- 236   2                      intervalTimer3 = dat;
- 237   2                      parameter_save();
- 238   2              }
- 239   1              else if(uartBuffer[2] == 0x14)  //时间设置4     字(int)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 5   
+ 215   2                      cylinder2 = 0;
+ 216   2              }
+ 217   1      
+ 218   1              if(cylinderOut3 == 0)
+ 219   1              {
+ 220   2                      cylinder3 = 1;
+ 221   2              }
+ 222   1              else
+ 223   1              {
+ 224   2                      cylinder3 = 0;
+ 225   2              }
+ 226   1      
+ 227   1              if(cylinderOut4 == 0)
+ 228   1              {
+ 229   2                      cylinder4 = 1;
+ 230   2              }
+ 231   1              else
+ 232   1              {
+ 233   2                      cylinder4 = 0;
+ 234   2              }
+ 235   1      
+ 236   1              if(cylinderOut5 == 0)
+ 237   1              {
+ 238   2                      cylinder5 = 1;
+ 239   2              }
+ 240   1              else
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 5   
 
- 240   1              {
- 241   2                      intervalTimer4 = dat;
- 242   2                      parameter_save();
+ 241   1              {
+ 242   2                      cylinder5 = 0;
  243   2              }
- 244   1              else if(uartBuffer[2] == 0x15)  //时间设置5     字(int)
- 245   1              {
- 246   2                      intervalTimer5 = dat;
- 247   2                      parameter_save();
- 248   2              }
- 249   1              else if(uartBuffer[2] == 0x16)  //时间设置6     字(int)
- 250   1              {
- 251   2                      intervalTimer6 = dat;
- 252   2                      parameter_save();
- 253   2              }
- 254   1              else if(uartBuffer[2] == 0x17)  //时间设置7     字(int)
- 255   1              {
- 256   2                      intervalTimer7 = dat;
- 257   2                      parameter_save();
- 258   2              }
- 259   1              else if(uartBuffer[2] == 0x18)  //报警设置 气缸1        字(int)
- 260   1              {
- 261   2                      cylinderAlarm1 = dat;
- 262   2                      parameter_save();       
- 263   2              }
- 264   1              else if(uartBuffer[2] == 0x19)  //报警设置 气缸2        字(int)
- 265   1              {
- 266   2                      cylinderAlarm2 = dat;
- 267   2                      parameter_save();
- 268   2              }
- 269   1              else if(uartBuffer[2] == 0x1A)  //报警设置 气缸3        字(int)
- 270   1              {
- 271   2                      cylinderAlarm3 = dat;
- 272   2                      parameter_save();
- 273   2              }
- 274   1              else if(uartBuffer[2] == 0x1B)  //报警设置 气缸4        字(int)
- 275   1              {
- 276   2                      cylinderAlarm4 = dat;
- 277   2                      parameter_save();
- 278   2              }
- 279   1              else if(uartBuffer[2] == 0x1C)  //报警设置 气缸5        字(int)
- 280   1              {
- 281   2                      cylinderAlarm5 = dat;
- 282   2                      parameter_save();
- 283   2              }
- 284   1              else if(uartBuffer[2] == 0x1D)  //复位计数按钮  返回数据0xEE
- 285   1              {
- 286   2                      pieceCount = 0;
- 287   2              }
- 288   1              else if(uartBuffer[2] == 0x1E)  //手动模式 按钮 气缸1   0：关闭  1：开启
- 289   1              {
- 290   2                      if(cylinder1)
- 291   2                      {
- 292   3                              cylinder1 = 0;
- 293   3                      }
- 294   2                      else
- 295   2                      {
- 296   3                              cylinder1 = 1;  
- 297   3                      }
- 298   2              }
- 299   1              else if(uartBuffer[2] == 0x1F)  //手动模式 按钮 气缸2   0：关闭  1：开启
- 300   1              {
- 301   2                      if(cylinder2)
-C51 COMPILER V7.50   UART                                                                  08/09/2014 18:02:17 PAGE 6   
+ 244   1      }
+ 245          
+ 246          void anyData()
+ 247          {
+ 248   1              WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
+ 249   1              refreshDisplay = 1;
+ 250   1              if(uartBuffer[2] == 0x00)//运行模式     0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启
+             -动)   返回数据0xEE
+ 251   1              {
+ 252   2                      if(runMode == 0 || runMode == 2)
+ 253   2                      {
+ 254   3                              runMode = 1;    
+ 255   3                      }
+ 256   2                      else
+ 257   2                      {
+ 258   3                              runMode = 0;
+ 259   3                      }
+ 260   2              }
+ 261   1              else if(uartBuffer[2] == 0x01)  //电机状态      0：电机停止   1：电机启动  返回数据0xEE
+ 262   1              {
+ 263   2                      if(montorMode == 0)
+ 264   2                      {
+ 265   3                              montorMode = 1;
+ 266   3                      }
+ 267   2                      else
+ 268   2                      {
+ 269   3                              montorMode = 0;
+ 270   3                      }
+ 271   2              }
+ 272   1              else if(uartBuffer[2] == 0x11)  //时间设置1     字(int) 最大9.9
+ 273   1              {
+ 274   2                      intervalTimer1 = dat;
+ 275   2                      parameter_save();
+ 276   2              }
+ 277   1              else if(uartBuffer[2] == 0x12)  //时间设置2     字(int)
+ 278   1              {
+ 279   2                      intervalTimer2 = dat;
+ 280   2                      parameter_save();
+ 281   2              }
+ 282   1              else if(uartBuffer[2] == 0x13)  //时间设置3     字(int)
+ 283   1              {
+ 284   2                      intervalTimer3 = dat;
+ 285   2                      parameter_save();
+ 286   2              }
+ 287   1              else if(uartBuffer[2] == 0x14)  //时间设置4     字(int)
+ 288   1              {
+ 289   2                      intervalTimer4 = dat;
+ 290   2                      parameter_save();
+ 291   2              }
+ 292   1              else if(uartBuffer[2] == 0x15)  //时间设置5     字(int)
+ 293   1              {
+ 294   2                      intervalTimer5 = dat;
+ 295   2                      parameter_save();
+ 296   2              }
+ 297   1              else if(uartBuffer[2] == 0x16)  //时间设置6     字(int)
+ 298   1              {
+ 299   2                      intervalTimer6 = dat;
+ 300   2                      parameter_save();
+ 301   2              }
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 6   
 
- 302   2                      {
- 303   3                              cylinder2 = 0;
- 304   3                      }
- 305   2                      else
- 306   2                      {
- 307   3                              cylinder2 = 1;  
- 308   3                      }
- 309   2              }
- 310   1              else if(uartBuffer[2] == 0x20)  //手动模式 按钮 气缸3   0：关闭  1：开启
- 311   1              {
- 312   2                      if(cylinder3)
- 313   2                      {
- 314   3                              cylinder3 = 0;
- 315   3                      }
- 316   2                      else
- 317   2                      {
- 318   3                              cylinder3 = 1;  
- 319   3                      }
- 320   2              }
- 321   1              else if(uartBuffer[2] == 0x21)  //手动模式 按钮 气缸4   0：关闭  1：开启
- 322   1              {
- 323   2                      if(cylinder4)
- 324   2                      {
- 325   3                              cylinder4 = 0;
- 326   3                      }
- 327   2                      else
- 328   2                      {
- 329   3                              cylinder4 = 1;  
- 330   3                      }
+ 302   1              else if(uartBuffer[2] == 0x17)  //时间设置7     字(int)
+ 303   1              {
+ 304   2                      intervalTimer7 = dat;
+ 305   2                      parameter_save();
+ 306   2              }
+ 307   1              else if(uartBuffer[2] == 0x18)  //报警设置 气缸1        字(int)
+ 308   1              {
+ 309   2                      cylinderAlarm1 = dat;
+ 310   2                      parameter_save();       
+ 311   2              }
+ 312   1              else if(uartBuffer[2] == 0x19)  //报警设置 气缸2        字(int)
+ 313   1              {
+ 314   2                      cylinderAlarm2 = dat;
+ 315   2                      parameter_save();
+ 316   2              }
+ 317   1              else if(uartBuffer[2] == 0x1A)  //报警设置 气缸3        字(int)
+ 318   1              {
+ 319   2                      cylinderAlarm3 = dat;
+ 320   2                      parameter_save();
+ 321   2              }
+ 322   1              else if(uartBuffer[2] == 0x1B)  //报警设置 气缸4        字(int)
+ 323   1              {
+ 324   2                      cylinderAlarm4 = dat;
+ 325   2                      parameter_save();
+ 326   2              }
+ 327   1              else if(uartBuffer[2] == 0x1C)  //报警设置 气缸5        字(int)
+ 328   1              {
+ 329   2                      cylinderAlarm5 = dat;
+ 330   2                      parameter_save();
  331   2              }
- 332   1              else if(uartBuffer[2] == 0x22)  //手动模式 按钮 气缸5   0：关闭  1：开启
+ 332   1              else if(uartBuffer[2] == 0x1D)  //复位计数按钮  返回数据0xEE
  333   1              {
- 334   2                      if(cylinder5)
- 335   2                      {
- 336   3                              cylinder5 = 0;
- 337   3                      }
- 338   2                      else
+ 334   2                      pieceCount = 0;
+ 335   2              }
+ 336   1              else if(uartBuffer[2] == 0x1E)  //手动模式 按钮 气缸1   0：关闭  1：开启
+ 337   1              {
+ 338   2                      if(cylinder1)
  339   2                      {
- 340   3                              cylinder5 = 1;  
- 341   3                      }
- 342   2              }
- 343   1              else if(uartBuffer[2] == 0x24)  //解除警报按钮  返回数据0xEE
- 344   1              {
- 345   2                      alarmMode = 0;
- 346   2              }
- 347   1              uartReceiveOK = 1;      
- 348   1      }
+ 340   3                              cylinder1 = 0;
+ 341   3                              cylinderOut1 = 1;
+ 342   3                      }
+ 343   2                      else
+ 344   2                      {
+ 345   3                              cylinder1 = 1;
+ 346   3                              cylinderOut1 = 0;       
+ 347   3                      }
+ 348   2              }
+ 349   1              else if(uartBuffer[2] == 0x1F)  //手动模式 按钮 气缸2   0：关闭  1：开启
+ 350   1              {
+ 351   2                      if(cylinder2)
+ 352   2                      {
+ 353   3                              cylinder2 = 0;
+ 354   3                              cylinderOut2 = 1;
+ 355   3                      }
+ 356   2                      else
+ 357   2                      {
+ 358   3                              cylinder2 = 1;
+ 359   3                              cylinderOut2 = 0;       
+ 360   3                      }
+ 361   2              }
+ 362   1              else if(uartBuffer[2] == 0x20)  //手动模式 按钮 气缸3   0：关闭  1：开启
+ 363   1              {
+C51 COMPILER V7.50   UART                                                                  08/09/2014 19:19:49 PAGE 7   
+
+ 364   2                      if(cylinder3)
+ 365   2                      {
+ 366   3                              cylinder3 = 0;
+ 367   3                              cylinderOut3 = 1;
+ 368   3                      }
+ 369   2                      else
+ 370   2                      {
+ 371   3                              cylinder3 = 1;
+ 372   3                              cylinderOut3 = 0;       
+ 373   3                      }
+ 374   2              }
+ 375   1              else if(uartBuffer[2] == 0x21)  //手动模式 按钮 气缸4   0：关闭  1：开启
+ 376   1              {
+ 377   2                      if(cylinder4)
+ 378   2                      {
+ 379   3                              cylinder4 = 0;
+ 380   3                              cylinderOut4 = 1;
+ 381   3                      }
+ 382   2                      else
+ 383   2                      {
+ 384   3                              cylinder4 = 1;
+ 385   3                              cylinderOut4 = 0;       
+ 386   3                      }
+ 387   2              }
+ 388   1              else if(uartBuffer[2] == 0x22)  //手动模式 按钮 气缸5   0：关闭  1：开启
+ 389   1              {
+ 390   2                      if(cylinder5)
+ 391   2                      {
+ 392   3                              cylinder5 = 0;
+ 393   3                              cylinderOut5 = 1;
+ 394   3                      }
+ 395   2                      else
+ 396   2                      {
+ 397   3                              cylinder5 = 1;
+ 398   3                              cylinderOut5 = 0;       
+ 399   3                      }
+ 400   2              }
+ 401   1              else if(uartBuffer[2] == 0x24)  //解除警报按钮  返回数据0xEE
+ 402   1              {
+ 403   2                      alarmMode = 0;
+ 404   2                      cylinderAlarmCount = 0;
+ 405   2                      systemAlarmOut = 1;
+ 406   2                      cancelcylinderAlarm();
+ 407   2              }
+ 408   1              uartReceiveOK = 1;      
+ 409   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    749    ----
+   CODE SIZE        =    878    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     18       5
    PDATA SIZE       =   ----    ----
