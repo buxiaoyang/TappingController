@@ -24,7 +24,7 @@ void parameter_send_screen()
 	//ÇÐ»»Ò³Ãæ
 	if(alarmMode == 0)
 	{
-		if(runMode == 0 || runMode == 3)
+		if(runMode == 0 || runMode == 2)
 		{
 			ChangeScreenPage(0x02);
 		}
@@ -81,9 +81,10 @@ void parameter_send_screen()
 /***************************************************************************/
 void main()
 {
+	delay_ms(500);
+	parameter_init();
 	uart_init();
 	//timer_init();
-	parameter_init();
 	while(1)
 	{	
 		if(refreshDisplay)

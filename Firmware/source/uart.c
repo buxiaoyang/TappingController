@@ -198,6 +198,7 @@ void ReceiveData(BYTE dat)
 void anyData()
 {
 	WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
+	refreshDisplay = 1;
 	if(uartBuffer[2] == 0x00)//运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
 	{
 		if(runMode == 0 || runMode == 2)
@@ -223,50 +224,62 @@ void anyData()
 	else if(uartBuffer[2] == 0x11) 	//时间设置1	字(int) 最大9.9
 	{
 		intervalTimer1 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x12)	//时间设置2	字(int)
 	{
 		intervalTimer2 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x13)	//时间设置3	字(int)
 	{
 		intervalTimer3 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x14)	//时间设置4	字(int)
 	{
 		intervalTimer4 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x15)	//时间设置5	字(int)
 	{
 		intervalTimer5 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x16)	//时间设置6	字(int)
 	{
 		intervalTimer6 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x17)	//时间设置7	字(int)
 	{
 	   	intervalTimer7 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x18)	//报警设置 气缸1	字(int)
 	{
-		cylinderAlarm1 = dat;	
+		cylinderAlarm1 = dat;
+		parameter_save();	
 	}
 	else if(uartBuffer[2] == 0x19) 	//报警设置 气缸2	字(int)
 	{
 		cylinderAlarm2 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x1A)	//报警设置 气缸3	字(int)
 	{
 		cylinderAlarm3 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x1B)	//报警设置 气缸4	字(int)
 	{
 		cylinderAlarm4 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x1C)	//报警设置 气缸5	字(int)
 	{
 		cylinderAlarm5 = dat;
+		parameter_save();
 	}
 	else if(uartBuffer[2] == 0x1D)	//复位计数按钮	返回数据0xEE
 	{
@@ -329,8 +342,7 @@ void anyData()
 	}
 	else if(uartBuffer[2] == 0x24)	//解除警报按钮	返回数据0xEE
 	{
-		
+		alarmMode = 0;
 	}
-	uartReceiveOK = 1;
-	refreshDisplay = 1;	
+	uartReceiveOK = 1;	
 }

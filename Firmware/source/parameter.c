@@ -12,6 +12,7 @@
 
 #include <parameter.h>
 #include <eeprom.h>
+#include <basefunc.h>
 
 /***************************************************************************/
 // 参数定义	
@@ -62,6 +63,27 @@ unsigned char refreshDisplay; //刷新屏幕标志位 0 不刷新 1刷新
 unsigned char parameter_read()
 {
 	unsigned char result = 1;
+	delay_ms(10); 
+	if(IapReadByte(IAP_ADDRESS+200) == 0xEE)
+	{
+		intervalTimer1 = IapReadByte(IAP_ADDRESS+0);
+		intervalTimer2 = IapReadByte(IAP_ADDRESS+1);
+		intervalTimer3 = IapReadByte(IAP_ADDRESS+2);
+		intervalTimer4 = IapReadByte(IAP_ADDRESS+3);
+		intervalTimer5 = IapReadByte(IAP_ADDRESS+4);
+		intervalTimer6 = IapReadByte(IAP_ADDRESS+5);
+		intervalTimer7 = IapReadByte(IAP_ADDRESS+6);	
+		cylinderAlarm1 = ((IapReadByte(IAP_ADDRESS+20) << 8) | IapReadByte(IAP_ADDRESS+21));
+		cylinderAlarm2 = ((IapReadByte(IAP_ADDRESS+22) << 8) | IapReadByte(IAP_ADDRESS+23));
+		cylinderAlarm3 = ((IapReadByte(IAP_ADDRESS+24) << 8) | IapReadByte(IAP_ADDRESS+25));
+		cylinderAlarm4 = ((IapReadByte(IAP_ADDRESS+26) << 8) | IapReadByte(IAP_ADDRESS+27));
+		cylinderAlarm5 = ((IapReadByte(IAP_ADDRESS+28) << 8) | IapReadByte(IAP_ADDRESS+29));
+		result = 1;
+	}
+	else
+	{
+		result = 0;
+	}
 	return result;
 }
 
@@ -73,7 +95,7 @@ unsigned char parameter_read()
 void parameter_init()
 {
 	runMode = 1; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
-	montorMode = 1; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+	montorMode = 0; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
 	alarmMode = 0;
 	sensor1 = 0; //传感器1	0：无效  1：有效  2：错误
 	sensor2 = 0; //传感器2	0：无效  1：有效  2：错误
@@ -92,20 +114,22 @@ void parameter_init()
 	cylinder4 = 0; //气缸4	0：无效  1：有效  2：错误
 	cylinder5 = 0; //气缸5	0：无效  1：有效  2：错误
 	
-	intervalTimer1 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer2 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer3 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer4 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer5 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer6 = 0; //时间设置1	字(int) 最大9.9
-	intervalTimer7 = 0; //时间设置1	字(int) 最大9.9
-	
-	cylinderAlarm1 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm2 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm3 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm4 = 0; //报警设置 气缸1	字(int)
-	cylinderAlarm5 = 0; //报警设置 气缸1	字(int)
-
+	if(!parameter_read())
+	{
+		intervalTimer1 = 32; //时间设置1	字(int) 最大9.9
+		intervalTimer2 = 43; //时间设置1	字(int) 最大9.9
+		intervalTimer3 = 55; //时间设置1	字(int) 最大9.9
+		intervalTimer4 = 65; //时间设置1	字(int) 最大9.9
+		intervalTimer5 = 75; //时间设置1	字(int) 最大9.9
+		intervalTimer6 = 87; //时间设置1	字(int) 最大9.9
+		intervalTimer7 = 99; //时间设置1	字(int) 最大9.9
+		
+		cylinderAlarm1 = 60; //报警设置 气缸1	字(int)
+		cylinderAlarm2 = 70; //报警设置 气缸1	字(int)
+		cylinderAlarm3 = 80; //报警设置 气缸1	字(int)
+		cylinderAlarm4 = 90; //报警设置 气缸1	字(int)
+		cylinderAlarm5 = 100; //报警设置 气缸1	字(int)	
+	}
 	pieceCount = 0;
 
 	refreshDisplay = 1;
@@ -119,6 +143,31 @@ void parameter_init()
 unsigned char parameter_save()
 {
 	unsigned char result = 1;
+	EA = 0;
+    delay_ms(10);                      //Delay
+	IapEraseSector(IAP_ADDRESS); //擦除EEPROM
+
+	IapProgramByte(IAP_ADDRESS+0, (BYTE)intervalTimer1);
+	IapProgramByte(IAP_ADDRESS+1, (BYTE)intervalTimer2);
+	IapProgramByte(IAP_ADDRESS+2, (BYTE)intervalTimer3);
+	IapProgramByte(IAP_ADDRESS+3, (BYTE)intervalTimer4);
+	IapProgramByte(IAP_ADDRESS+4, (BYTE)intervalTimer5);
+	IapProgramByte(IAP_ADDRESS+5, (BYTE)intervalTimer6);
+	IapProgramByte(IAP_ADDRESS+6, (BYTE)intervalTimer7);
+
+   	IapProgramByte(IAP_ADDRESS+20, (BYTE)(cylinderAlarm1>>8));
+	IapProgramByte(IAP_ADDRESS+21, (BYTE)cylinderAlarm1);
+	IapProgramByte(IAP_ADDRESS+22, (BYTE)(cylinderAlarm2>>8));
+	IapProgramByte(IAP_ADDRESS+23, (BYTE)cylinderAlarm2);
+	IapProgramByte(IAP_ADDRESS+24, (BYTE)(cylinderAlarm3>>8));
+	IapProgramByte(IAP_ADDRESS+25, (BYTE)cylinderAlarm3);
+	IapProgramByte(IAP_ADDRESS+26, (BYTE)(cylinderAlarm4>>8));
+	IapProgramByte(IAP_ADDRESS+27, (BYTE)cylinderAlarm4);
+	IapProgramByte(IAP_ADDRESS+28, (BYTE)(cylinderAlarm5>>8));
+	IapProgramByte(IAP_ADDRESS+29, (BYTE)cylinderAlarm5);
+	IapProgramByte(IAP_ADDRESS+200, 0xEE); //写入标志位
+	refreshDisplay = 0;
+	EA = 1;
 	return result;
 }
 
