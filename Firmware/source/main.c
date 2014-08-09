@@ -14,14 +14,29 @@
 #include <basefunc.h>
 #include <parameter.h>
 #include <uart.h>
-#include <timer.h>
+//#include <timer.h>
 #include <key.h>
 #include <dispatch.h>
 
 void parameter_send_screen()
 {
 	SendDataToScreen(0x0000,runMode); //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
-	
+	//切换页面
+	if(alarmMode == 0)
+	{
+		if(runMode == 0 || runMode == 3)
+		{
+			ChangeScreenPage(0x02);
+		}
+		else
+		{
+			ChangeScreenPage(0x00);
+		}
+	}
+	else
+	{
+		 ChangeScreenPage(0x08);
+	}
 	SendDataToScreen(0x0001,montorMode); //电机状态	0：电机停止   1：电机启动  返回数据0xEE
 
 	SendDataToScreen(0x0002,sensor1); //传感器1	0：无效  1：有效  2：错误
@@ -71,13 +86,25 @@ void main()
 	parameter_init();
 	while(1)
 	{	
-		parameter_send_screen();
-		//TestOut = ! TestOut;
-		 
+		if(refreshDisplay)
+		{
+			parameter_send_screen();
+			refreshDisplay = 0;
+		}
+		TestOut = ! TestOut;
+		//电机输出
+		if(montorMode)
+		{
+			montorOut = 0;
+		}
+		else
+		{
+			montorOut = 1;
+		} 
 		Key_Scan();
 		ManiDispatch();
 		SubDispatch();
-		delay_ms(100);
+		//delay_ms(100);
 	}   
 }
 

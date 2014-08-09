@@ -15,17 +15,16 @@ unsigned char Key_Scan_Steps = 0; 		//0：初始状态 如果有按键按下则进入1
 
 void Key_Scan(void)
 {
-	/*
 	switch(Key_Scan_Steps)
 	{
 		case 0:
-			if(KeyStart == 0 || KeyStop == 0 || KeyHydClam == 0)
+			if(KeyStart == 0 || KeyStop == 0)
 			{
 			   	Key_Scan_Steps = 1;
 			}
 		break;
 		case 1:
-			if(KeyStart == 0 || KeyStop == 0 || KeyHydClam == 0)
+			if(KeyStart == 0 || KeyStop == 0)
 			{
 			   	Key_Scan_Steps = 2;
 			}
@@ -35,32 +34,28 @@ void Key_Scan(void)
 			}
 		break;
 		case 2:
-			if(KeyStart == 0)
+			if(KeyStart == 0) //开始按键按下
 			{
-				if(runMode)
+				if(runMode == 1)
 				{
-					powerMode = 1;
-					ManiDispatchSteps = 0;
+					runMode = 3;
+					refreshDisplay = 1;
 				}
-			   	//cistern[7].cisternStatus = Ready;
-				//displayFlag = 1;
 			}
-			if(KeyStop == 0)
+			if(KeyStop == 0) //急停按键按下
 			{
-				powerMode = 0;	
-			}
-			if(KeyHydClam == 0)
-			{
-				//液压钳输出
-				if(!runMode) //手动状态
-				{
-					
-				}	
+				runMode = 1;
+				cylinderOut1 = 1;
+				cylinderOut2 = 1;
+				cylinderOut3 = 1;
+				cylinderOut4 = 1;
+				cylinderOut5 = 1;
+				refreshDisplay = 1;	
 			}
 			Key_Scan_Steps = 3;
 		break;
 		case 3:
-			if(KeyStart == 1 && KeyStop == 1 && KeyHydClam == 1)
+			if(KeyStart == 1 && KeyStop == 1)
 			{
 			   	Key_Scan_Steps = 0;
 			}
@@ -68,5 +63,4 @@ void Key_Scan(void)
 		default:
 			 _nop_();
 	}
-	*/
 }

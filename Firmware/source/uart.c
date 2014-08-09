@@ -139,6 +139,17 @@ void SendDataToScreen(WORD address, WORD dat)
 	SendData(dat);
 }
 
+void ChangeScreenPage(WORD page)
+{
+	SendData(0x5A);
+	SendData(0xA5);
+	SendData(0x04);
+	SendData(0x80);
+	SendData(0x03);
+	SendData(page>>8);
+	SendData(page);
+}
+
 void ReceiveData(BYTE dat)
 {
 	// 0: Ω” ’µΩ5A
@@ -320,5 +331,6 @@ void anyData()
 	{
 		
 	}
-	uartReceiveOK = 1;	
+	uartReceiveOK = 1;
+	refreshDisplay = 1;	
 }

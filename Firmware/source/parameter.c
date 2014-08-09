@@ -18,6 +18,7 @@
 /***************************************************************************/
 unsigned char runMode; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
 unsigned char montorMode; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+unsigned char alarmMode; //报警状态	0：正常   1：报警
 unsigned char sensor1; //传感器1	0：无效  1：有效  2：错误
 unsigned char sensor2; //传感器2	0：无效  1：有效  2：错误
 unsigned char sensor3; //传感器3	0：无效  1：有效  2：错误
@@ -51,6 +52,8 @@ unsigned int cylinderAlarm5; //报警设置 气缸1	字(int)
 
 unsigned int pieceCount; //计件计数	字(int)
 
+unsigned char refreshDisplay; //刷新屏幕标志位 0 不刷新 1刷新
+
 /***************************************************************************/
 // 读取参数
 // 参数：无
@@ -71,6 +74,7 @@ void parameter_init()
 {
 	runMode = 1; //运行模式	0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启动)   返回数据0xEE
 	montorMode = 1; //电机状态	0：电机停止   1：电机启动  返回数据0xEE
+	alarmMode = 0;
 	sensor1 = 0; //传感器1	0：无效  1：有效  2：错误
 	sensor2 = 0; //传感器2	0：无效  1：有效  2：错误
 	sensor3 = 0; //传感器3	0：无效  1：有效  2：错误
@@ -103,6 +107,8 @@ void parameter_init()
 	cylinderAlarm5 = 0; //报警设置 气缸1	字(int)
 
 	pieceCount = 0;
+
+	refreshDisplay = 1;
 }
 
 /***************************************************************************/

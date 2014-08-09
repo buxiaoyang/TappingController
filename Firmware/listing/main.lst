@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  08/07/2014 20:39:49 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 13:12:37 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -24,7 +24,7 @@ line level    source
   14          #include <basefunc.h>
   15          #include <parameter.h>
   16          #include <uart.h>
-  17          #include <timer.h>
+  17          //#include <timer.h>
   18          #include <key.h>
   19          #include <dispatch.h>
   20          
@@ -32,79 +32,108 @@ line level    source
   22          {
   23   1              SendDataToScreen(0x0000,runMode); //运行模式    0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自
              -动模式(启动)   返回数据0xEE
-  24   1              
-  25   1              SendDataToScreen(0x0001,montorMode); //电机状态 0：电机停止   1：电机启动  返回数据0xEE
-  26   1      
-  27   1              SendDataToScreen(0x0002,sensor1); //传感器1     0：无效  1：有效  2：错误
-  28   1              SendDataToScreen(0x0003,sensor2); //传感器2     0：无效  1：有效  2：错误
-  29   1              SendDataToScreen(0x0004,sensor3); //传感器3     0：无效  1：有效  2：错误
-  30   1              SendDataToScreen(0x0005,sensor4); //传感器4     0：无效  1：有效  2：错误
-  31   1              SendDataToScreen(0x0006,sensor5); //传感器5     0：无效  1：有效  2：错误
-  32   1              SendDataToScreen(0x0007,sensor6); //传感器6     0：无效  1：有效  2：错误
-  33   1              SendDataToScreen(0x0008,sensor7); //传感器7     0：无效  1：有效  2：错误
-  34   1              SendDataToScreen(0x0009,sensor8); //传感器8     0：无效  1：有效  2：错误
-  35   1              SendDataToScreen(0x000A,sensor9); //传感器9     0：无效  1：有效  2：错误
-  36   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
-  37   1      
-  38   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
-  39   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
-  40   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
-  41   1              SendDataToScreen(0x000F,cylinder4); //气缸4     0：无效  1：有效  2：错误
-  42   1              SendDataToScreen(0x0010,cylinder5); //气缸5     0：无效  1：有效  2：错误
-  43   1              
-  44   1              SendDataToScreen(0x0011,intervalTimer1); //时间设置1    字(int) 最大9.9
-  45   1              SendDataToScreen(0x0012,intervalTimer2); //时间设置2    字(int) 最大9.9
-  46   1              SendDataToScreen(0x0013,intervalTimer3); //时间设置3    字(int) 最大9.9
-  47   1              SendDataToScreen(0x0014,intervalTimer4); //时间设置4    字(int) 最大9.9
-  48   1              SendDataToScreen(0x0015,intervalTimer5); //时间设置5    字(int) 最大9.9
-  49   1              SendDataToScreen(0x0016,intervalTimer6); //时间设置6    字(int) 最大9.9
-  50   1              SendDataToScreen(0x0017,intervalTimer7); //时间设置7    字(int) 最大9.9
-  51   1              
-  52   1              SendDataToScreen(0x0018,cylinderAlarm1); //报警设置 气缸1       字(int)
-  53   1              SendDataToScreen(0x0019,cylinderAlarm2); //报警设置 气缸2       字(int)
-C51 COMPILER V7.50   MAIN                                                                  08/07/2014 20:39:49 PAGE 2   
+  24   1              //切换页面
+  25   1              if(alarmMode == 0)
+  26   1              {
+  27   2                      if(runMode == 0 || runMode == 3)
+  28   2                      {
+  29   3                              ChangeScreenPage(0x02);
+  30   3                      }
+  31   2                      else
+  32   2                      {
+  33   3                              ChangeScreenPage(0x00);
+  34   3                      }
+  35   2              }
+  36   1              else
+  37   1              {
+  38   2                       ChangeScreenPage(0x08);
+  39   2              }
+  40   1              SendDataToScreen(0x0001,montorMode); //电机状态 0：电机停止   1：电机启动  返回数据0xEE
+  41   1      
+  42   1              SendDataToScreen(0x0002,sensor1); //传感器1     0：无效  1：有效  2：错误
+  43   1              SendDataToScreen(0x0003,sensor2); //传感器2     0：无效  1：有效  2：错误
+  44   1              SendDataToScreen(0x0004,sensor3); //传感器3     0：无效  1：有效  2：错误
+  45   1              SendDataToScreen(0x0005,sensor4); //传感器4     0：无效  1：有效  2：错误
+  46   1              SendDataToScreen(0x0006,sensor5); //传感器5     0：无效  1：有效  2：错误
+  47   1              SendDataToScreen(0x0007,sensor6); //传感器6     0：无效  1：有效  2：错误
+  48   1              SendDataToScreen(0x0008,sensor7); //传感器7     0：无效  1：有效  2：错误
+  49   1              SendDataToScreen(0x0009,sensor8); //传感器8     0：无效  1：有效  2：错误
+  50   1              SendDataToScreen(0x000A,sensor9); //传感器9     0：无效  1：有效  2：错误
+  51   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
+  52   1      
+  53   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 13:12:37 PAGE 2   
 
-  54   1              SendDataToScreen(0x001A,cylinderAlarm3); //报警设置 气缸3       字(int)
-  55   1              SendDataToScreen(0x001B,cylinderAlarm4); //报警设置 气缸4       字(int)
-  56   1              SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5       字(int)
-  57   1      
-  58   1              SendDataToScreen(0x0023,pieceCount); 
-  59   1      
-  60   1      }
-  61          
-  62          /***************************************************************************/
-  63          // 主函数
-  64          // 参数：无
-  65          // 返回值：无   
-  66          /***************************************************************************/
-  67          void main()
-  68          {
-  69   1              uart_init();
-  70   1              //timer_init();
-  71   1              parameter_init();
-  72   1              while(1)
-  73   1              {       
-  74   2                      parameter_send_screen();
-  75   2                      //TestOut = ! TestOut;
-  76   2                       
-  77   2                      Key_Scan();
-  78   2                      ManiDispatch();
-  79   2                      SubDispatch();
-  80   2                      delay_ms(100);
-  81   2              }   
-  82   1      }
-  83          
-  84          
-  85          
-  86          
-  87          
-  88          
-  89          
-  90          
+  54   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
+  55   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
+  56   1              SendDataToScreen(0x000F,cylinder4); //气缸4     0：无效  1：有效  2：错误
+  57   1              SendDataToScreen(0x0010,cylinder5); //气缸5     0：无效  1：有效  2：错误
+  58   1              
+  59   1              SendDataToScreen(0x0011,intervalTimer1); //时间设置1    字(int) 最大9.9
+  60   1              SendDataToScreen(0x0012,intervalTimer2); //时间设置2    字(int) 最大9.9
+  61   1              SendDataToScreen(0x0013,intervalTimer3); //时间设置3    字(int) 最大9.9
+  62   1              SendDataToScreen(0x0014,intervalTimer4); //时间设置4    字(int) 最大9.9
+  63   1              SendDataToScreen(0x0015,intervalTimer5); //时间设置5    字(int) 最大9.9
+  64   1              SendDataToScreen(0x0016,intervalTimer6); //时间设置6    字(int) 最大9.9
+  65   1              SendDataToScreen(0x0017,intervalTimer7); //时间设置7    字(int) 最大9.9
+  66   1              
+  67   1              SendDataToScreen(0x0018,cylinderAlarm1); //报警设置 气缸1       字(int)
+  68   1              SendDataToScreen(0x0019,cylinderAlarm2); //报警设置 气缸2       字(int)
+  69   1              SendDataToScreen(0x001A,cylinderAlarm3); //报警设置 气缸3       字(int)
+  70   1              SendDataToScreen(0x001B,cylinderAlarm4); //报警设置 气缸4       字(int)
+  71   1              SendDataToScreen(0x001C,cylinderAlarm5); //报警设置 气缸5       字(int)
+  72   1      
+  73   1              SendDataToScreen(0x0023,pieceCount); 
+  74   1      
+  75   1      }
+  76          
+  77          /***************************************************************************/
+  78          // 主函数
+  79          // 参数：无
+  80          // 返回值：无   
+  81          /***************************************************************************/
+  82          void main()
+  83          {
+  84   1              uart_init();
+  85   1              //timer_init();
+  86   1              parameter_init();
+  87   1              while(1)
+  88   1              {       
+  89   2                      if(refreshDisplay)
+  90   2                      {
+  91   3                              parameter_send_screen();
+  92   3                              refreshDisplay = 0;
+  93   3                      }
+  94   2                      TestOut = ! TestOut;
+  95   2                      //电机输出
+  96   2                      if(montorMode)
+  97   2                      {
+  98   3                              montorOut = 0;
+  99   3                      }
+ 100   2                      else
+ 101   2                      {
+ 102   3                              montorOut = 1;
+ 103   3                      } 
+ 104   2                      Key_Scan();
+ 105   2                      ManiDispatch();
+ 106   2                      SubDispatch();
+ 107   2                      //delay_ms(100);
+ 108   2              }   
+ 109   1      }
+ 110          
+ 111          
+ 112          
+ 113          
+ 114          
+ 115          
+C51 COMPILER V7.50   MAIN                                                                  08/09/2014 13:12:37 PAGE 3   
+
+ 116          
+ 117          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    452    ----
+   CODE SIZE        =    501    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
