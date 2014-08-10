@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
   52   1      
   53   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 2   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 2   
 
   54   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
   55   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
@@ -126,7 +126,7 @@ line level    source
  113   1              //3
  114   1              if(sensorIn3 == 0)
  115   1              {
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 3   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 3   
 
  116   2                      if(sensor3 == 0)
  117   2                      {
@@ -190,7 +190,7 @@ line level    source
  175   2                      if(sensor6 == 1)
  176   2                      {
  177   3                              refreshDisplay = 1;
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 4   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 4   
 
  178   3                      }
  179   2                      sensor6 = 0;
@@ -254,7 +254,7 @@ line level    source
  237   3                              refreshDisplay = 1;
  238   3                      }
  239   2                      sensor10 = 1;
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 5   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 5   
 
  240   2              }
  241   1              if(sensorIn10 == 1)
@@ -318,7 +318,7 @@ line level    source
  299   2                      if(montorMode)
  300   2                      {
  301   3                              montorOut = 0;
-C51 COMPILER V7.50   MAIN                                                                  08/09/2014 19:19:48 PAGE 6   
+C51 COMPILER V7.50   MAIN                                                                  08/10/2014 22:13:34 PAGE 6   
 
  302   3                      }
  303   2                      else
