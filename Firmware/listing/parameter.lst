@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 21:05:21 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -62,7 +62,7 @@ line level    source
   51          unsigned int cylinderAlarm4; //报警设置 气缸1   字(int)
   52          unsigned int cylinderAlarm5; //报警设置 气缸1   字(int)
   53          
-C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 2   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 21:05:21 PAGE 2   
 
   54          unsigned int pieceCount; //计件计数     字(int)
   55          
@@ -126,7 +126,7 @@ line level    source
  112   1              
  113   1              cylinder1 = 0; //气缸1  0：无效  1：有效  2：错误
  114   1              cylinder2 = 0; //气缸2  0：无效  1：有效  2：错误
-C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 3   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 21:05:21 PAGE 3   
 
  115   1              cylinder3 = 0; //气缸3  0：无效  1：有效  2：错误
  116   1              cylinder4 = 0; //气缸4  0：无效  1：有效  2：错误
@@ -190,7 +190,7 @@ line level    source
  174          
 
 
-C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 4   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 21:05:21 PAGE 4   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    691    ----

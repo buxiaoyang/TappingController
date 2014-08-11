@@ -279,30 +279,24 @@ void main()
 			}
 			saveSetting = 0;
 		}
-		//计时
-		//timeCount10ms ++;
-		//if(timeCount10ms == 950)//10ms
-		//{
-			//timeCount10ms = 0;
-		   	TestOut = ! TestOut;
-			//按键扫描
-			Key_Scan();
-			//100ms和1s定时
-			timeCount100ms++;
-			if(timeCount100ms == 10) //100ms
+	   	TestOut = ! TestOut;
+		//按键扫描
+		Key_Scan();
+		//100ms和1s定时
+		timeCount100ms++;
+		if(timeCount100ms == 10) //100ms
+		{
+			timeCount100ms = 0;
+			//TestOut = ! TestOut;
+			intervalTimerCount ++;
+			timeCount1s ++;
+			if(timeCount1s == 10)
 			{
-				timeCount100ms = 0;
+				timeCount1s = 0;
 				//TestOut = ! TestOut;
-				intervalTimerCount ++;
-				timeCount1s ++;
-				if(timeCount1s == 10)
-				{
-					timeCount1s = 0;
-					//TestOut = ! TestOut;
-					cylinderAlarmCount ++;	
-				}
-			 }
-		//}
+				cylinderAlarmCount ++;	
+			}
+		 }
 		//刷新显示	
 		if(refreshDisplay)
 		{

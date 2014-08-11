@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 20:56:26 PAGE 1   
+C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 21:05:22 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE DISPATCH
@@ -62,7 +62,7 @@ line level    source
   52   3                                      cylinder3 = 2;
   53   3                                      systemAlarmOut = 0;
   54   3                                      refreshDisplay = 1;
-C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 20:56:26 PAGE 2   
+C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 21:05:22 PAGE 2   
 
   55   3                              }
   56   2                      break;
@@ -126,7 +126,7 @@ line level    source
  114   2                      break;
  115   2                      case 7: // 7，碰到6号感应器进入延迟
  116   2                              if(sensor6 == 1)
-C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 20:56:26 PAGE 3   
+C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 21:05:22 PAGE 3   
 
  117   2                              {
  118   3                                      intervalTimerCount = 0;
@@ -190,7 +190,7 @@ line level    source
  176   2                      break;
  177   2                      case 12: // 12，延迟intervalTimer5时间到，进刀气缸4启动
  178   2                              if(intervalTimerCount > intervalTimer5)
-C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 20:56:26 PAGE 4   
+C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 21:05:22 PAGE 4   
 
  179   2                              {
  180   3                                      cylinderOut4 = 0;
@@ -254,7 +254,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 20:56:26 PAGE 5   
+C51 COMPILER V7.50   DISPATCH                                                              08/11/2014 21:05:22 PAGE 5   
 
    CODE SIZE        =    728    ----
    CONSTANT SIZE    =   ----    ----

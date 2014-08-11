@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 1   
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51   1              SendDataToScreen(0x000B,sensor10); //传感器10   0：无效  1：有效  2：错误
   52   1      
   53   1              SendDataToScreen(0x000C,cylinder1); //气缸1     0：无效  1：有效  2：错误
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 2   
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 2   
 
   54   1              SendDataToScreen(0x000D,cylinder2); //气缸2     0：无效  1：有效  2：错误
   55   1              SendDataToScreen(0x000E,cylinder3); //气缸3     0：无效  1：有效  2：错误
@@ -126,7 +126,7 @@ line level    source
  113   1              //3
  114   1              if(sensorIn3 == 0)
  115   1              {
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 3   
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 3   
 
  116   2                      if(sensor3 == 0)
  117   2                      {
@@ -190,7 +190,7 @@ line level    source
  175   2                      if(sensor6 == 1)
  176   2                      {
  177   3                              refreshDisplay = 1;
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 4   
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 4   
 
  178   3                      }
  179   2                      sensor6 = 0;
@@ -254,7 +254,7 @@ line level    source
  237   3                              refreshDisplay = 1;
  238   3                      }
  239   2                      sensor10 = 1;
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 5   
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 5   
 
  240   2              }
  241   1              if(sensorIn10 == 1)
@@ -298,64 +298,58 @@ line level    source
  279   4                              }
  280   3                              saveSetting = 0;
  281   3                      }
- 282   2                      //计时
- 283   2                      //timeCount10ms ++;
- 284   2                      //if(timeCount10ms == 950)//10ms
- 285   2                      //{
- 286   2                              //timeCount10ms = 0;
- 287   2                              TestOut = ! TestOut;
- 288   2                              //按键扫描
- 289   2                              Key_Scan();
- 290   2                              //100ms和1s定时
- 291   2                              timeCount100ms++;
- 292   2                              if(timeCount100ms == 10) //100ms
- 293   2                              {
- 294   3                                      timeCount100ms = 0;
- 295   3                                      //TestOut = ! TestOut;
- 296   3                                      intervalTimerCount ++;
- 297   3                                      timeCount1s ++;
- 298   3                                      if(timeCount1s == 10)
- 299   3                                      {
- 300   4                                              timeCount1s = 0;
- 301   4                                              //TestOut = ! TestOut;
-C51 COMPILER V7.50   MAIN                                                                  08/11/2014 20:56:24 PAGE 6   
+ 282   2                      TestOut = ! TestOut;
+ 283   2                      //按键扫描
+ 284   2                      Key_Scan();
+ 285   2                      //100ms和1s定时
+ 286   2                      timeCount100ms++;
+ 287   2                      if(timeCount100ms == 10) //100ms
+ 288   2                      {
+ 289   3                              timeCount100ms = 0;
+ 290   3                              //TestOut = ! TestOut;
+ 291   3                              intervalTimerCount ++;
+ 292   3                              timeCount1s ++;
+ 293   3                              if(timeCount1s == 10)
+ 294   3                              {
+ 295   4                                      timeCount1s = 0;
+ 296   4                                      //TestOut = ! TestOut;
+ 297   4                                      cylinderAlarmCount ++;  
+ 298   4                              }
+ 299   3                       }
+ 300   2                      //刷新显示      
+ 301   2                      if(refreshDisplay)
+C51 COMPILER V7.50   MAIN                                                                  08/11/2014 21:05:21 PAGE 6   
 
- 302   4                                              cylinderAlarmCount ++;  
- 303   4                                      }
- 304   3                               }
- 305   2                      //}
- 306   2                      //刷新显示      
- 307   2                      if(refreshDisplay)
+ 302   2                      {
+ 303   3                              parameter_send_screen();
+ 304   3                              refreshDisplay = 0;
+ 305   3                      }
+ 306   2                      //电机输出
+ 307   2                      if(montorMode)
  308   2                      {
- 309   3                              parameter_send_screen();
- 310   3                              refreshDisplay = 0;
- 311   3                      }
- 312   2                      //电机输出
- 313   2                      if(montorMode)
- 314   2                      {
- 315   3                              montorOut = 0;
- 316   3                      }
- 317   2                      else
- 318   2                      {
- 319   3                              montorOut = 1;
- 320   3                      } 
- 321   2                      //刷新传感器状态
- 322   2                      getSensorStatus();
- 323   2                      //工作调度
- 324   2                      if(runMode == 3 && alarmMode == 0)
- 325   2                      {
- 326   3                              ManiDispatch();
- 327   3                      }
- 328   2              }   
- 329   1      }
+ 309   3                              montorOut = 0;
+ 310   3                      }
+ 311   2                      else
+ 312   2                      {
+ 313   3                              montorOut = 1;
+ 314   3                      } 
+ 315   2                      //刷新传感器状态
+ 316   2                      getSensorStatus();
+ 317   2                      //工作调度
+ 318   2                      if(runMode == 3 && alarmMode == 0)
+ 319   2                      {
+ 320   3                              ManiDispatch();
+ 321   3                      }
+ 322   2              }   
+ 323   1      }
+ 324          
+ 325          
+ 326          
+ 327          
+ 328          
+ 329          
  330          
  331          
- 332          
- 333          
- 334          
- 335          
- 336          
- 337          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
