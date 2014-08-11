@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 1   
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE UART
@@ -40,402 +40,403 @@ line level    source
   30          
   31          bit busy;
   32          bit uartReceiveOK = 0;
-  33          
-  34          BYTE uartBuffer[15] = {0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
-  35          
-  36          BYTE receiveSteps = 0;  // 0: 没有数据接收
-  37                                                          // 1: 接收到5A
-  38                                                          // 2：接收到A5
-  39                                                          // 3：接收到数据长度
-  40                                                          // 4: 接收数据
-  41                                                          // 5：确定指令动作
-  42          BYTE dataIndex = 0;
-  43          BYTE dataLength = 0;
-  44            
-  45          void SendData(BYTE dat);
-  46          void SendString(char *s);
-  47          void ReceiveData(BYTE dat);
-  48          void anyData();
-  49          
-  50          void uart_init()
-  51          {
-  52   1      #if (PARITYBIT == NONE_PARITY)
-  53   1          S2CON = 0x50;           //8-bit variable UART
-  54   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 2   
+  33          BYTE saveSetting = 0;
+  34          
+  35          BYTE uartBuffer[15] = {0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
+  36          
+  37          BYTE receiveSteps = 0;  // 0: 没有数据接收
+  38                                                          // 1: 接收到5A
+  39                                                          // 2：接收到A5
+  40                                                          // 3：接收到数据长度
+  41                                                          // 4: 接收数据
+  42                                                          // 5：确定指令动作
+  43          BYTE dataIndex = 0;
+  44          BYTE dataLength = 0;
+  45            
+  46          void SendData(BYTE dat);
+  47          void SendString(char *s);
+  48          void ReceiveData(BYTE dat);
+  49          void anyData();
+  50          
+  51          void uart_init()
+  52          {
+  53   1      #if (PARITYBIT == NONE_PARITY)
+  54   1          S2CON = 0x50;           //8-bit variable UART
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 2   
 
+  55   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
                   S2CON = 0xda;           //9-bit variable UART, parity bit initial to 1
               #elif (PARITYBIT == SPACE_PARITY)
                   S2CON = 0xd2;           //9-bit variable UART, parity bit initial to 0
               #endif
-  59   1      
-  60   1          BRT = -(FOSC/32/BAUD);  //Set auto-reload vaule of baudrate generator
-  61   1          AUXR = 0x14;            //Baudrate generator work in 1T mode
-  62   1          IE2 = 0x01;             //Enable UART2 interrupt
-  63   1          EA = 1;                 //Open master interrupt switch
-  64   1      
-  65   1          //SendString("STC12C5A60S2\r\nUart2 Test !\r\n");
-  66   1          //while(1);
-  67   1      }
-  68          
-  69          /*----------------------------
-  70          UART2 interrupt service routine
-  71          ----------------------------*/
-  72          void Uart2() interrupt 8 using 1
-  73          {
-  74   1          if (S2CON & S2RI)
-  75   1          {
-  76   2              S2CON &= ~S2RI;     //Clear receive interrupt flag
-  77   2              ReceiveData(S2BUF);
-  78   2                      //P2 = S2BUF;         //P0 show UART data
-  79   2              //P2 = (S2CON & S2RB8);//P2.2 show parity bit
-  80   2          }
-  81   1          if (S2CON & S2TI)
-  82   1          {
-  83   2              S2CON &= ~S2TI;     //Clear transmit interrupt flag
-  84   2              busy = 0;           //Clear transmit busy flag
-  85   2          }
-  86   1      }
-  87          
-  88          /*----------------------------
-  89          Send a byte data to UART
-  90          Input: dat (data to be sent)
-  91          Output:None
-  92          ----------------------------*/
-  93          void SendData(BYTE dat)
-  94          {
-  95   1          while (busy);           //Wait for the completion of the previous data is sent
-  96   1          ACC = dat;              //Calculate the even parity bit P (PSW.0)
-  97   1          if (P)                  //Set the parity bit according to P
-  98   1          {
-  99   2      #if (PARITYBIT == ODD_PARITY)
+  60   1      
+  61   1          BRT = -(FOSC/32/BAUD);  //Set auto-reload vaule of baudrate generator
+  62   1          AUXR = 0x14;            //Baudrate generator work in 1T mode
+  63   1          IE2 = 0x01;             //Enable UART2 interrupt
+  64   1          EA = 1;                 //Open master interrupt switch
+  65   1      
+  66   1          //SendString("STC12C5A60S2\r\nUart2 Test !\r\n");
+  67   1          //while(1);
+  68   1      }
+  69          
+  70          /*----------------------------
+  71          UART2 interrupt service routine
+  72          ----------------------------*/
+  73          void Uart2() interrupt 8 using 1
+  74          {
+  75   1          if (S2CON & S2RI)
+  76   1          {
+  77   2              S2CON &= ~S2RI;     //Clear receive interrupt flag
+  78   2              ReceiveData(S2BUF);
+  79   2                      //P2 = S2BUF;         //P0 show UART data
+  80   2              //P2 = (S2CON & S2RB8);//P2.2 show parity bit
+  81   2          }
+  82   1          if (S2CON & S2TI)
+  83   1          {
+  84   2              S2CON &= ~S2TI;     //Clear transmit interrupt flag
+  85   2              busy = 0;           //Clear transmit busy flag
+  86   2          }
+  87   1      }
+  88          
+  89          /*----------------------------
+  90          Send a byte data to UART
+  91          Input: dat (data to be sent)
+  92          Output:None
+  93          ----------------------------*/
+  94          void SendData(BYTE dat)
+  95          {
+  96   1          while (busy);           //Wait for the completion of the previous data is sent
+  97   1          ACC = dat;              //Calculate the even parity bit P (PSW.0)
+  98   1          if (P)                  //Set the parity bit according to P
+  99   1          {
+ 100   2      #if (PARITYBIT == ODD_PARITY)
                       S2CON &= ~S2TB8;    //Set parity bit to 0
               #elif (PARITYBIT == EVEN_PARITY)
                       S2CON |= S2TB8;     //Set parity bit to 1
               #endif
- 104   2          }
- 105   1          else
- 106   1          {
- 107   2      #if (PARITYBIT == ODD_PARITY)
+ 105   2          }
+ 106   1          else
+ 107   1          {
+ 108   2      #if (PARITYBIT == ODD_PARITY)
                       S2CON |= S2TB8;     //Set parity bit to 1
               #elif (PARITYBIT == EVEN_PARITY)
                       S2CON &= ~S2TB8;    //Set parity bit to 0
               #endif
- 112   2          }
- 113   1          busy = 1;
- 114   1          S2BUF = ACC;            //Send data to UART2 buffer
- 115   1      }
- 116          
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 3   
+ 113   2          }
+ 114   1          busy = 1;
+ 115   1          S2BUF = ACC;            //Send data to UART2 buffer
+ 116   1      }
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 3   
 
- 117          /*----------------------------
- 118          Send a string to UART
- 119          Input: s (address of string)
- 120          Output:None
- 121          ----------------------------*/
- 122          void SendString(char *s)
- 123          {
- 124   1          while (*s)              //Check the end of the string
- 125   1          {
- 126   2              SendData(*s++);     //Send current char and increment string ptr
- 127   2          }
- 128   1      }
- 129          
- 130          void SendDataToScreen(WORD address, WORD dat)
- 131          {
- 132   1              SendData(0x5A);
- 133   1              SendData(0xA5);
- 134   1              SendData(0x05);
- 135   1              SendData(0x82);
- 136   1              SendData(address>>8);
- 137   1              SendData(address);
- 138   1              SendData(dat>>8);
- 139   1              SendData(dat);
- 140   1      }
- 141          
- 142          void ChangeScreenPage(WORD page)
- 143          {
- 144   1              SendData(0x5A);
- 145   1              SendData(0xA5);
- 146   1              SendData(0x04);
- 147   1              SendData(0x80);
- 148   1              SendData(0x03);
- 149   1              SendData(page>>8);
- 150   1              SendData(page);
- 151   1      }
- 152          
- 153          void ReceiveData(BYTE dat)
- 154          {
- 155   1              // 0: 接收到5A
- 156   1              // 1：接收到A5
- 157   1              // 2：接收到数据长度
- 158   1              // 3: 接收数据
- 159   1              // 4：确定指令动作
- 160   1              switch(receiveSteps)
- 161   1              {
- 162   2                      case 0:
- 163   2                              if(dat == 0x5A)
- 164   2                              {
- 165   3                                      receiveSteps ++;
- 166   3                              }
- 167   2                      break;
- 168   2                      case 1:
- 169   2                              if(dat == 0xA5)
- 170   2                              {
- 171   3                                      receiveSteps ++;
- 172   3                              }
- 173   2                              else
- 174   2                              {
- 175   3                                      receiveSteps = 0;
- 176   3                              }
- 177   2                      break;
- 178   2                      case 2:
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 4   
+ 117          
+ 118          /*----------------------------
+ 119          Send a string to UART
+ 120          Input: s (address of string)
+ 121          Output:None
+ 122          ----------------------------*/
+ 123          void SendString(char *s)
+ 124          {
+ 125   1          while (*s)              //Check the end of the string
+ 126   1          {
+ 127   2              SendData(*s++);     //Send current char and increment string ptr
+ 128   2          }
+ 129   1      }
+ 130          
+ 131          void SendDataToScreen(WORD address, WORD dat)
+ 132          {
+ 133   1              SendData(0x5A);
+ 134   1              SendData(0xA5);
+ 135   1              SendData(0x05);
+ 136   1              SendData(0x82);
+ 137   1              SendData(address>>8);
+ 138   1              SendData(address);
+ 139   1              SendData(dat>>8);
+ 140   1              SendData(dat);
+ 141   1      }
+ 142          
+ 143          void ChangeScreenPage(WORD page)
+ 144          {
+ 145   1              SendData(0x5A);
+ 146   1              SendData(0xA5);
+ 147   1              SendData(0x04);
+ 148   1              SendData(0x80);
+ 149   1              SendData(0x03);
+ 150   1              SendData(page>>8);
+ 151   1              SendData(page);
+ 152   1      }
+ 153          
+ 154          void ReceiveData(BYTE dat)
+ 155          {
+ 156   1              // 0: 接收到5A
+ 157   1              // 1：接收到A5
+ 158   1              // 2：接收到数据长度
+ 159   1              // 3: 接收数据
+ 160   1              // 4：确定指令动作
+ 161   1              switch(receiveSteps)
+ 162   1              {
+ 163   2                      case 0:
+ 164   2                              if(dat == 0x5A)
+ 165   2                              {
+ 166   3                                      receiveSteps ++;
+ 167   3                              }
+ 168   2                      break;
+ 169   2                      case 1:
+ 170   2                              if(dat == 0xA5)
+ 171   2                              {
+ 172   3                                      receiveSteps ++;
+ 173   3                              }
+ 174   2                              else
+ 175   2                              {
+ 176   3                                      receiveSteps = 0;
+ 177   3                              }
+ 178   2                      break;
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 4   
 
- 179   2                              dataLength = dat;
- 180   2                              dataIndex = 0;
- 181   2                              receiveSteps ++;
- 182   2                      break;
- 183   2                      case 3:
- 184   2                              uartBuffer[dataIndex] = dat;
- 185   2                              dataIndex ++;
- 186   2                              if(dataIndex >= dataLength)
- 187   2                              {
- 188   3                                      anyData();
- 189   3                                      receiveSteps = 0;
- 190   3                              }
- 191   2                      break;
- 192   2                      default:
- 193   2                              _nop_();
- 194   2                              receiveSteps = 0;
- 195   2              }
- 196   1      }
- 197          
- 198          void cancelcylinderAlarm()
- 199          {
- 200   1              if(cylinderOut1 == 0)
- 201   1              {
- 202   2                      cylinder1 = 1;
- 203   2              }
- 204   1              else
- 205   1              {
- 206   2                      cylinder1 = 0;
- 207   2              }
- 208   1      
- 209   1              if(cylinderOut2 == 0)
- 210   1              {
- 211   2                      cylinder2 = 1;
- 212   2              }
- 213   1              else
- 214   1              {
- 215   2                      cylinder2 = 0;
- 216   2              }
- 217   1      
- 218   1              if(cylinderOut3 == 0)
- 219   1              {
- 220   2                      cylinder3 = 1;
- 221   2              }
- 222   1              else
- 223   1              {
- 224   2                      cylinder3 = 0;
- 225   2              }
- 226   1      
- 227   1              if(cylinderOut4 == 0)
- 228   1              {
- 229   2                      cylinder4 = 1;
- 230   2              }
- 231   1              else
- 232   1              {
- 233   2                      cylinder4 = 0;
- 234   2              }
- 235   1      
- 236   1              if(cylinderOut5 == 0)
- 237   1              {
- 238   2                      cylinder5 = 1;
- 239   2              }
- 240   1              else
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 5   
+ 179   2                      case 2:
+ 180   2                              dataLength = dat;
+ 181   2                              dataIndex = 0;
+ 182   2                              receiveSteps ++;
+ 183   2                      break;
+ 184   2                      case 3:
+ 185   2                              uartBuffer[dataIndex] = dat;
+ 186   2                              dataIndex ++;
+ 187   2                              if(dataIndex >= dataLength)
+ 188   2                              {
+ 189   3                                      anyData();
+ 190   3                                      receiveSteps = 0;
+ 191   3                              }
+ 192   2                      break;
+ 193   2                      default:
+ 194   2                              _nop_();
+ 195   2                              receiveSteps = 0;
+ 196   2              }
+ 197   1      }
+ 198          
+ 199          void cancelcylinderAlarm()
+ 200          {
+ 201   1              if(cylinderOut1 == 0)
+ 202   1              {
+ 203   2                      cylinder1 = 1;
+ 204   2              }
+ 205   1              else
+ 206   1              {
+ 207   2                      cylinder1 = 0;
+ 208   2              }
+ 209   1      
+ 210   1              if(cylinderOut2 == 0)
+ 211   1              {
+ 212   2                      cylinder2 = 1;
+ 213   2              }
+ 214   1              else
+ 215   1              {
+ 216   2                      cylinder2 = 0;
+ 217   2              }
+ 218   1      
+ 219   1              if(cylinderOut3 == 0)
+ 220   1              {
+ 221   2                      cylinder3 = 1;
+ 222   2              }
+ 223   1              else
+ 224   1              {
+ 225   2                      cylinder3 = 0;
+ 226   2              }
+ 227   1      
+ 228   1              if(cylinderOut4 == 0)
+ 229   1              {
+ 230   2                      cylinder4 = 1;
+ 231   2              }
+ 232   1              else
+ 233   1              {
+ 234   2                      cylinder4 = 0;
+ 235   2              }
+ 236   1      
+ 237   1              if(cylinderOut5 == 0)
+ 238   1              {
+ 239   2                      cylinder5 = 1;
+ 240   2              }
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 5   
 
- 241   1              {
- 242   2                      cylinder5 = 0;
- 243   2              }
- 244   1      }
- 245          
- 246          void anyData()
- 247          {
- 248   1              WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
- 249   1              refreshDisplay = 1;
- 250   1              if(uartBuffer[2] == 0x00)//运行模式     0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启
+ 241   1              else
+ 242   1              {
+ 243   2                      cylinder5 = 0;
+ 244   2              }
+ 245   1      }
+ 246          
+ 247          void anyData()
+ 248          {
+ 249   1              WORD dat = ((uartBuffer[4]<<8) | uartBuffer[5]);
+ 250   1              refreshDisplay = 1;
+ 251   1              if(uartBuffer[2] == 0x00)//运行模式     0：手动模式(停止)  1：自动模式(停止) 2：手动模式(启动) 3：自动模式(启
              -动)   返回数据0xEE
- 251   1              {
- 252   2                      if(runMode == 0 || runMode == 2)
- 253   2                      {
- 254   3                              runMode = 1;    
- 255   3                      }
- 256   2                      else
- 257   2                      {
- 258   3                              runMode = 0;
- 259   3                      }
- 260   2              }
- 261   1              else if(uartBuffer[2] == 0x01)  //电机状态      0：电机停止   1：电机启动  返回数据0xEE
- 262   1              {
- 263   2                      if(montorMode == 0)
- 264   2                      {
- 265   3                              montorMode = 1;
- 266   3                      }
- 267   2                      else
- 268   2                      {
- 269   3                              montorMode = 0;
- 270   3                      }
- 271   2              }
- 272   1              else if(uartBuffer[2] == 0x11)  //时间设置1     字(int) 最大9.9
- 273   1              {
- 274   2                      intervalTimer1 = dat;
- 275   2                      //parameter_save();
- 276   2              }
- 277   1              else if(uartBuffer[2] == 0x12)  //时间设置2     字(int)
- 278   1              {
- 279   2                      intervalTimer2 = dat;
- 280   2                      //parameter_save();
- 281   2              }
- 282   1              else if(uartBuffer[2] == 0x13)  //时间设置3     字(int)
- 283   1              {
- 284   2                      intervalTimer3 = dat;
- 285   2                      //parameter_save();
- 286   2              }
- 287   1              else if(uartBuffer[2] == 0x14)  //时间设置4     字(int)
- 288   1              {
- 289   2                      intervalTimer4 = dat;
- 290   2                      //parameter_save();
- 291   2              }
- 292   1              else if(uartBuffer[2] == 0x15)  //时间设置5     字(int)
- 293   1              {
- 294   2                      intervalTimer5 = dat;
- 295   2                      //parameter_save();
- 296   2              }
- 297   1              else if(uartBuffer[2] == 0x16)  //时间设置6     字(int)
- 298   1              {
- 299   2                      intervalTimer6 = dat;
- 300   2                      //parameter_save();
- 301   2              }
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 6   
+ 252   1              {
+ 253   2                      if(runMode == 0 || runMode == 2)
+ 254   2                      {
+ 255   3                              runMode = 1;    
+ 256   3                      }
+ 257   2                      else
+ 258   2                      {
+ 259   3                              runMode = 0;
+ 260   3                      }
+ 261   2              }
+ 262   1              else if(uartBuffer[2] == 0x01)  //电机状态      0：电机停止   1：电机启动  返回数据0xEE
+ 263   1              {
+ 264   2                      if(montorMode == 0)
+ 265   2                      {
+ 266   3                              montorMode = 1;
+ 267   3                      }
+ 268   2                      else
+ 269   2                      {
+ 270   3                              montorMode = 0;
+ 271   3                      }
+ 272   2              }
+ 273   1              else if(uartBuffer[2] == 0x11)  //时间设置1     字(int) 最大9.9
+ 274   1              {
+ 275   2                      intervalTimer1 = dat;
+ 276   2                      saveSetting = 1;
+ 277   2              }
+ 278   1              else if(uartBuffer[2] == 0x12)  //时间设置2     字(int)
+ 279   1              {
+ 280   2                      intervalTimer2 = dat;
+ 281   2                      saveSetting = 1;
+ 282   2              }
+ 283   1              else if(uartBuffer[2] == 0x13)  //时间设置3     字(int)
+ 284   1              {
+ 285   2                      intervalTimer3 = dat;
+ 286   2                      saveSetting = 1;
+ 287   2              }
+ 288   1              else if(uartBuffer[2] == 0x14)  //时间设置4     字(int)
+ 289   1              {
+ 290   2                      intervalTimer4 = dat;
+ 291   2                      saveSetting = 1;
+ 292   2              }
+ 293   1              else if(uartBuffer[2] == 0x15)  //时间设置5     字(int)
+ 294   1              {
+ 295   2                      intervalTimer5 = dat;
+ 296   2                      saveSetting = 1;
+ 297   2              }
+ 298   1              else if(uartBuffer[2] == 0x16)  //时间设置6     字(int)
+ 299   1              {
+ 300   2                      intervalTimer6 = dat;
+ 301   2                      saveSetting = 1;
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 6   
 
- 302   1              else if(uartBuffer[2] == 0x17)  //时间设置7     字(int)
- 303   1              {
- 304   2                      intervalTimer7 = dat;
- 305   2                      //parameter_save();
- 306   2              }
- 307   1              else if(uartBuffer[2] == 0x18)  //报警设置 气缸1        字(int)
- 308   1              {
- 309   2                      cylinderAlarm1 = dat;
- 310   2                      //parameter_save();     
- 311   2              }
- 312   1              else if(uartBuffer[2] == 0x19)  //报警设置 气缸2        字(int)
- 313   1              {
- 314   2                      cylinderAlarm2 = dat;
- 315   2                      //parameter_save();
- 316   2              }
- 317   1              else if(uartBuffer[2] == 0x1A)  //报警设置 气缸3        字(int)
- 318   1              {
- 319   2                      cylinderAlarm3 = dat;
- 320   2                      //parameter_save();
- 321   2              }
- 322   1              else if(uartBuffer[2] == 0x1B)  //报警设置 气缸4        字(int)
- 323   1              {
- 324   2                      cylinderAlarm4 = dat;
- 325   2                      //parameter_save();
- 326   2              }
- 327   1              else if(uartBuffer[2] == 0x1C)  //报警设置 气缸5        字(int)
- 328   1              {
- 329   2                      cylinderAlarm5 = dat;
- 330   2                      //parameter_save();
- 331   2              }
- 332   1              else if(uartBuffer[2] == 0x1D)  //复位计数按钮  返回数据0xEE
- 333   1              {
- 334   2                      pieceCount = 0;
- 335   2              }
- 336   1              else if(uartBuffer[2] == 0x1E)  //手动模式 按钮 气缸1   0：关闭  1：开启
- 337   1              {
- 338   2                      if(cylinder1)
- 339   2                      {
- 340   3                              cylinder1 = 0;
- 341   3                              cylinderOut1 = 1;
- 342   3                      }
- 343   2                      else
- 344   2                      {
- 345   3                              cylinder1 = 1;
- 346   3                              cylinderOut1 = 0;       
- 347   3                      }
- 348   2              }
- 349   1              else if(uartBuffer[2] == 0x1F)  //手动模式 按钮 气缸2   0：关闭  1：开启
- 350   1              {
- 351   2                      if(cylinder2)
- 352   2                      {
- 353   3                              cylinder2 = 0;
- 354   3                              cylinderOut2 = 1;
- 355   3                      }
- 356   2                      else
- 357   2                      {
- 358   3                              cylinder2 = 1;
- 359   3                              cylinderOut2 = 0;       
- 360   3                      }
- 361   2              }
- 362   1              else if(uartBuffer[2] == 0x20)  //手动模式 按钮 气缸3   0：关闭  1：开启
- 363   1              {
-C51 COMPILER V7.50   UART                                                                  08/10/2014 22:13:37 PAGE 7   
+ 302   2              }
+ 303   1              else if(uartBuffer[2] == 0x17)  //时间设置7     字(int)
+ 304   1              {
+ 305   2                      intervalTimer7 = dat;
+ 306   2                      saveSetting = 1;
+ 307   2              }
+ 308   1              else if(uartBuffer[2] == 0x18)  //报警设置 气缸1        字(int)
+ 309   1              {
+ 310   2                      cylinderAlarm1 = dat;
+ 311   2                      saveSetting = 2;        
+ 312   2              }
+ 313   1              else if(uartBuffer[2] == 0x19)  //报警设置 气缸2        字(int)
+ 314   1              {
+ 315   2                      cylinderAlarm2 = dat;
+ 316   2                      saveSetting = 2;
+ 317   2              }
+ 318   1              else if(uartBuffer[2] == 0x1A)  //报警设置 气缸3        字(int)
+ 319   1              {
+ 320   2                      cylinderAlarm3 = dat;
+ 321   2                      saveSetting = 2;
+ 322   2              }
+ 323   1              else if(uartBuffer[2] == 0x1B)  //报警设置 气缸4        字(int)
+ 324   1              {
+ 325   2                      cylinderAlarm4 = dat;
+ 326   2                      saveSetting = 2;
+ 327   2              }
+ 328   1              else if(uartBuffer[2] == 0x1C)  //报警设置 气缸5        字(int)
+ 329   1              {
+ 330   2                      cylinderAlarm5 = dat;
+ 331   2                      saveSetting = 2;
+ 332   2              }
+ 333   1              else if(uartBuffer[2] == 0x1D)  //复位计数按钮  返回数据0xEE
+ 334   1              {
+ 335   2                      pieceCount = 0;
+ 336   2              }
+ 337   1              else if(uartBuffer[2] == 0x1E)  //手动模式 按钮 气缸1   0：关闭  1：开启
+ 338   1              {
+ 339   2                      if(cylinder1)
+ 340   2                      {
+ 341   3                              cylinder1 = 0;
+ 342   3                              cylinderOut1 = 1;
+ 343   3                      }
+ 344   2                      else
+ 345   2                      {
+ 346   3                              cylinder1 = 1;
+ 347   3                              cylinderOut1 = 0;       
+ 348   3                      }
+ 349   2              }
+ 350   1              else if(uartBuffer[2] == 0x1F)  //手动模式 按钮 气缸2   0：关闭  1：开启
+ 351   1              {
+ 352   2                      if(cylinder2)
+ 353   2                      {
+ 354   3                              cylinder2 = 0;
+ 355   3                              cylinderOut2 = 1;
+ 356   3                      }
+ 357   2                      else
+ 358   2                      {
+ 359   3                              cylinder2 = 1;
+ 360   3                              cylinderOut2 = 0;       
+ 361   3                      }
+ 362   2              }
+ 363   1              else if(uartBuffer[2] == 0x20)  //手动模式 按钮 气缸3   0：关闭  1：开启
+C51 COMPILER V7.50   UART                                                                  08/11/2014 20:56:25 PAGE 7   
 
- 364   2                      if(cylinder3)
- 365   2                      {
- 366   3                              cylinder3 = 0;
- 367   3                              cylinderOut3 = 1;
- 368   3                      }
- 369   2                      else
- 370   2                      {
- 371   3                              cylinder3 = 1;
- 372   3                              cylinderOut3 = 0;       
- 373   3                      }
- 374   2              }
- 375   1              else if(uartBuffer[2] == 0x21)  //手动模式 按钮 气缸4   0：关闭  1：开启
- 376   1              {
- 377   2                      if(cylinder4)
- 378   2                      {
- 379   3                              cylinder4 = 0;
- 380   3                              cylinderOut4 = 1;
- 381   3                      }
- 382   2                      else
- 383   2                      {
- 384   3                              cylinder4 = 1;
- 385   3                              cylinderOut4 = 0;       
- 386   3                      }
- 387   2              }
- 388   1              else if(uartBuffer[2] == 0x22)  //手动模式 按钮 气缸5   0：关闭  1：开启
- 389   1              {
- 390   2                      if(cylinder5)
- 391   2                      {
- 392   3                              cylinder5 = 0;
- 393   3                              cylinderOut5 = 1;
- 394   3                      }
- 395   2                      else
- 396   2                      {
- 397   3                              cylinder5 = 1;
- 398   3                              cylinderOut5 = 0;       
- 399   3                      }
- 400   2              }
- 401   1              else if(uartBuffer[2] == 0x24)  //解除警报按钮  返回数据0xEE
- 402   1              {
- 403   2                      alarmMode = 0;
- 404   2                      cylinderAlarmCount = 0;
- 405   2                      systemAlarmOut = 1;
- 406   2                      cancelcylinderAlarm();
- 407   2              }
- 408   1              uartReceiveOK = 1;      
- 409   1      }
+ 364   1              {
+ 365   2                      if(cylinder3)
+ 366   2                      {
+ 367   3                              cylinder3 = 0;
+ 368   3                              cylinderOut3 = 1;
+ 369   3                      }
+ 370   2                      else
+ 371   2                      {
+ 372   3                              cylinder3 = 1;
+ 373   3                              cylinderOut3 = 0;       
+ 374   3                      }
+ 375   2              }
+ 376   1              else if(uartBuffer[2] == 0x21)  //手动模式 按钮 气缸4   0：关闭  1：开启
+ 377   1              {
+ 378   2                      if(cylinder4)
+ 379   2                      {
+ 380   3                              cylinder4 = 0;
+ 381   3                              cylinderOut4 = 1;
+ 382   3                      }
+ 383   2                      else
+ 384   2                      {
+ 385   3                              cylinder4 = 1;
+ 386   3                              cylinderOut4 = 0;       
+ 387   3                      }
+ 388   2              }
+ 389   1              else if(uartBuffer[2] == 0x22)  //手动模式 按钮 气缸5   0：关闭  1：开启
+ 390   1              {
+ 391   2                      if(cylinder5)
+ 392   2                      {
+ 393   3                              cylinder5 = 0;
+ 394   3                              cylinderOut5 = 1;
+ 395   3                      }
+ 396   2                      else
+ 397   2                      {
+ 398   3                              cylinder5 = 1;
+ 399   3                              cylinderOut5 = 0;       
+ 400   3                      }
+ 401   2              }
+ 402   1              else if(uartBuffer[2] == 0x24)  //解除警报按钮  返回数据0xEE
+ 403   1              {
+ 404   2                      alarmMode = 0;
+ 405   2                      cylinderAlarmCount = 0;
+ 406   2                      systemAlarmOut = 1;
+ 407   2                      cancelcylinderAlarm();
+ 408   2              }
+ 409   1              uartReceiveOK = 1;      
+ 410   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    784    ----
+   CODE SIZE        =    809    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     18       3
+   XDATA SIZE       =     19       3
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

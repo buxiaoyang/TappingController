@@ -265,6 +265,20 @@ void main()
 	while(1)
 	{
 		delay_us(3600);
+		if(saveSetting)
+		{
+			ChangeScreenPage(0x0A);
+			parameter_save();
+			if(saveSetting == 2)
+			{
+				ChangeScreenPage(0x04);
+			}
+			else
+			{
+				ChangeScreenPage(0x00);
+			}
+			saveSetting = 0;
+		}
 		//¼ÆÊ±
 		//timeCount10ms ++;
 		//if(timeCount10ms == 950)//10ms
