@@ -1,4 +1,4 @@
-C51 COMPILER V7.50   PARAMETER                                                             08/10/2014 22:13:35 PAGE 1   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 1   
 
 
 C51 COMPILER V7.50, COMPILATION OF MODULE PARAMETER
@@ -62,7 +62,7 @@ line level    source
   51          unsigned int cylinderAlarm4; //报警设置 气缸1   字(int)
   52          unsigned int cylinderAlarm5; //报警设置 气缸1   字(int)
   53          
-C51 COMPILER V7.50   PARAMETER                                                             08/10/2014 22:13:35 PAGE 2   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 2   
 
   54          unsigned int pieceCount; //计件计数     字(int)
   55          
@@ -126,7 +126,7 @@ line level    source
  112   1              
  113   1              cylinder1 = 0; //气缸1  0：无效  1：有效  2：错误
  114   1              cylinder2 = 0; //气缸2  0：无效  1：有效  2：错误
-C51 COMPILER V7.50   PARAMETER                                                             08/10/2014 22:13:35 PAGE 3   
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 3   
 
  115   1              cylinder3 = 0; //气缸3  0：无效  1：有效  2：错误
  116   1              cylinder4 = 0; //气缸4  0：无效  1：有效  2：错误
@@ -161,41 +161,39 @@ line level    source
  145          unsigned char parameter_save()
  146          {
  147   1              unsigned char result = 1;
- 148   1              EA = 0;
- 149   1          delay_ms(10);                      //Delay
- 150   1              IapEraseSector(IAP_ADDRESS); //擦除EEPROM
- 151   1      
- 152   1              IapProgramByte(IAP_ADDRESS+0, (BYTE)intervalTimer1);
- 153   1              IapProgramByte(IAP_ADDRESS+1, (BYTE)intervalTimer2);
- 154   1              IapProgramByte(IAP_ADDRESS+2, (BYTE)intervalTimer3);
- 155   1              IapProgramByte(IAP_ADDRESS+3, (BYTE)intervalTimer4);
- 156   1              IapProgramByte(IAP_ADDRESS+4, (BYTE)intervalTimer5);
- 157   1              IapProgramByte(IAP_ADDRESS+5, (BYTE)intervalTimer6);
- 158   1              IapProgramByte(IAP_ADDRESS+6, (BYTE)intervalTimer7);
- 159   1      
- 160   1              IapProgramByte(IAP_ADDRESS+20, (BYTE)(cylinderAlarm1>>8));
- 161   1              IapProgramByte(IAP_ADDRESS+21, (BYTE)cylinderAlarm1);
- 162   1              IapProgramByte(IAP_ADDRESS+22, (BYTE)(cylinderAlarm2>>8));
- 163   1              IapProgramByte(IAP_ADDRESS+23, (BYTE)cylinderAlarm2);
- 164   1              IapProgramByte(IAP_ADDRESS+24, (BYTE)(cylinderAlarm3>>8));
- 165   1              IapProgramByte(IAP_ADDRESS+25, (BYTE)cylinderAlarm3);
- 166   1              IapProgramByte(IAP_ADDRESS+26, (BYTE)(cylinderAlarm4>>8));
- 167   1              IapProgramByte(IAP_ADDRESS+27, (BYTE)cylinderAlarm4);
- 168   1              IapProgramByte(IAP_ADDRESS+28, (BYTE)(cylinderAlarm5>>8));
- 169   1              IapProgramByte(IAP_ADDRESS+29, (BYTE)cylinderAlarm5);
- 170   1              IapProgramByte(IAP_ADDRESS+200, 0xEE); //写入标志位
- 171   1              refreshDisplay = 0;
- 172   1              EA = 1;
- 173   1              return result;
- 174   1      }
- 175          
- 176          
-C51 COMPILER V7.50   PARAMETER                                                             08/10/2014 22:13:35 PAGE 4   
+ 148   1          delay_ms(10);                      //Delay
+ 149   1              IapEraseSector(IAP_ADDRESS); //擦除EEPROM
+ 150   1      
+ 151   1              IapProgramByte(IAP_ADDRESS+0, (BYTE)intervalTimer1);
+ 152   1              IapProgramByte(IAP_ADDRESS+1, (BYTE)intervalTimer2);
+ 153   1              IapProgramByte(IAP_ADDRESS+2, (BYTE)intervalTimer3);
+ 154   1              IapProgramByte(IAP_ADDRESS+3, (BYTE)intervalTimer4);
+ 155   1              IapProgramByte(IAP_ADDRESS+4, (BYTE)intervalTimer5);
+ 156   1              IapProgramByte(IAP_ADDRESS+5, (BYTE)intervalTimer6);
+ 157   1              IapProgramByte(IAP_ADDRESS+6, (BYTE)intervalTimer7);
+ 158   1      
+ 159   1              IapProgramByte(IAP_ADDRESS+20, (BYTE)(cylinderAlarm1>>8));
+ 160   1              IapProgramByte(IAP_ADDRESS+21, (BYTE)cylinderAlarm1);
+ 161   1              IapProgramByte(IAP_ADDRESS+22, (BYTE)(cylinderAlarm2>>8));
+ 162   1              IapProgramByte(IAP_ADDRESS+23, (BYTE)cylinderAlarm2);
+ 163   1              IapProgramByte(IAP_ADDRESS+24, (BYTE)(cylinderAlarm3>>8));
+ 164   1              IapProgramByte(IAP_ADDRESS+25, (BYTE)cylinderAlarm3);
+ 165   1              IapProgramByte(IAP_ADDRESS+26, (BYTE)(cylinderAlarm4>>8));
+ 166   1              IapProgramByte(IAP_ADDRESS+27, (BYTE)cylinderAlarm4);
+ 167   1              IapProgramByte(IAP_ADDRESS+28, (BYTE)(cylinderAlarm5>>8));
+ 168   1              IapProgramByte(IAP_ADDRESS+29, (BYTE)cylinderAlarm5);
+ 169   1              IapProgramByte(IAP_ADDRESS+200, 0xEE); //写入标志位
+ 170   1              refreshDisplay = 0;
+ 171   1              return result;
+ 172   1      }
+ 173          
+ 174          
 
 
+C51 COMPILER V7.50   PARAMETER                                                             08/11/2014 20:56:25 PAGE 4   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    695    ----
+   CODE SIZE        =    691    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     38       2
    PDATA SIZE       =   ----    ----

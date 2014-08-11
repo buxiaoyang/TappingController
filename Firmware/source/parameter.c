@@ -145,7 +145,6 @@ void parameter_init()
 unsigned char parameter_save()
 {
 	unsigned char result = 1;
-	EA = 0;
     delay_ms(10);                      //Delay
 	IapEraseSector(IAP_ADDRESS); //擦除EEPROM
 
@@ -169,7 +168,6 @@ unsigned char parameter_save()
 	IapProgramByte(IAP_ADDRESS+29, (BYTE)cylinderAlarm5);
 	IapProgramByte(IAP_ADDRESS+200, 0xEE); //写入标志位
 	refreshDisplay = 0;
-	EA = 1;
 	return result;
 }
 

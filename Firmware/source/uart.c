@@ -30,6 +30,7 @@ sfr IE2   = 0xaf;           //Interrupt control 2
 
 bit busy;
 bit uartReceiveOK = 0;
+BYTE saveSetting = 0;
 
 BYTE uartBuffer[15] = {0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
@@ -272,62 +273,62 @@ void anyData()
 	else if(uartBuffer[2] == 0x11) 	//时间设置1	字(int) 最大9.9
 	{
 		intervalTimer1 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x12)	//时间设置2	字(int)
 	{
 		intervalTimer2 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x13)	//时间设置3	字(int)
 	{
 		intervalTimer3 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x14)	//时间设置4	字(int)
 	{
 		intervalTimer4 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x15)	//时间设置5	字(int)
 	{
 		intervalTimer5 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x16)	//时间设置6	字(int)
 	{
 		intervalTimer6 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x17)	//时间设置7	字(int)
 	{
 	   	intervalTimer7 = dat;
-		//parameter_save();
+		saveSetting = 1;
 	}
 	else if(uartBuffer[2] == 0x18)	//报警设置 气缸1	字(int)
 	{
 		cylinderAlarm1 = dat;
-		//parameter_save();	
+		saveSetting = 2;	
 	}
 	else if(uartBuffer[2] == 0x19) 	//报警设置 气缸2	字(int)
 	{
 		cylinderAlarm2 = dat;
-		//parameter_save();
+		saveSetting = 2;
 	}
 	else if(uartBuffer[2] == 0x1A)	//报警设置 气缸3	字(int)
 	{
 		cylinderAlarm3 = dat;
-		//parameter_save();
+		saveSetting = 2;
 	}
 	else if(uartBuffer[2] == 0x1B)	//报警设置 气缸4	字(int)
 	{
 		cylinderAlarm4 = dat;
-		//parameter_save();
+		saveSetting = 2;
 	}
 	else if(uartBuffer[2] == 0x1C)	//报警设置 气缸5	字(int)
 	{
 		cylinderAlarm5 = dat;
-		//parameter_save();
+		saveSetting = 2;
 	}
 	else if(uartBuffer[2] == 0x1D)	//复位计数按钮	返回数据0xEE
 	{
